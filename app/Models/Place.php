@@ -31,7 +31,7 @@ class Place extends Model
 
     public function setPlaceAttribute($value)
     {
-        $this->attributes['place'] = strtoupper($value);
+        $this->attributes['place'] = trim(strtoupper($value));
     }
 
 }

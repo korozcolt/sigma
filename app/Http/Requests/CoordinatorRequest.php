@@ -33,7 +33,7 @@ class CoordinatorRequest extends FormRequest
             'first_name' => 'required|string|regex:/^[\pL\s]+$/u',
             'last_name' => 'required|string|regex:/^[\pL\s]+$/u',
             'email' => 'nullable|email',
-            'phone' => 'nullable|numeric|size:11',
+            'phone' => 'nullable|numeric|size:10',
         ];
     }
 
