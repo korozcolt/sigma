@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Coordinator;
 use App\Http\Requests\CoordinatorRequest;
+use App\Models\Place;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -24,7 +25,7 @@ class CoordinatorController extends Controller
                 ->orWhere('dni', 'like', "%$search%");
         })->paginate(10);
 
-        return view('coordinator.index', compact('coordinators', 'search'));
+        return view('coordinators.index', compact('coordinators', 'search'));
     }
 
     /**
@@ -34,7 +35,8 @@ class CoordinatorController extends Controller
      */
     public function create()
     {
-        return view('coordinator.create');
+        $places = Place::all();
+        return view('coordinators.create', compact('places'));
     }
 
     /**
@@ -59,7 +61,7 @@ class CoordinatorController extends Controller
         $coordinator->user()->associate($user);
         $coordinator->save();
 
-        return redirect()->route('coordinator.index')->with('success', 'Coordinador creado Correctamente.');
+        return redirect()->route('coordinators.index')->with('success', 'Coordinador creado Correctamente.');
     }
 
     /**
@@ -70,7 +72,7 @@ class CoordinatorController extends Controller
      */
     public function edit(Coordinator $coordinator)
     {
-        return view('coordinator.edit', compact('coordinator'));
+        return view('coordinators.edit', compact('coordinator'));
     }
 
     /**
@@ -83,7 +85,7 @@ class CoordinatorController extends Controller
     public function update(CoordinatorRequest $request, Coordinator $coordinator)
     {
         $coordinator->update($request->validated());
-        return redirect()->route('coordinator.index')->with('success', 'Coordinador actualizado Correctamente.');
+        return redirect()->route('coordinators.index')->with('success', 'Coordinador actualizado Correctamente.');
     }
 
     /**
@@ -95,6 +97,6 @@ class CoordinatorController extends Controller
     public function destroy(Coordinator $coordinator)
     {
         $coordinator->delete();
-        return redirect()->route('coordinator.index')->with('success','Coordinator Eliminado Correctamente');
+        return redirect()->route('coordinators.index')->with('success','Coordinator Eliminado Correctamente');
     }
 }

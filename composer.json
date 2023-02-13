@@ -14,6 +14,7 @@
         "laravel/tinker": "^2.7",
         "pestphp/pest": "^1.16",
         "pestphp/pest-plugin-laravel": "^1.1",
+        "phpoffice/phpexcel": "^1.8",
         "predis/predis": "^2.1",
         "realrashid/sweet-alert": "^5.1"
     },
