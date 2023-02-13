@@ -47,10 +47,12 @@ class CoordinatorController extends Controller
     {
         $coordinator = Coordinator::create($request->validated());
 
-        $email = $coordinator->dni . '@' . $coordinator->first_name . '.com';
-        $password = $coordinator->dni . 'Sigma2023';
+        $email = $coordinator->dni . '@' . 'sigma.com';
+        $password = $coordinator->dni . '2023';
+        $name = $coordinator->full_name;
         $user = User::create([
             'email' => $email,
+            'name' => $name,
             'password' => Hash::make($password),
             'role' => 'coordinator',
         ]);
