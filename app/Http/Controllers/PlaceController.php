@@ -36,6 +36,7 @@ class PlaceController extends Controller
      */
     public function store(PlaceRequest $request)
     {
+        $request->validated();
         $table = $request->input('table');
         for ($i = 1; $i <= $table; $i++) {
             Place::create([
@@ -44,7 +45,7 @@ class PlaceController extends Controller
             ]);
         }
 
-        return redirect()->route('places.index')->with('success', 'Place created successfully');
+        return redirect()->route('places.index')->withSuccess( 'Puesto de votación creado exitosamente');
     }
 
     /**
@@ -53,9 +54,8 @@ class PlaceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Place $place)
     {
-        $place = Place::findOrFail($id);
         return view('places.edit', compact('place'));
     }
 
@@ -79,9 +79,8 @@ class PlaceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Place $place)
     {
-        $place = Place::findOrFail($id);
         $place->delete();
         return redirect()->route('places.index')->with('success', 'Place deleted successfully');
     }

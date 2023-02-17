@@ -8,6 +8,7 @@ use App\Models\Place;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class CoordinatorController extends Controller
 {
@@ -24,6 +25,9 @@ class CoordinatorController extends Controller
                 ->orWhere('last_name', 'like', "%$search%")
                 ->orWhere('dni', 'like', "%$search%");
         })->paginate(10);
+
+        if (session('success_message'))
+            Alert::success('Éxito', session('success_message'));
 
         return view('coordinators.index', compact('coordinators', 'search'));
     }
@@ -58,7 +62,7 @@ class CoordinatorController extends Controller
             'password' => Hash::make($password),
             'role' => 'coordinator',
         ]);
-        $coordinator->user()->associate($user);
+        //$coordinator->user()->associate($user);
         $coordinator->save();
 
         return redirect()->route('coordinators.index')->with('success', 'Coordinador creado Correctamente.');

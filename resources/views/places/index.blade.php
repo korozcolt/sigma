@@ -4,7 +4,7 @@
             <h1 class="text-2xl font-bold">Listado de Lugares</h1>
             <button class="bg-blue-500 text-white px-4 py-2 rounded-lg" id="showCreateFormButton">Crear Lugar</button>
         </div>
-        <div class="mt-4" id="createForm" style="display: none;">
+        {{-- <div class="mt-4" id="createForm" style="display: none;">
             <form action="{{ route('places.store') }}" method="post">
                 @csrf
                 <div class="flex">
@@ -15,40 +15,43 @@
                     <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Guardar</button>
                 </div>
             </form>
-        </div>
-        <table class="mt-8 w-full text-left table-collapse">
+        </div> --}}
+        <table class="w-full table-auto">
             <thead>
-                <tr class="text-sm font-medium uppercase text-gray-700">
-                    <th class="px-4 py-2">Nombre del Lugar</th>
-                    <th class="px-4 py-2">Cantidad de Mesas</th>
-                    <th class="px-4 py-2">Acciones</th>
+                <tr class="bg-gray-800 text-white">
+                    <th class="py-2 px-4">Puesto de Votacion</th>
+                    <th class="py-2 px-4">Mesa</th>
+                    <th class="py-2 px-4"><i class="fa-solid fa-gear"></i></th>
                 </tr>
             </thead>
             <tbody>
-                @forelse($places as $place)
-                    <tr class="text-sm border-t border-gray-400">
-                        <td class="px-4 py-2">{{ $place->place }}</td>
-                        <td class="px-4 py-2">{{ $place->table }}</td>
-                        <td class="px-4 py-2">
-                            <a href="{{ route('places.edit', $place) }}" class="text-blue-500 hover:underline"><i
-                                    class="fas fa-pencil-alt"></i></a>
-                            <form action="{{ route('places.destroy', $place) }}" method="post" class="inline">
-                                @csrf
-                                @method('delete')
-                                <button type="submit" class="text-red-500 hover:underline"><i
-                                        class="fas fa-trash"></i></button>
-                            </form>
+                @forelse ($places as $place)
+                    <tr class="border-b">
+                        <td class="py-2 px-4 text-center">{{ $place->place }}</td>
+                        <td class="py-2 px-4  text-center">{{ $place->table }}</td>
+                        <td class="py-2 px-4 flex items-center text-center">
+                            <a href="{{ route('places.edit', $place) }}" class="text-blue-500 hover:text-blue-700 mr-4">
+                                <i class="fas fa-pencil-alt"></i>
+                            </a>
+                            <x-modal-delete-confirmation :route="route('places.destroy', $place)" :id="$place->id">
+                                <x-slot name="trigger">
+                                    <button type="button" class="text-red-500 hover:text-red-700 focus:outline-none">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </x-slot>
+                            </x-modal-delete-confirmation>
                         </td>
                     </tr>
                 @empty
-                    <tr class="text-sm border-t border-gray-400">
-                        <td colspan="3" class="px-4 py-2">No hay lugares registrados</td>
+                    <tr>
+                        <td class="py-2 px-4" colspan="4">No hay Puestos de Votacion registrados</td>
                     </tr>
                 @endforelse
             </tbody>
         </table>
     </div>
     {{ $places->links() }}
+
 </x-app-layout>
 
 <script>

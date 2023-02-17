@@ -4,51 +4,38 @@
 
         <form method="post" action="{{ route('coordinators.store') }}">
             @csrf
-            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="first_name">
-                    First Name
-                </label>
-                <input
-                    class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white {{ $errors->has('first_name') ? 'border-red-500' : '' }}"
-                    id="first_name" name="first_name" type="text" value="{{ old('first_name') }}">
-                @error('first_name')
-                    <p class="text-red-500 text-xs italic mt-4">
-                        {{ $message }}
-                    </p>
-                @enderror
+            <div class="mt-4">
+                <div class="mt-4">
+                    <x-input-label for="dni" :value="__('Cedula')" />
+                    <x-text-input type="text" id="dni" name="dni" class="block w-full"
+                        value="{{ old('dni') }}" required autofocus />
+                    <x-input-error :messages="$errors->get('dni')" class="mt-2" />
+                </div>
             </div>
-            <div class="w-full md:w-1/2 px-3">
-                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="last_name">
-                    Last Name
-                </label>
-                <input
-                    class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white {{ $errors->has('last_name') ? 'border-red-500' : '' }}"
-                    id="last_name" name="last_name" type="text" value="{{ old('last_name') }}">
-                @error('last_name')
-                    <p class="text-red-500 text-xs italic mt-4">
-                        {{ $message }}
-                    </p>
-                @enderror
+            <div class="mt-4">
+                <x-input-label for="first_name" :value="__('First Name')" />
+                <x-text-input type="text" id="first_name" name="first_name" class="block w-full"
+                    value="{{ old('first_name') }}" required autofocus />
+                <x-input-error :messages="$errors->get('first_name')" class="mt-2" />
             </div>
-            <div class="mb-4">
-                <label class="block font-bold mb-2" for="phone">Teléfono</label>
-                <input
-                    class="ppearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white {{ $errors->has('phone') ? 'border-red-500' : '' }}"
-                    type="text" id="phone" name="phone">
-                @error('phone')
-                    <p class="text-red-500 text-xs italic mt-4">
-                        {{ $message }}
-                    </p>
-                @enderror
+            <div class="mt-4">
+                <x-input-label for="last_name" :value="__('Last Name')" />
+                <x-text-input type="text" id="last_name" name="last_name" class="block w-full"
+                    value="{{ old('last_name') }}" required autofocus />
+                <x-input-error :messages="$errors->get('last_name')" class="mt-2" />
+            </div>
+            <div class="mt-4">
+                <x-input-label for="phone" :value="__('Phone')" />
+                <x-text-input type="text" id="phone" name="phone" class="block w-full"
+                    value="{{ old('phone') }}" required autofocus />
+                <x-input-error :messages="$errors->get('phone')" class="mt-2" />
             </div>
 
-            <div class="mb-4">
-                <label class="block font-bold mb-2" for="place_id">Lugar</label>
-                <select class="w-full border border-gray-400 p-2" id="place_id" name="place_id">
-                    @foreach ($places as $place)
-                        <option value="{{ $place->id }}">{{ $place->name }}</option>
-                    @endforeach
-                </select>
+            <div class="mt-4">
+                <x-input-label for="place" :value="__('Place')" />
+                <x-select-input-place :options="$places" id="place_id" name="place_id" value="{{ old('place_id') }}"
+                    required autofocus />
+                <x-input-error :messages="$errors->get('place')" class="mt-2" />
             </div>
 
             <div class="text-right">

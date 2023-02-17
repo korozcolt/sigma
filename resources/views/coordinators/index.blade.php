@@ -19,27 +19,31 @@
                     <th class="py-2 px-4">Nombre Completo</th>
                     <th class="py-2 px-4">DNI</th>
                     <th class="py-2 px-4">Teléfono</th>
-                    <th class="py-2 px-4"></th>
+                    <th class="py-2 px-4">Lugar de votacion</th>
+                    <th class="py-2 px-4"><i class="fa-solid fa-gear"></i></th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($coordinators as $coordinator)
                     <tr class="border-b">
-                        <td class="py-2 px-4">{{ $coordinator->full_name }}</td>
-                        <td class="py-2 px-4">{{ $coordinator->dni }}</td>
-                        <td class="py-2 px-4">{{ $coordinator->phone }}</td>
-                        <td class="py-2 px-4 flex items-center">
+                        <td class="py-2 px-4 text-center">{{ $coordinator->full_name }}</td>
+                        <td class="py-2 px-4  text-center">{{ $coordinator->dni }}</td>
+                        <td class="py-2 px-4 text-center">{{ $coordinator->phone }}</td>
+                        <td class="py-2 px-4 text-center">{{ $coordinator->place->place }} - Mesa:
+                            {{ $coordinator->place->table }}
+                        </td>
+                        <td class="py-2 px-4 flex items-center text-center">
                             <a href="{{ route('coordinators.edit', $coordinator) }}"
                                 class="text-blue-500 hover:text-blue-700 mr-4">
                                 <i class="fas fa-pencil-alt"></i>
                             </a>
-                            <form action="{{ route('coordinators.destroy', $coordinator) }}" method="post">
-                                @csrf
-                                @method('delete')
-                                <button type="submit" class="text-red-500 hover:text-red-700">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </form>
+                            <x-modal-delete-confirmation :route="route('coordinators.destroy', $coordinator)" :id="$coordinator->id">
+                                <x-slot name="trigger">
+                                    <button type="button" class="text-red-500 hover:text-red-700 focus:outline-none">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </x-slot>
+                            </x-modal-delete-confirmation>
                         </td>
                     </tr>
                 @empty
