@@ -4,7 +4,7 @@
             <h1 class="text-2xl font-bold">Listado de Lugares</h1>
             <button class="bg-blue-500 text-white px-4 py-2 rounded-lg" id="showCreateFormButton">Crear Lugar</button>
         </div>
-        {{-- <div class="mt-4" id="createForm" style="display: none;">
+        <div class="mt-4" id="createForm" style="display: none;">
             <form action="{{ route('places.store') }}" method="post">
                 @csrf
                 <div class="flex">
@@ -15,7 +15,7 @@
                     <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Guardar</button>
                 </div>
             </form>
-        </div> --}}
+        </div>
         <table class="w-full table-auto">
             <thead>
                 <tr class="bg-gray-800 text-white">

@@ -7,6 +7,7 @@ use App\Http\Requests\CoordinatorRequest;
 use App\Models\Place;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -39,8 +40,13 @@ class CoordinatorController extends Controller
      */
     public function create()
     {
-        $places = Place::all();
-        return view('coordinators.create', compact('places'));
+        $user = Auth::user();
+        if ($user->hasRole('coordinator') || $user->hasRole('admin') || $user->hasRole('super_admin')) {
+            $places = Place::all();
+            return view('coordinators.create', compact('places'));
+        } else {
+            abort(403, 'No tienes permiso para acceder a esta página.');
+        }
     }
 
     /**
@@ -76,7 +82,13 @@ class CoordinatorController extends Controller
      */
     public function edit(Coordinator $coordinator)
     {
-        return view('coordinators.edit', compact('coordinator'));
+        $user = Auth::user();
+        if ($user->hasRole('coordinator') || $user->hasRole('admin') || $user->hasRole('super_admin')) {
+            $places = Place::all();
+            return view('coordinators.edit', compact('coordinator', 'places'));
+        } else {
+            abort(403, 'No tienes permiso para acceder a esta página.');
+        }
     }
 
     /**
@@ -100,7 +112,18 @@ class CoordinatorController extends Controller
      */
     public function destroy(Coordinator $coordinator)
     {
+        $user = $coordinator->user;
+        if ($user) {
+            $user->delete();
+        }
+
+        // Mover los Leader asociados a otro Coordinator
+        $leaderIds = $coordinator->leaders->pluck('id');
+        $otherCoordinator = Coordinator::find(1);
+        $otherCoordinator->leaders()->whereIn('id', $leaderIds)->update(['coordinator_id' => $otherCoordinator->id]);
+
+        // Eliminar el Coordinator
         $coordinator->delete();
-        return redirect()->route('coordinators.index')->with('success','Coordinator Eliminado Correctamente');
+        return redirect()->route('coordinators.index')->with('success', 'Coordinator Eliminado Correctamente');
     }
 }

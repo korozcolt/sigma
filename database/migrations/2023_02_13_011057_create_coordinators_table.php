@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('status')->nullable();
             $table->string('debate_boss')->nullable();
             $table->string('candidate')->nullable();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('place_id')->constrained('places')->onDelete('cascade');
             $table->timestamps();
         });

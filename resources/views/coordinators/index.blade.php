@@ -6,11 +6,12 @@
     <div class="p-4 bg-white rounded-lg shadow-xs">
         <div class="flex items-center justify-between mb-3">
             <h1 class="text-gray-700 text-2xl">Listado de Coordinadores</h1>
-
-            <a href="{{ route('coordinators.create') }}"
-                class="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg">
-                Crear Coordinador
-            </a>
+            @if (Auth::user()->hasRole(['super_admin', 'admin', 'coordinator']))
+                <a href="{{ route('coordinators.create') }}"
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg">
+                    Crear Coordinador
+                </a>
+            @endif
         </div>
 
         <table class="w-full table-auto">
@@ -32,19 +33,22 @@
                         <td class="py-2 px-4 text-center">{{ $coordinator->place->place }} - Mesa:
                             {{ $coordinator->place->table }}
                         </td>
-                        <td class="py-2 px-4 flex items-center text-center">
-                            <a href="{{ route('coordinators.edit', $coordinator) }}"
-                                class="text-blue-500 hover:text-blue-700 mr-4">
-                                <i class="fas fa-pencil-alt"></i>
-                            </a>
-                            <x-modal-delete-confirmation :route="route('coordinators.destroy', $coordinator)" :id="$coordinator->id">
-                                <x-slot name="trigger">
-                                    <button type="button" class="text-red-500 hover:text-red-700 focus:outline-none">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </x-slot>
-                            </x-modal-delete-confirmation>
-                        </td>
+                        @if (Auth::user()->hasRole(['super_admin', 'admin', 'coordinator']))
+                            <td class="py-2 px-4 flex items-center text-center">
+                                <a href="{{ route('coordinators.edit', $coordinator) }}"
+                                    class="text-blue-500 hover:text-blue-700 mr-4">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </a>
+                                <x-modal-delete-confirmation :route="route('coordinators.destroy', $coordinator)" :id="$coordinator->id">
+                                    <x-slot name="trigger">
+                                        <button type="button"
+                                            class="text-red-500 hover:text-red-700 focus:outline-none">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </x-slot>
+                                </x-modal-delete-confirmation>
+                            </td>
+                        @endif
                     </tr>
                 @empty
                     <tr>

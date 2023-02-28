@@ -22,6 +22,15 @@ class Coordinator extends Model
         'place_id',
     ];
 
+    public function user()
+    {
+        return $this->hasOne(User::class)->withDefault([
+            'name' => $this->full_name,
+            'email' => $this->dni . '@sigma.com',
+            'role' => 'coordinator',
+        ])->onDelete('cascade');
+    }
+
     public function place()
     {
         return $this->belongsTo(Place::class);

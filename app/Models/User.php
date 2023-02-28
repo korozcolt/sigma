@@ -42,4 +42,29 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function coordinator()
+    {
+        return $this->hasOne(Coordinator::class);
+    }
+
+    public function leader()
+    {
+        return $this->hasOne(Leader::class);
+    }
+
+    public function hasRole($roles)
+    {
+        if (is_string($roles)) {
+            return $this->role === $roles;
+        }
+
+        foreach ($roles as $role) {
+            if ($this->hasRole($role)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
