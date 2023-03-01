@@ -23,8 +23,13 @@ class DatabaseSeeder extends Seeder
             'role' => 'super_admin',
         ]);
 
+        $place = \App\Models\Place::create([
+            'place' => 'Casa de la Cultura',
+            'table' => '1',
+        ]);
+
         //create coordinator with $user->id
-        \App\Models\Coordinator::create([
+        $coordinator = \App\Models\Coordinator::create([
             'dni' => '1102812122',
             'first_name' => 'Kristian',
             'last_name' => 'Orozco',
@@ -34,9 +39,38 @@ class DatabaseSeeder extends Seeder
             'status' => 'active',
             'debate_boss' => 'Administrator',
             'candidate' => 'Administrator',
-            'place_id' => 1,
+            'place_id' => $place->id,
             'user_id' => $user->id,
         ]);
 
+        $leader = \App\Models\Leader::create([
+            'dni' => '1102812122',
+            'first_name' => 'Kristian',
+            'last_name' => 'Orozco',
+            'phone' => '12345678',
+            'address' => '3016859339',
+            'type' => 'Administrator',
+            'status' => 'active',
+            'debate_boss' => 'Administrator',
+            'candidate' => 'Administrator',
+            'place_id' => $place->id,
+            'user_id' => $user->id,
+            'coordinator_id' => $coordinator->id,
+        ]);
+
+        \App\Models\Voter::create([
+            'dni' => '1102812122',
+            'first_name' => 'Kristian',
+            'last_name' => 'Orozco',
+            'phone' => '12345678',
+            'address' => '3016859339',
+            'type' => 'Administrator',
+            'status' => 'active',
+            'debate_boss' => 'Administrator',
+            'candidate' => 'Administrator',
+            'place_id' => $place->id,
+            'user_id' => $user->id,
+            'leader_id' => $leader->id,
+        ]);
     }
 }

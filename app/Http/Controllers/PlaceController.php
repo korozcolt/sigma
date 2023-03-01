@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Place;
 use App\Http\Requests\PlaceRequest;
+use Illuminate\Support\Facades\Auth;
 
 class PlaceController extends Controller
 {
@@ -14,8 +15,13 @@ class PlaceController extends Controller
      */
     public function index()
     {
-        $places = Place::paginate(10);
-        return view('places.index', compact('places'));
+        $user = Auth::user();
+        if ($user->isAdmin()) {
+            $places = Place::paginate(10);
+            return view('places.index', compact('places'));
+        } else {
+            abort(403, 'No tienes permiso para acceder a esta página.');
+        }
     }
 
     /**
@@ -25,7 +31,12 @@ class PlaceController extends Controller
      */
     public function create()
     {
-        return view('places.create');
+        $user = Auth::user();
+        if ($user->isAdmin()) {
+            return view('places.create');
+        } else {
+            abort(403, 'No tienes permiso para acceder a esta página.');
+        }
     }
 
     /**
@@ -45,7 +56,7 @@ class PlaceController extends Controller
             ]);
         }
 
-        return redirect()->route('places.index')->withSuccess( 'Puesto de votación creado exitosamente');
+        return redirect()->route('places.index')->withSuccess('Puesto de votación creado exitosamente');
     }
 
     /**
@@ -56,7 +67,12 @@ class PlaceController extends Controller
      */
     public function edit(Place $place)
     {
-        return view('places.edit', compact('place'));
+        $user = Auth::user();
+        if ($user->isAdmin()) {
+            return view('places.edit', compact('place'));
+        } else {
+            abort(403, 'No tienes permiso para acceder a esta página.');
+        }
     }
 
     /**

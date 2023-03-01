@@ -20,17 +20,22 @@ class CoordinatorController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->input('search');
-        $coordinators = Coordinator::when($search, function ($query) use ($search) {
-            return $query->where('first_name', 'like', "%$search%")
-                ->orWhere('last_name', 'like', "%$search%")
-                ->orWhere('dni', 'like', "%$search%");
-        })->paginate(10);
+        $user = Auth::user();
+        if ($user->hasRole('coordinator') || $user->isAdmin() || $user->hasRole('leader')) {
+            $search = $request->input('search');
+            $coordinators = Coordinator::when($search, function ($query) use ($search) {
+                return $query->where('first_name', 'like', "%$search%")
+                    ->orWhere('last_name', 'like', "%$search%")
+                    ->orWhere('dni', 'like', "%$search%");
+            })->paginate(10);
 
-        if (session('success_message'))
-            Alert::success('Éxito', session('success_message'));
+            if (session('success_message'))
+                Alert::success('Éxito', session('success_message'));
 
-        return view('coordinators.index', compact('coordinators', 'search'));
+            return view('coordinators.index', compact('coordinators', 'search'));
+        } else {
+            abort(403, 'No tienes permiso para acceder a esta página.');
+        }
     }
 
     /**
@@ -41,7 +46,7 @@ class CoordinatorController extends Controller
     public function create()
     {
         $user = Auth::user();
-        if ($user->hasRole('coordinator') || $user->hasRole('admin') || $user->hasRole('super_admin')) {
+        if ($user->hasRole('coordinator') || $user->isAdmin()) {
             $places = Place::all();
             return view('coordinators.create', compact('places'));
         } else {
@@ -83,7 +88,7 @@ class CoordinatorController extends Controller
     public function edit(Coordinator $coordinator)
     {
         $user = Auth::user();
-        if ($user->hasRole('coordinator') || $user->hasRole('admin') || $user->hasRole('super_admin')) {
+        if ($user->hasRole('coordinator') || $user->isAdmin()) {
             $places = Place::all();
             return view('coordinators.edit', compact('coordinator', 'places'));
         } else {
