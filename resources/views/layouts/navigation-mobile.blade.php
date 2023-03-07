@@ -28,7 +28,9 @@
             </li>
 
             <li class="relative px-6 py-3">
-                <x-responsive-nav-link :active="request()->routeIs('places')">
+                <x-responsive-nav-link :active="request()->routeIs('places')" :role="auth()
+                    ->user()
+                    ->isAdmin()">
                     <x-slot name="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                             width="24px" height="32px" viewBox="0 0 24 32" version="1.1">
@@ -43,7 +45,12 @@
             </li>
 
             <li class="relative px-6 py-3">
-                <x-responsive-nav-link :active="request()->routeIs('coordinators')">
+                <x-responsive-nav-link :active="request()->routeIs('coordinators')" :role="auth()
+                    ->user()
+                    ->isAdmin() ||
+                    auth()
+                        ->user()
+                        ->hasRole('coordinator')">
                     <x-slot name="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                             width="24px" height="19px" viewBox="0 0 23 19" version="1.1">
@@ -58,7 +65,12 @@
             </li>
 
             <li class="relative px-6 py-3">
-                <x-responsive-nav-link href="{{ route('users.index') }}" :active="request()->routeIs('users.index')">
+                <x-responsive-nav-link href="{{ route('users.index') }}" :active="request()->routeIs('users.index')" :role="auth()
+                    ->user()
+                    ->isAdmin() ||
+                    auth()
+                        ->user()
+                        ->hasRole('coordinator')">
                     <x-slot name="icon">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg">

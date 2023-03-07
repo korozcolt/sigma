@@ -4,7 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class SelectInputCoordinator extends Component
+class SelectInputEntities extends Component
 {
     /**
      * Create a new component instance.
@@ -23,6 +23,6 @@ class SelectInputCoordinator extends Component
      */
     public function render()
     {
-        return view('components.select-input-coordinator');
+        return view('components.select-input-entities');
     }
 }

@@ -34,6 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::view('about', 'about')->name('about');
 
     Route::get('users', [\App\Http\Controllers\UserController::class, 'index'])->name('users.index');
+    Route::delete('users/{user}', [\App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
     Route::resource('coordinators', \App\Http\Controllers\CoordinatorController::class);
     Route::resource('places', \App\Http\Controllers\PlaceController::class);
     Route::resource('leaders', \App\Http\Controllers\LeaderController::class);

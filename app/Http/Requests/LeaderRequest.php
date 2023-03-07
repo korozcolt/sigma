@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class LeaderRequest extends FormRequest
 {
@@ -29,6 +30,14 @@ class LeaderRequest extends FormRequest
             'last_name' => 'required|string|regex:/^[\pL\s]+$/u',
             'email' => 'nullable|email',
             'phone' => 'nullable|numeric|size:11',
+            'place_id' => [
+                'required',
+                Rule::exists('places', 'id'),
+            ],
+            'user_id' => [
+                'required',
+                Rule::exists('users', 'id'),
+            ],
         ];
     }
 
@@ -46,6 +55,8 @@ class LeaderRequest extends FormRequest
             'last_name.regex' => 'El campo Apellido solo debe contener letras.',
             'email.email' => 'El campo Email debe ser una dirección de correo electrónico válida.',
             'phone.numeric' => 'El campo Teléfono solo debe contener números.',
+            'place_id.required' => 'El campo Lugar es obligatorio.',
+            'user_id.required' => 'El campo Usuario es obligatorio.',
         ];
     }
 }

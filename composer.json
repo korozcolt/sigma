@@ -19,6 +19,7 @@
         "realrashid/sweet-alert": "^5.1"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.8",
         "fakerphp/faker": "^1.9.1",
         "laravel-lang/attributes": "^2.1",
         "laravel-lang/lang": "^12.15",

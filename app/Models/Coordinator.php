@@ -20,6 +20,7 @@ class Coordinator extends Model
         'debate_boss',
         'candidate',
         'place_id',
+        'user_id',
     ];
 
     public function user()

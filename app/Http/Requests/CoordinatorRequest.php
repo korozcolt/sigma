@@ -38,6 +38,10 @@ class CoordinatorRequest extends FormRequest
                 'required',
                 Rule::exists('places', 'id'),
             ],
+            'user_id' => [
+                'required',
+                Rule::exists('users', 'id'),
+            ],
         ];
     }
 

@@ -33,7 +33,7 @@
 
             <div class="mt-4">
                 <x-input-label for="coordinator" :value="__('Coordinator')" />
-                <x-select-input-coordinator :options="$coordinators" id="coordinator_id" name="place_id"
+                <x-select-input-entities :options="$coordinators" id="coordinator_id" name="place_id"
                     value="{{ old('coordinator_id') }}" required autofocus />
                 <x-input-error :messages="$errors->get('coordinator')" class="mt-2" />
             </div>
@@ -45,8 +45,10 @@
                 <x-input-error :messages="$errors->get('place')" class="mt-2" />
             </div>
 
-            <div class="text-right">
-                <button class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Guardar</button>
+            <div class="text-right mt-4 flex">
+                <button class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-l w-1/2"
+                    onclick="window.location='{{ route('leaders.index') }}'">Cancelar</button>
+                <button class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-r w-1/2">Guardar</button>
             </div>
         </form>
     </div>

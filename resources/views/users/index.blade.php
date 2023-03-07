@@ -31,6 +31,7 @@
                             <th class="px-4 py-3">Name</th>
                             <th class="px-4 py-3">Email</th>
                             <th class="px-4 py-3">Role</th>
+                            <th class="px-4 py-3">Actions</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y">
@@ -44,6 +45,16 @@
                                 </td>
                                 <td class="px-4 py-3 text-sm">
                                     {{ $user->role }}
+                                </td>
+                                <td>
+                                    <x-modal-delete-confirmation :route="route('users.destroy', $user)" :id="$user->id">
+                                        <x-slot name="trigger">
+                                            <button type="button"
+                                                class="text-red-500 hover:text-red-700 focus:outline-none">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </x-slot>
+                                    </x-modal-delete-confirmation>
                                 </td>
                             </tr>
                         @endforeach

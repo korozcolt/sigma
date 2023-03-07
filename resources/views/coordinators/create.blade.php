@@ -4,6 +4,7 @@
 
         <form method="post" action="{{ route('coordinators.store') }}">
             @csrf
+            <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
             <div class="mt-4">
                 <div class="mt-4">
                     <x-input-label for="dni" :value="__('Cedula')" />
@@ -38,9 +39,15 @@
                 <x-input-error :messages="$errors->get('place')" class="mt-2" />
             </div>
 
-            <div class="text-right">
-                <button class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Guardar</button>
+
+
+            <div class="text-right mt-4 flex">
+                <button class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-l w-1/2"
+                    onclick="window.location='{{ route('coordinators.index') }}'">Cancelar</button>
+                <button class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-r w-1/2">Guardar</button>
             </div>
+
+
         </form>
     </div>
 </x-app-layout>

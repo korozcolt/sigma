@@ -3,7 +3,10 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Helper\HablameHelper as HelperHablameHelper;
 use Illuminate\Database\Seeder;
+use App\Helpers\HablameHelper;
 
 class DatabaseSeeder extends Seeder
 {
@@ -33,7 +36,7 @@ class DatabaseSeeder extends Seeder
             'dni' => '1102812122',
             'first_name' => 'Kristian',
             'last_name' => 'Orozco',
-            'phone' => '12345678',
+            'phone' => '3016859339',
             'address' => '3016859339',
             'type' => 'Administrator',
             'status' => 'active',
@@ -47,7 +50,7 @@ class DatabaseSeeder extends Seeder
             'dni' => '1102812122',
             'first_name' => 'Kristian',
             'last_name' => 'Orozco',
-            'phone' => '12345678',
+            'phone' => '3016859339',
             'address' => '3016859339',
             'type' => 'Administrator',
             'status' => 'active',
@@ -62,15 +65,18 @@ class DatabaseSeeder extends Seeder
             'dni' => '1102812122',
             'first_name' => 'Kristian',
             'last_name' => 'Orozco',
-            'phone' => '12345678',
+            'phone' => '3016859339',
             'address' => '3016859339',
             'type' => 'Administrator',
             'status' => 'active',
             'debate_boss' => 'Administrator',
             'candidate' => 'Administrator',
             'place_id' => $place->id,
-            'user_id' => $user->id,
             'leader_id' => $leader->id,
         ]);
+
+        $contacts = \App\Models\Voter::first();
+        $message = 'Tu usuario es: ' . $user->email . ' y tu contraseña es: Q@10op29+';
+        HelperHablameHelper::sendSms($contacts, $message);
     }
 }

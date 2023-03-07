@@ -17,4 +17,10 @@ class UserController extends Controller
             abort(403, 'No tienes permiso para acceder a esta página.');
         }
     }
+
+    public function destroy(User $user)
+    {
+        $user->delete();
+        return redirect()->route('users.index')->with('success_message', 'Usuario eliminado con éxito.');
+    }
 }

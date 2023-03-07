@@ -34,4 +34,9 @@ class Place extends Model
         $this->attributes['place'] = trim(strtoupper($value));
     }
 
+    //function for convert the place to uppercase
+    public function getPlaceAttribute($value)
+    {
+        return strtoupper($value);
+    }
 }
