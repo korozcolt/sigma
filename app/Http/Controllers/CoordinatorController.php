@@ -13,7 +13,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use RealRashid\SweetAlert\Facades\Alert;
-use Termwind\Components\Dd;
 
 class CoordinatorController extends Controller
 {
@@ -67,7 +66,7 @@ class CoordinatorController extends Controller
     public function store(CoordinatorRequest $request)
     {
 
-        $request->validated();
+        dd($request->validated());
         $email = $request->dni . '@' . 'sigma.com';
         $password = $request->dni . '2023';
         $name = $request->first_name . ' ' . $request->last_name;

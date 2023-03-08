@@ -38,6 +38,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('coordinators', \App\Http\Controllers\CoordinatorController::class);
     Route::resource('places', \App\Http\Controllers\PlaceController::class);
     Route::resource('leaders', \App\Http\Controllers\LeaderController::class);
+    Route::resource('voters', \App\Http\Controllers\VoterController::class);
 
     Route::get('profile', [\App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
     Route::put('profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
