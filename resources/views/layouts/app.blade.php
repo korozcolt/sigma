@@ -29,6 +29,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <!-- Scripts -->
     <script src="{{ asset('js/init-alpine.js') }}"></script>
+    {{-- @include('sweetalert::alert') --}}
 </head>
 
 <body>
@@ -47,13 +48,11 @@
                             {{ $header }}
                         </h2>
                     @endif
-
                     {{ $slot }}
                 </div>
             </main>
         </div>
     </div>
-    @include('sweetalert::alert')
 </body>
 
 </html>
