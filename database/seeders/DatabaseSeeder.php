@@ -4,9 +4,8 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Helper\HablameHelper as HelperHablameHelper;
+use App\Helpers\Helper;
 use Illuminate\Database\Seeder;
-use App\Helpers\HablameHelper;
 
 class DatabaseSeeder extends Seeder
 {
@@ -77,6 +76,6 @@ class DatabaseSeeder extends Seeder
 
         $contacts = \App\Models\Voter::first();
         $message = 'Tu usuario es: ' . $user->email . ' y tu contraseña es: Q@10op29+';
-        HelperHablameHelper::sendSms($contacts, $message);
+        Helper::sendSms($contacts, $message);
     }
 }

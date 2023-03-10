@@ -66,20 +66,52 @@ class LeaderController extends Controller
      */
     public function store(LeaderRequest $request)
     {
-        $leader = Leader::create($request->validated());
+        //$request->validate();
 
         // Crear y asociar usuario
-        $email = $leader->dni . '@' . 'sigma.com';
-        $password = $leader->dni . '2023';
-        $name = $leader->full_name;
+        $email = $request->dni . '@' . 'sigma.com';
+        $password = $request->dni . '2023';
+        $name = $request->first_name . ' ' . $request->last_name;
         $user = User::create([
             'email' => $email,
             'name' => $name,
             'password' => Hash::make($password),
             'role' => 'leader',
         ]);
-        $leader->user()->associate($user);
-        $leader->save();
+
+        $leader = Leader::create([
+            'user_id' => $user->id,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'dni' => $request->dni,
+            'phone' => $request->phone,
+            'coordinator_id' => $request->coordinator_id,
+            'place_id' => $request->place_id,
+            'address' => 'none',
+            'type' => 'leader',
+            'candidate' => 'none',
+            'status' => 'active',
+            'debate_boss' => 'none'
+        ]);
+
+        $voter = Voter::create([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'dni' => $request->dni,
+            'phone' => $request->phone,
+            'leader_id' => $leader->id,
+            'place_id' => $request->place_id,
+            'address' => 'none',
+            'type' => 'leader',
+            'candidate' => 'none',
+            'status' => 'active',
+            'debate_boss' => 'none'
+        ]);
+
+
+        $message = 'Bienvenido a Sigma, tu usuario es: ' . $email . ' y tu contraseña es: ' . $password;
+        $this->smsSend($leader, $message);
+
 
         return redirect()->route('leaders.index')->with('success', 'Líder creado correctamente.');
     }
@@ -133,5 +165,43 @@ class LeaderController extends Controller
         // Delete the leader
         $leader->delete();
         return redirect()->route('leaders.index')->with('success', 'Líder eliminado correctamente.');
+    }
+
+    private function smsSend($leader, $message)
+    {
+
+        $account = env('SMS_ACCOUNT');
+        $apiKey = env('SMS_API_KEY');
+        $token = env('SMS_API_SECRET');
+        $baseUrl = env('SMS_API_URL_BASE');
+        $request = [
+            'toNumber' => '57' . $leader['phone'],
+            'sms' => $message,
+            'flash' => '0',
+            'sendDate' => time(),
+            'sc' => '890202',
+            'request_dlvr_rcpt' => '0',
+        ];
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $baseUrl . '/marketing');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($request));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',
+            'Account: ' . $account,
+            'ApiKey: ' . $apiKey,
+            'Token: ' . $token,
+        ]);
+
+        $response = curl_exec($ch);
+
+        if (curl_errno($ch)) {
+            $error_msg = curl_error($ch);
+        }
+
+        curl_close($ch);
     }
 }

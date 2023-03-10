@@ -29,7 +29,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <!-- Scripts -->
     <script src="{{ asset('js/init-alpine.js') }}"></script>
-    {{-- @include('sweetalert::alert') --}}
+    @include('sweetalert::alert')
 </head>
 
 <body>

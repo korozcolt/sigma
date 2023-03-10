@@ -25,11 +25,11 @@ class LeaderRequest extends FormRequest
     public function rules()
     {
         return [
-            'dni' => 'required|numeric|unique:leaders,dni',
+            'dni' => 'required|numeric|digits_between:6,11|unique:leaders,dni',
             'first_name' => 'required|string|regex:/^[\pL\s]+$/u',
             'last_name' => 'required|string|regex:/^[\pL\s]+$/u',
             'email' => 'nullable|email',
-            'phone' => 'nullable|numeric|size:11',
+            'phone' => 'nullable|numeric|digits:10',
             'place_id' => [
                 'required',
                 Rule::exists('places', 'id'),
@@ -47,6 +47,7 @@ class LeaderRequest extends FormRequest
             'dni.required' => 'El DNI es requerido',
             'dni.numeric' => 'El DNI solo debe contener números',
             'dni.unique' => 'El DNI ya está en uso',
+            'dni.digits_between' => 'El DNI solo debe contener entre 6 y 11 números',
             'first_name.required' => 'El campo Nombre es obligatorio.',
             'first_name.string' => 'El campo Nombre solo debe contener letras.',
             'first_name.regex' => 'El campo Nombre solo debe contener letras.',

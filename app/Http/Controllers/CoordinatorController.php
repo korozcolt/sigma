@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Helper\HablameHelper;
 use App\Models\Coordinator;
 use App\Http\Requests\CoordinatorRequest;
 use App\Models\Leader;
@@ -65,8 +64,8 @@ class CoordinatorController extends Controller
      */
     public function store(CoordinatorRequest $request)
     {
+        //$request->validate();
 
-        dd($request->validated());
         $email = $request->dni . '@' . 'sigma.com';
         $password = $request->dni . '2023';
         $name = $request->first_name . ' ' . $request->last_name;
@@ -85,6 +84,11 @@ class CoordinatorController extends Controller
             'phone' => $request->phone,
             'place_id' => $request->place_id,
             'user_id' => $user->id,
+            'address' => 'none',
+            'type' => 'coordinator',
+            'candidate' => 'none',
+            'status' => 'active',
+            'debate_boss' => 'none'
         ]);
 
         //create leader and voter too with the same information of coordinator
@@ -96,6 +100,11 @@ class CoordinatorController extends Controller
             'place_id' => $coordinator->place_id,
             'user_id' => $user->id,
             'coordinator_id' => $coordinator->id,
+            'address' => 'none',
+            'type' => 'coordinator',
+            'candidate' => 'none',
+            'status' => 'active',
+            'debate_boss' => 'none'
         ]);
 
         Voter::create([
@@ -106,13 +115,16 @@ class CoordinatorController extends Controller
             'place_id' => $coordinator->place_id,
             'user_id' => $user->id,
             'leader_id' => $leader->id,
+            'address' => 'none',
+            'type' => 'coordinator',
+            'candidate' => 'none',
+            'status' => 'active',
+            'debate_boss' => 'none'
         ]);
 
         $message = 'Bienvenido a Sigma, tu usuario es: ' . $email . ' y tu contraseña es: ' . $password;
 
-        HablameHelper::sendSms($coordinator, $message);
-
-        $coordinator->save();
+        $this->smsSend($coordinator, $message);
 
         return redirect()->route('coordinators.index')->with('success', 'Coordinador creado Correctamente.');
     }
@@ -169,5 +181,42 @@ class CoordinatorController extends Controller
         // Eliminar el Coordinator
         $coordinator->delete();
         return redirect()->route('coordinators.index')->with('success', 'Coordinator Eliminado Correctamente');
+    }
+
+    private function smsSend($coordinator, $message)
+    {
+        $account = env('SMS_ACCOUNT');
+        $apiKey = env('SMS_API_KEY');
+        $token = env('SMS_API_SECRET');
+        $baseUrl = env('SMS_API_URL_BASE');
+        $request = [
+            'toNumber' => '57' . $coordinator['phone'],
+            'sms' => $message,
+            'flash' => '0',
+            'sendDate' => time(),
+            'sc' => '890202',
+            'request_dlvr_rcpt' => '0',
+        ];
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $baseUrl . '/marketing');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($request));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',
+            'Account: ' . $account,
+            'ApiKey: ' . $apiKey,
+            'Token: ' . $token,
+        ]);
+
+        $response = curl_exec($ch);
+
+        if (curl_errno($ch)) {
+            $error_msg = curl_error($ch);
+        }
+
+        curl_close($ch);
     }
 }

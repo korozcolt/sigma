@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Helper;
+namespace App\Helpers;
 
-class HablameHelper
+class Helper
 {
-    public static function sendSmsBulk($contacts)
+    public static function sendSmsBulk($contacts, $message)
     {
         $account = env('SMS_ACCOUNT');
         $apiKey = env('SMS_API_KEY');
@@ -16,7 +16,7 @@ class HablameHelper
         foreach ($contacts as $contact) {
             $messages[] = [
                 'numero' => '57' . $contact->phone,
-                'sms' => 'Esto es una prueba ' . $contact->name,
+                'sms' => $message,
             ];
         }
 
@@ -91,11 +91,6 @@ class HablameHelper
         }
 
         curl_close($ch);
-
-        if (isset($error_msg)) {
-            return ['success' => false, 'message' => $error_msg];
-        } else {
-            return ['success' => true, 'message' => $response];
-        }
+        return $response;
     }
 }
