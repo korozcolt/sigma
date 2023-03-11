@@ -39,6 +39,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('places', \App\Http\Controllers\PlaceController::class);
     Route::resource('leaders', \App\Http\Controllers\LeaderController::class);
     Route::resource('voters', \App\Http\Controllers\VoterController::class);
+    Route::resource('sms', \App\Http\Controllers\SmsController::class);
 
     Route::get('profile', [\App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
     Route::put('profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
