@@ -20,7 +20,17 @@ class Coordinator extends Model
         'debate_boss',
         'candidate',
         'place_id',
+        'user_id',
     ];
+
+    public function user()
+    {
+        return $this->hasOne(User::class)->withDefault([
+            'name' => $this->full_name,
+            'email' => $this->dni . '@sigma.com',
+            'role' => 'coordinator',
+        ])->onDelete('cascade');
+    }
 
     public function place()
     {

@@ -28,12 +28,18 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 Route::middleware('auth')->group(function () {
     Route::view('about', 'about')->name('about');
 
     Route::get('users', [\App\Http\Controllers\UserController::class, 'index'])->name('users.index');
+    Route::delete('users/{user}', [\App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
+    Route::resource('coordinators', \App\Http\Controllers\CoordinatorController::class);
+    Route::resource('places', \App\Http\Controllers\PlaceController::class);
+    Route::resource('leaders', \App\Http\Controllers\LeaderController::class);
+    Route::resource('voters', \App\Http\Controllers\VoterController::class);
+    Route::resource('sms', \App\Http\Controllers\SmsController::class);
 
     Route::get('profile', [\App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
     Route::put('profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');

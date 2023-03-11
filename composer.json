@@ -2,7 +2,10 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "keywords": [
+        "framework",
+        "laravel"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
@@ -14,10 +17,13 @@
         "laravel/tinker": "^2.7",
         "pestphp/pest": "^1.16",
         "pestphp/pest-plugin-laravel": "^1.1",
+        "phpoffice/phpexcel": "^1.8",
         "predis/predis": "^2.1",
         "realrashid/sweet-alert": "^5.1"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.8",
+        "barryvdh/laravel-ide-helper": "^2.13",
         "fakerphp/faker": "^1.9.1",
         "laravel-lang/attributes": "^2.1",
         "laravel-lang/lang": "^12.15",
@@ -35,7 +41,10 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": [
+            "app/Helpers/helper.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

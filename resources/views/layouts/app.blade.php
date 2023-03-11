@@ -48,7 +48,6 @@
                             {{ $header }}
                         </h2>
                     @endif
-
                     {{ $slot }}
                 </div>
             </main>

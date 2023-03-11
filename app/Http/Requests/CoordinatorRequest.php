@@ -28,12 +28,20 @@ class CoordinatorRequest extends FormRequest
             'dni' => [
                 'required',
                 'integer',
+                'digits_between : 6, 11',
                 'unique:coordinators,dni',
             ],
             'first_name' => 'required|string|regex:/^[\pL\s]+$/u',
             'last_name' => 'required|string|regex:/^[\pL\s]+$/u',
-            'email' => 'nullable|email',
-            'phone' => 'nullable|numeric|size:11',
+            'phone' => 'nullable|numeric|digits:10',
+            'place_id' => [
+                'required',
+                Rule::exists('places', 'id'),
+            ],
+            'user_id' => [
+                'required',
+                Rule::exists('users', 'id'),
+            ],
         ];
     }
 
@@ -49,8 +57,9 @@ class CoordinatorRequest extends FormRequest
             'last_name.required' => 'El campo Apellido es obligatorio.',
             'last_name.string' => 'El campo Apellido solo debe contener letras.',
             'last_name.regex' => 'El campo Apellido solo debe contener letras.',
-            'email.email' => 'El campo Email debe ser una dirección de correo electrónico válida.',
             'phone.numeric' => 'El campo Teléfono solo debe contener números.',
+            'place_id.required' => 'El campo Lugar es obligatorio.',
+            'place_id.exists' => 'El campo Lugar no existe.',
         ];
     }
 }

@@ -10,6 +10,7 @@ class Voter extends Model
     use HasFactory;
 
     protected $fillable = [
+        'dni',
         'first_name',
         'last_name',
         'email',
@@ -41,5 +42,10 @@ class Voter extends Model
     public function leader()
     {
         return $this->belongsTo(Leader::class);
+    }
+
+    public function place()
+    {
+        return $this->belongsTo(Place::class);
     }
 }

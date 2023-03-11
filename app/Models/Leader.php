@@ -10,6 +10,7 @@ class Leader extends Model
     use HasFactory;
 
     protected $fillable = [
+        'dni',
         'first_name',
         'last_name',
         'email',
@@ -20,8 +21,13 @@ class Leader extends Model
         'debate_boss',
         'candidate',
         'coordinator_id',
-        'place_id'
+        'place_id',
+        'user_id',
     ];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function getFullNameAttribute()
     {
@@ -46,5 +52,10 @@ class Leader extends Model
     public function voters()
     {
         return $this->hasMany(Voter::class);
+    }
+
+    public function place()
+    {
+        return $this->belongsTo(Place::class);
     }
 }

@@ -31,7 +31,12 @@ class Place extends Model
 
     public function setPlaceAttribute($value)
     {
-        $this->attributes['place'] = strtoupper($value);
+        $this->attributes['place'] = trim(strtoupper($value));
     }
 
+    //function for convert the place to uppercase
+    public function getPlaceAttribute($value)
+    {
+        return strtoupper($value);
+    }
 }
