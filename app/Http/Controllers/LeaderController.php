@@ -66,7 +66,7 @@ class LeaderController extends Controller
      */
     public function store(LeaderRequest $request)
     {
-        //$request->validate();
+        $leader = Leader::create($request->validated());
 
         // Crear y asociar usuario
         $email = $request->dni . '@' . 'sigma.com';
@@ -79,20 +79,8 @@ class LeaderController extends Controller
             'role' => 'leader',
         ]);
 
-        $leader = Leader::create([
-            'user_id' => $user->id,
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'dni' => $request->dni,
-            'phone' => $request->phone,
-            'coordinator_id' => $request->coordinator_id,
-            'place_id' => $request->place_id,
-            'address' => 'none',
-            'type' => 'leader',
-            'candidate' => 'none',
-            'status' => 'active',
-            'debate_boss' => 'none'
-        ]);
+        $leader->user_id = $user->id;
+        $leader->save();
 
         $voter = Voter::create([
             'first_name' => $request->first_name,

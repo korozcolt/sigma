@@ -7,6 +7,6 @@
     style="display: none;"
     @endif>
     @foreach ($options as $key => $value)
-        <option value="{{ $key }}">{{ $value->place }} - Mesa: {{ $value->table }}</option>
+        <option value="{{ $value->id }}">{{ $value->place }} - Mesa: {{ $value->table }}</option>
     @endforeach
 </select>

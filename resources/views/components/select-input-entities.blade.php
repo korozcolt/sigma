@@ -7,6 +7,6 @@
     style="display: none;"
     @endif>
     @foreach ($options as $key => $value)
-        <option value="{{ $key }}">{{ $value->full_name }}</option>
+        <option value="{{ $value->id }}">{{ $value->full_name }}</option>
     @endforeach
 </select>

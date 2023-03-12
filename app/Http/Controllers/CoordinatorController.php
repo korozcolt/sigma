@@ -64,7 +64,7 @@ class CoordinatorController extends Controller
      */
     public function store(CoordinatorRequest $request)
     {
-        //$request->validate();
+        $coordinator = Coordinator::create($request->validated());
 
         $email = $request->dni . '@' . 'sigma.com';
         $password = $request->dni . '2023';
@@ -77,19 +77,8 @@ class CoordinatorController extends Controller
             'role' => 'coordinator',
         ]);
 
-        $coordinator = Coordinator::create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'dni' => $request->dni,
-            'phone' => $request->phone,
-            'place_id' => $request->place_id,
-            'user_id' => $user->id,
-            'address' => 'none',
-            'type' => 'coordinator',
-            'candidate' => 'none',
-            'status' => 'active',
-            'debate_boss' => 'none'
-        ]);
+        $coordinator->user_id = $user->id;
+        $coordinator->save();
 
         //create leader and voter too with the same information of coordinator
         $leader = Leader::create([
