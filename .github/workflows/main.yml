@@ -12,4 +12,7 @@ jobs:
         run: composer install
       - name: Build and deploy
         run: |
-          ssh kronnos@184.168.20.106 "cd /var/www/html/sigma && git pull origin master"
+          ssh kronnos@184.168.20.106 "cd /var/www/html/sigma &&
+          git pull origin master &&
+          composer install &&
+          chmod -R 777 storage/ bootstrap/cache/"
