@@ -22,6 +22,9 @@
                     <th class="py-2 px-4">Teléfono</th>
                     <th class="py-2 px-4">Coordinador</th>
                     <th class="py-2 px-4">Lugar de votación</th>
+                    @if (auth()->user()->isAdmin())
+                        <th class="py-2 px-4">Estado</th>
+                    @endif
                     <th class="py-2 px-4"><i class="fa-solid fa-gear"></i></th>
                 </tr>
             </thead>
@@ -35,6 +38,15 @@
                         <td class="py-2 px-4 text-center">{{ $leader->place->place }} - Mesa:
                             {{ $leader->place->table }}
                         </td>
+                        @if (auth()->user()->isAdmin())
+                            <td class="py-2 px-4 text-center">
+                                <span @class([
+                                    'rounded-md px-2 py-1 text-white',
+                                    'bg-orange-600' => $leader->status->pendiente(),
+                                    'bg-green-600' => $leader->status->revisado(),
+                                ])>{{ $leader->status->getLabelText() }}</span>
+                            </td>
+                        @endif
                         @if (auth()->user()->isAdmin() ||
                                 auth()->user()->hasRole('coordinator'))
                             <td class="py-2 px-4 flex items-center text-center">

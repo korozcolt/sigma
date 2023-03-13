@@ -6,7 +6,7 @@
     <div class="p-4 bg-white rounded-lg shadow-xs">
         <div class="flex items-center justify-between mb-3">
             <h1 class="text-gray-700 text-2xl">Listado de Coordinadores</h1>
-            @if (Auth::user()->hasRole(['super_admin', 'admin', 'coordinator']))
+            @if (Auth::user()->hasRole(['super_admin', 'admin']))
                 <a href="{{ route('coordinators.create') }}"
                     class="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg">
                     Crear Coordinador
@@ -21,6 +21,9 @@
                     <th class="py-2 px-4">DNI</th>
                     <th class="py-2 px-4">Teléfono</th>
                     <th class="py-2 px-4">Lugar de votacion</th>
+                    @if (auth()->user()->isAdmin())
+                        <th class="py-2 px-4">Estado</th>
+                    @endif
                     <th class="py-2 px-4"><i class="fa-solid fa-gear"></i></th>
                 </tr>
             </thead>
@@ -33,8 +36,16 @@
                         <td class="py-2 px-4 text-center">{{ $coordinator->place->place }} - Mesa:
                             {{ $coordinator->place->table }}
                         </td>
-                        @if (auth()->user()->isAdmin() ||
-                                auth()->user()->hasRole('coordinator'))
+                        @if (auth()->user()->isAdmin())
+                            <td class="py-2 px-4 text-center">
+                                <span @class([
+                                    'rounded-md px-2 py-1 text-white',
+                                    'bg-orange-600' => $coordinator->status->pendiente(),
+                                    'bg-green-600' => $coordinator->status->revisado(),
+                                ])>{{ $coordinator->status->getLabelText() }}</span>
+                            </td>
+                        @endif
+                        @if (auth()->user()->isAdmin())
                             <td class="py-2 px-4 flex items-center text-center">
                                 <a href="{{ route('coordinators.edit', $coordinator) }}"
                                     class="text-blue-500 hover:text-blue-700 mr-4">

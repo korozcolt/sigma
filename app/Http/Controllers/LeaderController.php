@@ -25,11 +25,19 @@ class LeaderController extends Controller
         $user = Auth::user();
         if ($user->hasRole('coordinator') || $user->isAdmin() || $user->hasRole('leader')) {
             $search = $request->input('search');
-            $leaders = Leader::when($search, function ($query) use ($search) {
-                return $query->where('first_name', 'like', "%$search%")
-                    ->orWhere('last_name', 'like', "%$search%")
-                    ->orWhere('dni', 'like', "%$search%");
-            })->paginate(10);
+            if ($user->isAdmin()) {
+                $leaders = Leader::when($search, function ($query) use ($search) {
+                    return $query->where('first_name', 'like', "%$search%")
+                        ->orWhere('last_name', 'like', "%$search%")
+                        ->orWhere('dni', 'like', "%$search%");
+                })->paginate(10);
+            } else {
+                $leaders = Leader::when($search, function ($query) use ($search) {
+                    return $query->where('first_name', 'like', "%$search%")
+                        ->orWhere('last_name', 'like', "%$search%")
+                        ->orWhere('dni', 'like', "%$search%");
+                })->where('user_id', '=', $user->id)->paginate(10);
+            }
 
             if (session('success_message')) {
                 Alert::success('Éxito', session('success_message'));
@@ -69,7 +77,7 @@ class LeaderController extends Controller
         $leader = Leader::create($request->validated());
 
         // Crear y asociar usuario
-        $email = $request->dni . '@' . 'sigma.com';
+        $email = $request->dni . '@' . 'sigmaapp.co';
         $password = $request->dni . '2023';
         $name = $request->first_name . ' ' . $request->last_name;
         $user = User::create([
@@ -80,6 +88,10 @@ class LeaderController extends Controller
         ]);
 
         $leader->user_id = $user->id;
+        $leader->status = 'pendiente';
+        $leader->type = 'coordinator';
+        $leader->candidate = 'none';
+        $leader->debate_boss = 'none';
         $leader->save();
 
         $voter = Voter::create([
@@ -92,7 +104,7 @@ class LeaderController extends Controller
             'address' => 'none',
             'type' => 'leader',
             'candidate' => 'none',
-            'status' => 'active',
+            'status' => 'pendiente',
             'debate_boss' => 'none'
         ]);
 
@@ -102,6 +114,22 @@ class LeaderController extends Controller
 
 
         return redirect()->route('leaders.index')->with('success', 'Líder creado correctamente.');
+    }
+
+
+    /**
+     * status
+     *
+     * @param  mixed $leader
+     * @param  mixed $request
+     * @return void
+     */
+    public function status(Leader $leader, Request $request)
+    {
+        $leader->status = $request->status;
+        $leader->save();
+
+        return redirect()->route('leaders.index')->with('success', 'Líder actualizado correctamente.');
     }
 
     /**

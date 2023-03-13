@@ -21,7 +21,7 @@ return new class extends Migration
             $table->bigInteger('phone');
             $table->string('address')->nullable();
             $table->string('type')->nullable();
-            $table->string('status')->nullable();
+            $table->string('status')->enum(['revisado', 'pendiente', 'activo', 'llamado', 'cuelga', 'no_responde', 'positivo', 'negativo', 'blanco', 'otro_candidato', 'numero_equivocado', 'numero_no_existe', 'numero_mal_escrito'])->nullable();
             $table->string('debate_boss')->nullable();
             $table->string('candidate')->nullable();
             $table->foreignId('place_id')->constrained('places')->onDelete('cascade');

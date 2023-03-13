@@ -36,9 +36,13 @@ Route::middleware('auth')->group(function () {
     Route::get('users', [\App\Http\Controllers\UserController::class, 'index'])->name('users.index');
     Route::delete('users/{user}', [\App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
     Route::resource('coordinators', \App\Http\Controllers\CoordinatorController::class);
+    //update status by coordinator in the function status on CoordinatorController
+    Route::put('coordinators/{coordinator}/status', [\App\Http\Controllers\CoordinatorController::class, 'status'])->name('coordinators.status');
     Route::resource('places', \App\Http\Controllers\PlaceController::class);
     Route::resource('leaders', \App\Http\Controllers\LeaderController::class);
+    Route::put('leaders/{leader}/status', [\App\Http\Controllers\LeaderController::class, 'status'])->name('leaders.status');
     Route::resource('voters', \App\Http\Controllers\VoterController::class);
+    Route::put('voters/{voter}/status', [\App\Http\Controllers\VoterController::class, 'status'])->name('voters.status');
     Route::resource('sms', \App\Http\Controllers\SmsController::class);
 
     Route::get('profile', [\App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
