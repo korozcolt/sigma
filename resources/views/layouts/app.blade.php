@@ -29,7 +29,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <!-- Scripts -->
     <script src="{{ asset('js/init-alpine.js') }}"></script>
-    @include('sweetalert::alert')
+
 </head>
 
 <body>
@@ -53,6 +53,15 @@
             </main>
         </div>
     </div>
+    @include('sweetalert::alert')
+    <script>
+        $(document).ready(function() {
+            $(".select2").select2({
+                theme: "classic"
+            });
+        });
+    </script>
+
 </body>
 
 </html>

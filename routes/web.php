@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\Helper;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -44,6 +45,16 @@ Route::middleware('auth')->group(function () {
     Route::resource('voters', \App\Http\Controllers\VoterController::class);
     Route::put('voters/{voter}/status', [\App\Http\Controllers\VoterController::class, 'status'])->name('voters.status');
     Route::resource('sms', \App\Http\Controllers\SmsController::class);
+    Route::get('/sms-test', function () {
+        $message = 'prueba mensajería';
+        $contact = [
+            'first_name'  => 'Kristian',
+            'last_name'   => 'Klaus',
+            'phone' => '3016859339'
+        ];
+
+        var_dump(Helper::sendSms($contact, $message));
+    });
 
     Route::get('profile', [\App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
     Route::put('profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');

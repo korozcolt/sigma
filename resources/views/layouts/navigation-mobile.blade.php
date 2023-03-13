@@ -45,7 +45,7 @@
             </li>
 
             <li class="relative px-6 py-3">
-                <x-responsive-nav-link :active="request()->routeIs('coordinators')" :role="auth()
+                <x-responsive-nav-link href="{{ route('coordinators.index') }}" :active="request()->routeIs('coordinators')" :role="auth()
                     ->user()
                     ->isAdmin() ||
                     auth()
@@ -65,7 +65,7 @@
             </li>
 
             <li class="relative px-6 py-3">
-                <x-responsive-nav-link :active="request()->routeIs('leaders')" :role="auth()
+                <x-responsive-nav-link href="{{ route('leaders.index') }}" :active="request()->routeIs('leaders')" :role="auth()
                     ->user()
                     ->isAdmin() ||
                     auth()
