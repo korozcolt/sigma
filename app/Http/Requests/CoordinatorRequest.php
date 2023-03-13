@@ -42,6 +42,7 @@ class CoordinatorRequest extends FormRequest
                 'required',
                 Rule::exists('users', 'id'),
             ],
+            'address' => 'nullable|string'
         ];
     }
 
@@ -58,6 +59,8 @@ class CoordinatorRequest extends FormRequest
             'last_name.string' => 'El campo Apellido solo debe contener letras.',
             'last_name.regex' => 'El campo Apellido solo debe contener letras.',
             'phone.numeric' => 'El campo Teléfono solo debe contener números.',
+            'user_id.required' => 'Debe haber al menos un usuario',
+            'user_id.exists' => 'El usuario no existe.',
             'place_id.required' => 'El campo Lugar es obligatorio.',
             'place_id.exists' => 'El campo Lugar no existe.',
         ];

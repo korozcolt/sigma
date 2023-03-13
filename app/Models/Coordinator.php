@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\EntityStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -56,4 +57,8 @@ class Coordinator extends Model
     {
         $this->attributes['last_name'] = trim(strtoupper($value));
     }
+
+    protected $casts = [
+        'status' => EntityStatus::class
+    ];
 }

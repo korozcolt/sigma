@@ -1,6 +1,6 @@
 <div x-data="{ showModal: false }">
-    <button class="text-red-500 hover:text-red-700 mr-2" @click="showModal = true">
-        <i class="fas fa-trash"></i>
+    <button class="text-orange-500 hover:text-orange-700 mr-2" @click="showModal = true">
+        <i class="fas fa-exchange-alt"></i>
     </button>
 
     <div class="fixed z-10 inset-0 overflow-y-auto" x-show="showModal">
@@ -26,7 +26,7 @@
 
                         <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                             <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-headline">
-                                ¿Está seguro que desea eliminar este registro?
+                                Actualizacion de revision
                             </h3>
                         </div>
                     </div>
@@ -35,11 +35,15 @@
                 <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                     <form action="{{ $route }}" method="post">
                         @csrf
-                        @method('delete')
+                        @method('put')
                         <input type="hidden" name="id" value="{{ $id }}">
+                        <select id="status" name="status">
+                            <option value="pendiente">Pendiente</option>
+                            <option value="revisado">Revisado</option>
+                        </select>
                         <button type="submit"
-                            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
-                            Eliminar
+                            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
+                            Actualizar
                         </button>
                     </form>
 
