@@ -62,6 +62,14 @@
                                         </button>
                                     </x-slot>
                                 </x-modal-delete-confirmation>
+                                <x-modal-reviewer-confirmation :route="route('leaders.status', $leader)" :id="$leader->id">
+                                    <x-slot name="trigger">
+                                        <button type="button"
+                                            class="text-orange-500 hover:text-orange-700 focus:outline-none mr-2">
+                                            <i class="fas fa-exchange-alt"></i>
+                                        </button>
+                                    </x-slot>
+                                </x-modal-reviewer-confirmation>
                             </td>
                         @endif
                     </tr>

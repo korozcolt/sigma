@@ -48,17 +48,25 @@
                         @if (auth()->user()->isAdmin())
                             <td class="py-2 px-4 flex items-center text-center">
                                 <a href="{{ route('coordinators.edit', $coordinator) }}"
-                                    class="text-blue-500 hover:text-blue-700 mr-4">
+                                    class="text-blue-500 hover:text-blue-700 mr-2">
                                     <i class="fas fa-pencil-alt"></i>
                                 </a>
                                 <x-modal-delete-confirmation :route="route('coordinators.destroy', $coordinator)" :id="$coordinator->id">
                                     <x-slot name="trigger">
                                         <button type="button"
-                                            class="text-red-500 hover:text-red-700 focus:outline-none">
+                                            class="text-red-500 hover:text-red-700 focus:outline-none mr-2">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
                                     </x-slot>
                                 </x-modal-delete-confirmation>
+                                <x-modal-reviewer-confirmation :route="route('coordinators.status', $coordinator)" :id="$coordinator->id">
+                                    <x-slot name="trigger">
+                                        <button type="button"
+                                            class="text-orange-500 hover:text-orange-700 focus:outline-none mr-2">
+                                            <i class="fas fa-exchange-alt"></i>
+                                        </button>
+                                    </x-slot>
+                                </x-modal-reviewer-confirmation>
                             </td>
                         @endif
                     </tr>
