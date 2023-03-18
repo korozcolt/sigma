@@ -1,4 +1,6 @@
 import _ from 'lodash';
+import axios from 'axios';
+import select2 from 'select2';
 window._ = _;
 
 /**
@@ -7,11 +9,11 @@ window._ = _;
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-import axios from 'axios';
 window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
+select2();
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting

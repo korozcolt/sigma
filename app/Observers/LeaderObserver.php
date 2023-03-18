@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Helpers\Helper;
 use App\Models\Leader;
 
 class LeaderObserver
@@ -19,7 +20,7 @@ class LeaderObserver
 
         $message = 'Bienvenido a Sigma, tu usuario es: ' . $email . ' y tu contraseña es: ' . $password;
 
-        $this->smsSend($leader, $message);
+        Helper::sendSms($leader, $message);
     }
 
     /**
@@ -64,42 +65,5 @@ class LeaderObserver
     public function forceDeleted(Leader $leader)
     {
         //
-    }
-
-    private function smsSend($coordinator, $message)
-    {
-        $account = env('SMS_ACCOUNT');
-        $apiKey = env('SMS_API_KEY');
-        $token = env('SMS_API_SECRET');
-        $baseUrl = env('SMS_API_URL_BASE');
-        $request = [
-            'toNumber' => '57' . $coordinator['phone'],
-            'sms' => $message,
-            'flash' => '0',
-            'sendDate' => time(),
-            'sc' => '890202',
-            'request_dlvr_rcpt' => '0',
-        ];
-
-        $ch = curl_init();
-
-        curl_setopt($ch, CURLOPT_URL, $baseUrl . '/marketing');
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($request));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            'Content-Type: application/json',
-            'Account: ' . $account,
-            'ApiKey: ' . $apiKey,
-            'Token: ' . $token,
-        ]);
-
-        $response = curl_exec($ch);
-
-        if (curl_errno($ch)) {
-            $error_msg = curl_error($ch);
-        }
-
-        curl_close($ch);
     }
 }

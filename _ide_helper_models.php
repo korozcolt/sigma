@@ -191,7 +191,7 @@ namespace App\Models{
  * @property int $phone
  * @property string|null $address
  * @property string|null $type
- * @property string|null $status
+ * @property \App\Enums\EntityStatus|null $status
  * @property string|null $debate_boss
  * @property string|null $candidate
  * @property int $place_id
