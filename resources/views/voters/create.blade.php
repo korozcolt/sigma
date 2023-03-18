@@ -1,8 +1,8 @@
 <x-app-layout>
     <div class="py-4">
-        <h1 class="text-2xl font-bold mb-4">Crear Lider</h1>
+        <h1 class="text-2xl font-bold mb-4">Crear Votante</h1>
 
-        <form method="post" action="{{ route('leaders.store') }}">
+        <form method="post" action="{{ route('voters.store') }}">
             @csrf
             <div class="mt-4">
                 <div class="mt-4">
@@ -32,10 +32,10 @@
             </div>
 
             <div class="mt-4">
-                <x-input-label for="coordinator" :value="__('Coordinator')" />
-                <x-select-input-entities :options="$coordinators" id="coordinator_id" name="coordinator_id"
-                    value="{{ old('coordinator_id') }}" required autofocus />
-                <x-input-error :messages="$errors->get('coordinator')" class="mt-2" />
+                <x-input-label for="leader" :value="__('Leader')" />
+                <x-select-input-entities :options="$leaders" id="leader_id" name="leader_id"
+                    value="{{ old('leader_id') }}" required autofocus />
+                <x-input-error :messages="$errors->get('leader')" class="mt-2" />
             </div>
 
             <div class="mt-4">
@@ -47,7 +47,7 @@
 
             <div class="text-right mt-4 flex">
                 <button class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-l w-1/2"
-                    onclick="window.location='{{ route('leaders.index') }}'">Cancelar</button>
+                    onclick="window.location='{{ route('voters.index') }}'">Cancelar</button>
                 <button class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-r w-1/2">Guardar</button>
             </div>
         </form>

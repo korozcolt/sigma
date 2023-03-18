@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\VoterRequest;
+use App\Models\Coordinator;
+use App\Models\Leader;
+use App\Models\Place;
 use App\Models\Voter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class VoterController extends Controller
 {
@@ -12,9 +18,33 @@ class VoterController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $user = Auth::user();
+        if ($user->hasRole('coordinator') || $user->isAdmin() || $user->hasRole('leader')) {
+            $search = $request->input('search');
+            if ($user->isAdmin()) {
+                $voters = Voter::when($search, function ($query) use ($search) {
+                    return $query->where('first_name', 'like', "%$search%")
+                        ->orWhere('last_name', 'like', "%$search%")
+                        ->orWhere('dni', 'like', "%$search%");
+                })->paginate(10);
+            } else {
+                $voters = Voter::when($search, function ($query) use ($search) {
+                    return $query->where('first_name', 'like', "%$search%")
+                        ->orWhere('last_name', 'like', "%$search%")
+                        ->orWhere('dni', 'like', "%$search%");
+                })->where('user_id', '=', $user->id)->paginate(10);
+            }
+
+            if (session('success_message')) {
+                Alert::success('Éxito', session('success_message'));
+            }
+
+            return view('voters.index', compact('voters', 'search'));
+        } else {
+            abort(403, 'No tienes permiso para acceder a esta página.');
+        }
     }
 
     /**
@@ -24,7 +54,19 @@ class VoterController extends Controller
      */
     public function create()
     {
-        //
+        $user = Auth::user();
+        if ($user->isAdmin() || $user->isRole(['leader', 'coordinator'])) {
+            $places = Place::all();
+            if ($user->isRole('coordinator')) {
+                $coordinator = Coordinator::where($user->id, 'user_id')->first();
+                $leaders = Leader::where($coordinator->id, 'coordinator_id')->get();
+            } else if ($user->isRole('leader')) {
+                $leaders = Leader::where($user->id, 'user_id')->get();
+            }
+            return view('voters.create', compact('places', 'leaders'));
+        } else {
+            abort(403, 'No tienes permiso para acceder a esta página.');
+        }
     }
 
     /**
@@ -33,20 +75,32 @@ class VoterController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(VoterRequest $request)
     {
-        //
+        $voter = Voter::create($request->validated());
+
+        $voter->status = 'pendiente';
+        $voter->type = 'voter';
+        $voter->candidate = 'none';
+        $voter->debate_boss = 'none';
+        $voter->save();
+
+        return redirect()->route('voters.index')->with('success', 'Votante creado correctamente.');
     }
 
     /**
-     * Display the specified resource.
+     * status
      *
-     * @param  \App\Models\Voter  $voter
-     * @return \Illuminate\Http\Response
+     * @param  mixed $voter
+     * @param  mixed $request
+     * @return void
      */
-    public function show(Voter $voter)
+    public function status(Voter $voter, VoterRequest $request)
     {
-        //
+        $voter->status = $request->status;
+        $voter->save();
+
+        return redirect()->route('voters.index')->with('success', 'Votante actualizado correctamente.');
     }
 
     /**
@@ -57,7 +111,13 @@ class VoterController extends Controller
      */
     public function edit(Voter $voter)
     {
-        //
+        $user = Auth::user();
+        if ($user->isAdmin()) {
+            $places = Place::all();
+            return view('voters.edit', compact('voter', 'places'));
+        } else {
+            abort(403, 'No tienes permiso para acceder a esta página.');
+        }
     }
 
     /**
@@ -67,9 +127,10 @@ class VoterController extends Controller
      * @param  \App\Models\Voter  $voter
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Voter $voter)
+    public function update(VoterRequest $request, Voter $voter)
     {
-        //
+        $voter->update($request->validated());
+        return redirect()->route('voters.index')->with('success', 'Votante actualizado correctamente.');
     }
 
     /**
@@ -80,6 +141,7 @@ class VoterController extends Controller
      */
     public function destroy(Voter $voter)
     {
-        //
+        $voter->delete();
+        return redirect()->route('voters.index')->with('success', 'Votante eliminado correctamente.');
     }
 }

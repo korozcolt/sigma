@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\EntityStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -48,4 +49,8 @@ class Voter extends Model
     {
         return $this->belongsTo(Place::class);
     }
+
+    protected $casts = [
+        'status' => EntityStatus::class
+    ];
 }

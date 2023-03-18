@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Models\Voter;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class VoterRequest extends FormRequest
 {
@@ -25,11 +26,19 @@ class VoterRequest extends FormRequest
     public function rules()
     {
         return [
-            'dni' => 'required|numeric|unique:voters,dni',
+            'dni' => 'required|numeric|digits_between:6,11|unique:leaders,dni',
             'first_name' => 'required|string|regex:/^[\pL\s]+$/u',
             'last_name' => 'required|string|regex:/^[\pL\s]+$/u',
             'email' => 'nullable|email',
-            'phone' => 'nullable|numeric|size:11',
+            'phone' => 'nullable|numeric|digits:10',
+            'place_id' => [
+                'required',
+                Rule::exists('places', 'id'),
+            ],
+            'leader_id' => [
+                'required',
+                Rule::exists('leaders', 'id'),
+            ],
         ];
     }
 
