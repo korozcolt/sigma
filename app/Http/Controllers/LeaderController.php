@@ -26,13 +26,13 @@ class LeaderController extends Controller
         if ($user->hasRole('coordinator') || $user->isAdmin() || $user->hasRole('leader')) {
             $search = $request->input('search');
             if ($user->isAdmin()) {
-                $leaders = Leader::when($search, function ($query) use ($search) {
+                $leaders = Leader::with(['coordinator', 'place', 'users'])->when($search, function ($query) use ($search) {
                     return $query->where('first_name', 'like', "%$search%")
                         ->orWhere('last_name', 'like', "%$search%")
                         ->orWhere('dni', 'like', "%$search%");
                 })->paginate(10);
             } else {
-                $leaders = Leader::when($search, function ($query) use ($search) {
+                $leaders = Leader::with(['coordinator', 'place', 'users'])->when($search, function ($query) use ($search) {
                     return $query->where('first_name', 'like', "%$search%")
                         ->orWhere('last_name', 'like', "%$search%")
                         ->orWhere('dni', 'like', "%$search%");

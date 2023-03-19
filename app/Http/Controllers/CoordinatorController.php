@@ -23,16 +23,16 @@ class CoordinatorController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        if ($user->hasRole('coordinator') || $user->isAdmin() || $user->hasRole('leader')) {
+        if ($user->hasRole(['coordinator', 'leader']) || $user->isAdmin()) {
             $search = $request->input('search');
             if ($user->isAdmin()) {
-                $coordinators = Coordinator::when($search, function ($query) use ($search) {
+                $coordinators = Coordinator::with(['users', 'place'])->when($search, function ($query) use ($search) {
                     return $query->where('first_name', 'like', "%$search%")
                         ->orWhere('last_name', 'like', "%$search%")
                         ->orWhere('dni', 'like', "%$search%");
                 })->paginate(10);
             } else {
-                $coordinators = Coordinator::when($search, function ($query) use ($search) {
+                $coordinators = Coordinator::with(['users', 'place'])->when($search, function ($query) use ($search) {
                     return $query->where('first_name', 'like', "%$search%")
                         ->orWhere('last_name', 'like', "%$search%")
                         ->orWhere('dni', 'like', "%$search%");
