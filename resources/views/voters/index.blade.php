@@ -15,9 +15,10 @@
         </div>
 
         <div class="flex items-center w-full py-2">
-            <input type="text" placeholder="Buscar" name="search"
+            <input type="text" placeholder="Buscar" name="search" id="search-input"
                 class="py-2 px-4 rounded-l-lg border-t mr-0 border-b border-l text-gray-800 border-gray-200 bg-white w-full" />
-            <button class="-ml-px px-4 py-2 rounded-r-lg border border-gray-200 bg-white hover:bg-gray-100">
+            <button class="-ml-px px-4 py-2 rounded-r-lg border border-gray-200 bg-white hover:bg-gray-100"
+                id="search-button">
                 <i class="fas fa-search"></i>
             </button>
         </div>
@@ -91,5 +92,13 @@
 
         {{ $voters->links() }}
     </div>
+    <script>
+        const searchButton = document.getElementById('search-button');
+        const searchInput = document.getElementById('search-input');
 
+        searchButton.addEventListener('click', () => {
+            const searchTerm = searchInput.value;
+            window.location.href = `/voters?search=${searchTerm}`;
+        });
+    </script>
 </x-app-layout>

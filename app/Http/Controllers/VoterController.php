@@ -55,12 +55,12 @@ class VoterController extends Controller
     public function create()
     {
         $user = Auth::user();
-        if ($user->isAdmin() || $user->isRole(['leader', 'coordinator'])) {
+        if ($user->isAdmin() || $user->hasRole(['leader', 'coordinator'])) {
             $places = Place::all();
-            if ($user->isRole('coordinator')) {
+            if ($user->hasRole('coordinator')) {
                 $coordinator = Coordinator::with('user')->where($user->id, 'user_id')->first();
                 $leaders = Leader::with('coordinator')->where($coordinator->id, 'coordinator_id')->get();
-            } else if ($user->isRole('leader')) {
+            } else if ($user->hasRole('leader')) {
                 $leaders = Leader::with(['coordinator', 'user'])->where($user->id, 'user_id')->get();
             }
             return view('voters.create', compact('places', 'leaders'));
