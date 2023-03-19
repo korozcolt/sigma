@@ -9,9 +9,18 @@
             @if (Auth::user()->hasRole(['super_admin', 'admin', 'coordinator']))
                 <a href="{{ route('voters.create') }}"
                     class="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg">
-                    Crear Líder
+                    Crear Votante
                 </a>
             @endif
+        </div>
+
+        <div class="flex items-center w-full py-2">
+            <input type="text" placeholder="Buscar" name="search" id="search-input"
+                class="py-2 px-4 rounded-l-lg border-t mr-0 border-b border-l text-gray-800 border-gray-200 bg-white w-full" />
+            <button class="-ml-px px-4 py-2 rounded-r-lg border border-gray-200 bg-white hover:bg-gray-100"
+                id="search-button">
+                <i class="fas fa-search"></i>
+            </button>
         </div>
 
         <table class="w-full table-auto">
@@ -83,5 +92,13 @@
 
         {{ $voters->links() }}
     </div>
+    <script>
+        const searchButton = document.getElementById('search-button');
+        const searchInput = document.getElementById('search-input');
 
+        searchButton.addEventListener('click', () => {
+            const searchTerm = searchInput.value;
+            window.location.href = `/voters?search=${searchTerm}`;
+        });
+    </script>
 </x-app-layout>

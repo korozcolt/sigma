@@ -53,7 +53,9 @@
             </main>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
     @include('sweetalert::alert')
+    @yield('scripts')
     <script>
         $(document).ready(function() {
             $(".select2").select2({
@@ -61,7 +63,6 @@
             });
         });
     </script>
-
 </body>
 
 </html>

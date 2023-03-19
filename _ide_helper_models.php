@@ -32,6 +32,7 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Leader> $leaders
  * @property-read int|null $leaders_count
  * @property-read \App\Models\Place $place
+ * @property-read \App\Models\User|null $users
  * @method static \Illuminate\Database\Eloquent\Builder|Coordinator newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Coordinator newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Coordinator query()

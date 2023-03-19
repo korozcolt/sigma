@@ -21,16 +21,16 @@ class VoterController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        if ($user->hasRole('coordinator') || $user->isAdmin() || $user->hasRole('leader')) {
+        if ($user->hasRole(['coordinator', 'leader']) || $user->isAdmin()) {
             $search = $request->input('search');
             if ($user->isAdmin()) {
-                $voters = Voter::when($search, function ($query) use ($search) {
+                $voters = Voter::with(['leader', 'place'])->when($search, function ($query) use ($search) {
                     return $query->where('first_name', 'like', "%$search%")
                         ->orWhere('last_name', 'like', "%$search%")
                         ->orWhere('dni', 'like', "%$search%");
                 })->paginate(10);
             } else {
-                $voters = Voter::when($search, function ($query) use ($search) {
+                $voters = Voter::with(['leader', 'place'])->when($search, function ($query) use ($search) {
                     return $query->where('first_name', 'like', "%$search%")
                         ->orWhere('last_name', 'like', "%$search%")
                         ->orWhere('dni', 'like', "%$search%");
@@ -55,13 +55,13 @@ class VoterController extends Controller
     public function create()
     {
         $user = Auth::user();
-        if ($user->isAdmin() || $user->isRole(['leader', 'coordinator'])) {
+        if ($user->isAdmin() || $user->hasRole(['leader', 'coordinator'])) {
             $places = Place::all();
-            if ($user->isRole('coordinator')) {
-                $coordinator = Coordinator::where($user->id, 'user_id')->first();
-                $leaders = Leader::where($coordinator->id, 'coordinator_id')->get();
-            } else if ($user->isRole('leader')) {
-                $leaders = Leader::where($user->id, 'user_id')->get();
+            if ($user->hasRole('coordinator')) {
+                $coordinator = Coordinator::with('user')->where($user->id, 'user_id')->first();
+                $leaders = Leader::with('coordinator')->where($coordinator->id, 'coordinator_id')->get();
+            } else if ($user->hasRole('leader')) {
+                $leaders = Leader::with(['coordinator', 'user'])->where($user->id, 'user_id')->get();
             }
             return view('voters.create', compact('places', 'leaders'));
         } else {

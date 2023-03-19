@@ -43,6 +43,11 @@ class Coordinator extends Model
         return $this->hasMany(Leader::class);
     }
 
+    public function users()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function getFullNameAttribute()
     {
         return "{$this->first_name} {$this->last_name}";
