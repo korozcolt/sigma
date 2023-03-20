@@ -57,6 +57,7 @@ class VoterController extends Controller
         $user = Auth::user();
         if ($user->isAdmin() || $user->hasRole(['leader', 'coordinator'])) {
             $places = Place::all();
+            $leaders = Leader::all();
             if ($user->hasRole('coordinator')) {
                 $coordinator = Coordinator::with('user')->where($user->id, 'user_id')->first();
                 $leaders = Leader::with('coordinator')->where($coordinator->id, 'coordinator_id')->get();
@@ -95,7 +96,7 @@ class VoterController extends Controller
      * @param  mixed $request
      * @return void
      */
-    public function status(Voter $voter, VoterRequest $request)
+    public function status(Voter $voter, Request $request)
     {
         $voter->status = $request->status;
         $voter->save();
