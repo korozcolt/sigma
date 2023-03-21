@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        {{ __('Coordinadores') }} - {{ $coordinators->count() }}
+        {{ __('Coordinadores') }} - {{ $coordinators->total() }}
     </x-slot>
 
     <div class="p-4 bg-white rounded-lg shadow-xs">
