@@ -34,7 +34,7 @@ class VoterController extends Controller
                     return $query->where('first_name', 'like', "%$search%")
                         ->orWhere('last_name', 'like', "%$search%")
                         ->orWhere('dni', 'like', "%$search%");
-                })->where('user_id', '=', $user->id)->paginate(10);
+                })->paginate(10);
             }
 
             if (session('success_message')) {
@@ -59,10 +59,10 @@ class VoterController extends Controller
             $places = Place::all();
             $leaders = Leader::all();
             if ($user->hasRole('coordinator')) {
-                $coordinator = Coordinator::with('user')->where($user->id, 'user_id')->first();
+                $coordinator = Coordinator::with('user')->where('user_id', $user->id)->first();
                 $leaders = Leader::with('coordinator')->where($coordinator->id, 'coordinator_id')->get();
             } else if ($user->hasRole('leader')) {
-                $leaders = Leader::with(['coordinator', 'user'])->where($user->id, 'user_id')->get();
+                $leaders = Leader::with(['coordinator', 'user'])->where('user_id', $user->id)->get();
             }
             return view('voters.create', compact('places', 'leaders'));
         } else {
