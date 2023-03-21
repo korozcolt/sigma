@@ -57,10 +57,16 @@ class LeaderController extends Controller
     public function create()
     {
         $user = Auth::user();
-        if ($user->isAdmin()) {
-            $places = Place::all();
-            $coordinators = Coordinator::all();
-            return view('leaders.create', compact('places', 'coordinators'));
+        if ($user->hasRole(['coordinator']) || $user->isAdmin()) {
+            if ($user->isAdmin()) {
+                $places = Place::all();
+                $coordinators = Coordinator::all();
+                return view('leaders.create', compact('places', 'coordinators'));
+            } else {
+                $places = Place::all();
+                $coordinators = Coordinator::with(['place', 'users'])->where('user_id', $user->id)->get();
+                return view('leaders.create', compact('places', 'coordinators'));
+            }
         } else {
             abort(403, 'No tienes permiso para acceder a esta página.');
         }
