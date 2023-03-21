@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        {{ __('Líderes') }} - {{ $leaders->count() }}
+        {{ __('Líderes') }} - {{ $leaders->total() }}
     </x-slot>
 
     <div class="p-4 bg-white rounded-lg shadow-xs">

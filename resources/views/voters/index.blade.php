@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        {{ __('Votantes') }} - {{ $voters->count() }}
+        {{ __('Votantes') }} - {{ $voters->total() }}
     </x-slot>
 
     <div class="p-4 bg-white rounded-lg shadow-xs">
