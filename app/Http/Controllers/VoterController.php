@@ -23,19 +23,24 @@ class VoterController extends Controller
         $user = Auth::user();
         if ($user->hasRole(['coordinator', 'leader']) || $user->isAdmin()) {
             $search = $request->input('search');
-            if ($user->isAdmin()) {
-                $voters = Voter::with(['leader', 'place'])->when($search, function ($query) use ($search) {
-                    return $query->where('first_name', 'like', "%$search%")
-                        ->orWhere('last_name', 'like', "%$search%")
-                        ->orWhere('dni', 'like', "%$search%");
-                })->paginate(10);
-            } else {
-                $voters = Voter::with(['leader', 'place'])->when($search, function ($query) use ($search) {
-                    return $query->where('first_name', 'like', "%$search%")
-                        ->orWhere('last_name', 'like', "%$search%")
-                        ->orWhere('dni', 'like', "%$search%");
-                })->paginate(10);
+            $query = Voter::with(['leader', 'place']);
+
+            if ($user->hasRole('leader')) {
+                // Filtrar votantes del líder logueado
+                $query->where('leader_id', $user->id);
+            } elseif ($user->hasRole('coordinator')) {
+                // Obtener líderes relacionados con el coordinador logueado
+                $leaderIds = $user->coordinator->leaders()->pluck('id')->toArray();
+
+                // Filtrar votantes de los líderes relacionados con el coordinador
+                $query->whereIn('leader_id', $leaderIds);
             }
+
+            $voters = $query->when($search, function ($query) use ($search) {
+                return $query->where('first_name', 'like', "%$search%")
+                    ->orWhere('last_name', 'like', "%$search%")
+                    ->orWhere('dni', 'like', "%$search%");
+            })->paginate(10);
 
             if (session('success_message')) {
                 Alert::success('Éxito', session('success_message'));
