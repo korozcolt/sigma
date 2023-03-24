@@ -4,13 +4,23 @@ namespace App\Helpers;
 
 class Helper
 {
+    // TODO: declare global constants with account, apiKey, token and baseUrl. Use env() to get the values from .env file
+    protected static $account = '';
+    protected static $apiKey = '' ;
+    protected static $token     = '';
+    protected static $baseUrl  = '';
+
+    public static function initialize(){
+
+        self::$account = env('SMS_ACCOUNT');
+        self::$apiKey = env('SMS_API_KEY');
+        self::$token = env('SMS_API_SECRET');
+        self::$baseUrl = env('SMS_API_URL_BASE');
+    }
+
     public static function sendSmsBulk($contacts, $message)
     {
-        $account = env('SMS_ACCOUNT');
-        $apiKey = env('SMS_API_KEY');
-        $token = env('SMS_API_SECRET');
-        $baseUrl = env('SMS_API_URL_BASE');
-
+        self::initialize();
         $messages = [];
 
         foreach ($contacts as $contact) {
@@ -30,15 +40,15 @@ class Helper
 
         $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL, $baseUrl . '/marketing/bulk');
+        curl_setopt($ch, CURLOPT_URL, self::$baseUrl . '/sms/v3/send/marketing/bulk');
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($request));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json',
-            'Account: ' . $account,
-            'ApiKey: ' . $apiKey,
-            'Token: ' . $token,
+            'Account: ' . self::$account,
+            'ApiKey: ' . self::$apiKey,
+            'Token: ' . self::$token,
         ]);
 
         $response = curl_exec($ch);
@@ -58,10 +68,7 @@ class Helper
 
     public static function sendSms($contact, $message)
     {
-        $account = env('SMS_ACCOUNT');
-        $apiKey = env('SMS_API_KEY');
-        $token = env('SMS_API_SECRET');
-        $baseUrl = env('SMS_API_URL_BASE');
+        self::initialize();
         $request = [
             'toNumber' => '57' . $contact['phone'],
             'sms' => $message,
@@ -73,15 +80,45 @@ class Helper
 
         $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL, $baseUrl . '/marketing');
+        curl_setopt($ch, CURLOPT_URL, self::$baseUrl . '/sms/v3/send/marketing');
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($request));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json',
-            'Account: ' . $account,
-            'ApiKey: ' . $apiKey,
-            'Token: ' . $token,
+            'Account: ' . self::$account,
+            'ApiKey: ' . self::$apiKey,
+            'Token: ' . self::$token,
+        ]);
+
+        $response = curl_exec($ch);
+
+        if (curl_errno($ch)) {
+            $error_msg = curl_error($ch);
+        }
+
+        curl_close($ch);
+        return $response;
+    }
+
+    public static function shortLink($link){
+
+        self::initialize();
+        $request = [
+            'url' => $link,
+        ];
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, self::$baseUrl . '/url-shortener/v1/token');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($request));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',
+            'Account: ' . self::$account,
+            'ApiKey: ' . self::$apiKey,
+            'Token: ' . self::$token,
         ]);
 
         $response = curl_exec($ch);

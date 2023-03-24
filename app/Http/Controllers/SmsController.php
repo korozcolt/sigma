@@ -14,16 +14,7 @@ class SmsController extends Controller
      */
     public function index()
     {
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return view('sms.index');
     }
 
     /**
@@ -34,102 +25,38 @@ class SmsController extends Controller
      */
     public function store(Request $request)
     {
-    }
+        $contacts = [];
+        $message = $request->message;
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Sms  $sms
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Sms $sms)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Sms  $sms
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Sms $sms)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Sms  $sms
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Sms $sms)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Sms  $sms
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Sms $sms)
-    {
-        //
-    }
-
-    private static function sendSmsBulk($contacts, $message)
-    {
-        $account = env('SMS_ACCOUNT');
-        $apiKey = env('SMS_API_KEY');
-        $token = env('SMS_API_SECRET');
-        $baseUrl = env('SMS_API_URL_BASE');
-
-        $messages = [];
-
-        foreach ($contacts as $contact) {
-            $messages[] = [
-                'numero' => '57' . $contact->phone,
-                'sms' => $message,
-            ];
+        if($request->option_send == '1'){
+            $contacts = \App\Models\Coordinator::all();
+        }else if($request->option_send == '2'){
+            $contacts = \App\Models\Leader::all();
+        }else if($request->option_send == '3'){
+            $contacts = \App\Models\Voter::where('type', 'voter')->get();
+        }else if($request->option_send == '0'){
+            $contacts = \App\Models\Coordinator::all();
+            $contacts = $contacts->merge(\App\Models\Leader::all());
+            $contacts = $contacts->merge(\App\Models\Voter::where('type', 'voter')->get());
         }
+        //count the contacts to send the message
+        $count = count($contacts);
 
-        $request = [
-            'flash' => '0',
-            'sendDate' => time(),
-            'sc' => '890202',
-            'request_dlvr_rcpt' => '0',
-            'bulk' => $messages,
-        ];
+        $response = \App\Helpers\Helper::sendSmsBulk($contacts, $message);
 
-        $ch = curl_init();
+        return redirect()->route('sms.index')->with('success', 'Se han enviado ' . $count . ' mensajes');
+    }
 
-        curl_setopt($ch, CURLOPT_URL, $baseUrl . '/marketing/bulk');
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($request));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            'Content-Type: application/json',
-            'Account: ' . $account,
-            'ApiKey: ' . $apiKey,
-            'Token: ' . $token,
+    //shorLink helper function to create a short link for the sms
+    public function link(Request $request)
+    {
+        //validate the url to create a short link
+        $request->validate([
+            'url' => 'required|url'
         ]);
+        $url = $request->url;
+        $response = \App\Helpers\Helper::shortLink($url);
 
-        $response = curl_exec($ch);
-
-        if (curl_errno($ch)) {
-            $error_msg = curl_error($ch);
-        }
-
-        curl_close($ch);
-
-        if (isset($error_msg)) {
-            return ['success' => false, 'message' => $error_msg];
-        } else {
-            return ['success' => true, 'message' => $response];
-        }
+        return $response;
     }
 }
