@@ -84,7 +84,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td class="py-2 px-4" colspan="6">No hay líderes registrados</td>
+                        <td class="py-2 px-4" colspan="6">No hay votantes registrados</td>
                     </tr>
                 @endforelse
             </tbody>

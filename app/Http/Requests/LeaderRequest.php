@@ -26,10 +26,14 @@ class LeaderRequest extends FormRequest
     public function rules()
     {
         return [
-            'dni' => 'required|numeric|digits_between:6,11|unique:leaders,dni',
+            'dni' => [
+                'required',
+                'integer',
+                'digits_between : 6, 11',
+                'unique:leaders,dni',
+            ],
             'first_name' => 'required|string|regex:/^[\pL\s]+$/u',
             'last_name' => 'required|string|regex:/^[\pL\s]+$/u',
-            'email' => 'nullable|email',
             'phone' => 'nullable|numeric|digits:10',
             'place_id' => [
                 'required',
@@ -39,6 +43,11 @@ class LeaderRequest extends FormRequest
                 'required',
                 Rule::exists('users', 'id'),
             ],
+            'coordinator_id' => [
+                'required',
+                Rule::exists('coordinators', 'id'),
+            ],
+            'address' => 'nullable|string'
         ];
     }
 
@@ -66,6 +75,7 @@ class LeaderRequest extends FormRequest
             'phone.numeric' => 'El campo Teléfono solo debe contener números.',
             'place_id.required' => 'El campo Lugar es obligatorio.',
             'user_id.required' => 'El campo Usuario es obligatorio.',
+            'coordinator_id.required' => 'El campo Coordinador es obligatorio.',
         ];
     }
 }

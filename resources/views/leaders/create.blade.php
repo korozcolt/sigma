@@ -4,6 +4,7 @@
 
         <form method="post" action="{{ route('leaders.store') }}">
             @csrf
+            <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
             <div class="mt-4">
                 <div class="mt-4">
                     <x-input-label for="dni" :value="__('Cedula')" />

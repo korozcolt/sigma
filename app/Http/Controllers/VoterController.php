@@ -59,15 +59,19 @@ class VoterController extends Controller
      */
     public function create()
     {
+        // Only admins, coordinators and leaders can see voters
+        // Admins can see all voters
+        // Coordinators can see voters of their leaders
+        // Leaders can see voters of their own
         $user = Auth::user();
-        if ($user->isAdmin() || $user->hasRole(['leader', 'coordinator'])) {
+        if($user->hasRole(['coordinator', 'leader']) || $user->isAdmin()) {
             $places = Place::all();
             $leaders = Leader::all();
+
             if ($user->hasRole('coordinator')) {
-                $coordinator = Coordinator::with('user')->where('user_id', $user->id)->first();
-                $leaders = Leader::with('coordinator')->where($coordinator->id, 'coordinator_id')->get();
-            } else if ($user->hasRole('leader')) {
-                $leaders = Leader::with(['coordinator', 'user'])->where('user_id', $user->id)->get();
+                $leaders = $user->coordinator->leaders;
+            } elseif ($user->hasRole('leader')) {
+                $leaders = $user->leader->where('id', $user->id);
             }
             return view('voters.create', compact('places', 'leaders'));
         } else {
