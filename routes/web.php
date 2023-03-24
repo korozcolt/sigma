@@ -33,18 +33,23 @@ require __DIR__ . '/auth.php';
 
 Route::middleware('auth')->group(function () {
     Route::view('about', 'about')->name('about');
-
+    //User routes
     Route::get('users', [\App\Http\Controllers\UserController::class, 'index'])->name('users.index');
     Route::delete('users/{user}', [\App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
+    //Coordinator routes
     Route::resource('coordinators', \App\Http\Controllers\CoordinatorController::class);
-    //update status by coordinator in the function status on CoordinatorController
     Route::put('coordinators/{coordinator}/status', [\App\Http\Controllers\CoordinatorController::class, 'status'])->name('coordinators.status');
+    //Place routes
     Route::resource('places', \App\Http\Controllers\PlaceController::class);
+    //Leader routes
     Route::resource('leaders', \App\Http\Controllers\LeaderController::class);
     Route::put('leaders/{leader}/status', [\App\Http\Controllers\LeaderController::class, 'status'])->name('leaders.status');
+    //Voter routes
     Route::resource('voters', \App\Http\Controllers\VoterController::class);
     Route::put('voters/{voter}/status', [\App\Http\Controllers\VoterController::class, 'status'])->name('voters.status');
-    Route::resource('sms', \App\Http\Controllers\SmsController::class);
+    //Sms routes
+    Route::resource('sms', \App\Http\Controllers\SmsController::class)->only(['index', 'store']);
+    Route::post('sms/link', [\App\Http\Controllers\SmsController::class, 'link'])->name('sms.link');
     Route::get('/sms-test', function () {
         $message = 'prueba mensajería';
         $contact = [
