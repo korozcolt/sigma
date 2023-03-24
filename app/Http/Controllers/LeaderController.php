@@ -22,28 +22,35 @@ class LeaderController extends Controller
      */
     public function index(Request $request)
     {
+        //the search variable is the value of the input search
+        $search = $request->input('search');
         $user = Auth::user();
         if ($user->hasRole(['coordinator', 'leader']) || $user->isAdmin()) {
-            $search = $request->input('search');
             if ($user->isAdmin()) {
-                $leaders = Leader::with(['coordinator', 'place', 'user'])->when($search, function ($query) use ($search) {
+                $leaders = Leader::with(['place', 'coordinator', 'user'])->when($search, function ($query) use ($search) {
                     return $query->where('first_name', 'like', "%$search%")
                         ->orWhere('last_name', 'like', "%$search%")
                         ->orWhere('dni', 'like', "%$search%");
-                })->paginate(10);
+                    })->paginate(10);
+                return view('leaders.index', compact('leaders'));
             } else {
-                $leaders = Leader::with(['coordinator', 'place', 'user'])->when($search, function ($query) use ($search) {
-                    return $query->where('first_name', 'like', "%$search%")
-                        ->orWhere('last_name', 'like', "%$search%")
-                        ->orWhere('dni', 'like', "%$search%");
-                })->where('user_id', '=', $user->id)->paginate(10);
+                if ($user->hasRole(['coordinator'])) {
+                    $coordinator = Coordinator::with(['place', 'users'])->where('user_id', $user->id)->first();
+                    $leaders = Leader::with(['place', 'coordinator', 'user'])->when($search, function ($query) use ($search) {
+                        return $query->where('first_name', 'like', "%$search%")
+                            ->orWhere('last_name', 'like', "%$search%")
+                            ->orWhere('dni', 'like', "%$search%");
+                        })->where('coordinator_id', $coordinator->id)->paginate(10);
+                    return view('leaders.index', compact('leaders'));
+                } else {
+                    $leaders = Leader::with(['place', 'coordinator', 'user'])->when($search, function ($query) use ($search) {
+                        return $query->where('first_name', 'like', "%$search%")
+                            ->orWhere('last_name', 'like', "%$search%")
+                            ->orWhere('dni', 'like', "%$search%");
+                        })->where('user_id', $user->id)->paginate(10);
+                    return view('leaders.index', compact('leaders'));
+                }
             }
-
-            if (session('success_message')) {
-                Alert::success('Éxito', session('success_message'));
-            }
-
-            return view('leaders.index', compact('leaders', 'search'));
         } else {
             abort(403, 'No tienes permiso para acceder a esta página.');
         }
@@ -114,11 +121,6 @@ class LeaderController extends Controller
             'debate_boss' => 'none'
         ]);
 
-
-        $message = 'Bienvenido a Sigma, tu usuario es: ' . $email . ' y tu contraseña es: ' . $password;
-        $this->smsSend($leader, $message);
-
-
         return redirect()->route('leaders.index')->with('success', 'Líder creado correctamente.');
     }
 
@@ -149,7 +151,8 @@ class LeaderController extends Controller
         $user = Auth::user();
         if ($user->isAdmin()) {
             $places = Place::all();
-            return view('leaders.edit', compact('leader', 'places'));
+            $coordinators = Coordinator::all();
+            return view('leaders.edit', compact('leader', 'places', 'coordinators'));
         } else {
             abort(403, 'No tienes permiso para acceder a esta página.');
         }
@@ -176,13 +179,14 @@ class LeaderController extends Controller
      */
     public function destroy(Leader $leader)
     {
-        $user = $leader->user;
-        if ($user) {
-            $user->delete();
+        // Delete the user
+        // If the leader has voters associated, they will be assigned to the leader with dni 1102812122
+        $user = User::where('id', $leader->user_id)->first();
+        $user->delete();
+
+        if($leader->voters->count() > 0){
+            $leader->voters()->update(['leader_id' => 1]);
         }
-        $voterIds = $leader->voters->pluck('id');
-        $leader1 = Leader::find(1);
-        $leader1->voters()->whereIn('id', $voterIds)->update(['leader_id' => $leader1->id]);
 
         // Delete the leader
         $leader->delete();

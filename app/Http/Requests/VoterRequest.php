@@ -39,6 +39,7 @@ class VoterRequest extends FormRequest
                 'required',
                 Rule::exists('leaders', 'id'),
             ],
+            'address' => 'nullable|string',
         ];
     }
 
