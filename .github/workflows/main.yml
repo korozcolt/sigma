@@ -16,7 +16,7 @@ jobs:
         run: npm run build
       - name: Build and deploy
         run: |
-          ssh kronnos@184.168.20.106 "
+          ssh kronnos@184.168.20.106"
           sudo su &&
           cd /var/www/html/sigma &&
           git stash &&

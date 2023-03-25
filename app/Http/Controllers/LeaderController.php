@@ -23,6 +23,7 @@ class LeaderController extends Controller
     public function index(Request $request)
     {
         //the search variable is the value of the input search
+        //all querys must be order by coordinator_id asc
         $search = $request->input('search');
         $user = Auth::user();
         if ($user->hasRole(['coordinator', 'leader']) || $user->isAdmin()) {
@@ -31,7 +32,7 @@ class LeaderController extends Controller
                     return $query->where('first_name', 'like', "%$search%")
                         ->orWhere('last_name', 'like', "%$search%")
                         ->orWhere('dni', 'like', "%$search%");
-                    })->paginate(10);
+                    })->orderBy('coordinator_id', 'asc')->paginate(10);
                 return view('leaders.index', compact('leaders'));
             } else {
                 if ($user->hasRole(['coordinator'])) {
@@ -40,14 +41,14 @@ class LeaderController extends Controller
                         return $query->where('first_name', 'like', "%$search%")
                             ->orWhere('last_name', 'like', "%$search%")
                             ->orWhere('dni', 'like', "%$search%");
-                        })->where('coordinator_id', $coordinator->id)->paginate(10);
+                        })->where('coordinator_id', $coordinator->id)->orderBy('coordinator_id', 'asc')->paginate(10);
                     return view('leaders.index', compact('leaders'));
                 } else {
                     $leaders = Leader::with(['place', 'coordinator', 'user'])->when($search, function ($query) use ($search) {
                         return $query->where('first_name', 'like', "%$search%")
                             ->orWhere('last_name', 'like', "%$search%")
                             ->orWhere('dni', 'like', "%$search%");
-                        })->where('user_id', $user->id)->paginate(10);
+                        })->where('user_id', $user->id)->orderBy('coordinator_id', 'asc')->paginate(10);
                     return view('leaders.index', compact('leaders'));
                 }
             }

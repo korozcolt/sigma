@@ -30,6 +30,7 @@
                     <th class="py-2 px-4">DNI</th>
                     <th class="py-2 px-4">Teléfono</th>
                     <th class="py-2 px-4">Lider</th>
+                    <th class="py-2 px-4">Coordinador</th>
                     <th class="py-2 px-4">Lugar de votación</th>
                     @if (auth()->user()->isAdmin())
                         <th class="py-2 px-4">Estado</th>
@@ -44,6 +45,7 @@
                         <td class="py-2 px-4 text-center">{{ $voter->dni }}</td>
                         <td class="py-2 px-4 text-center">{{ $voter->phone }}</td>
                         <td class="py-2 px-4 text-center">{{ $voter->leader->full_name }}</td>
+                        <td class="py-2 px-4 text-center">{{ $voter->leader->coordinator->full_name }}</td>
                         <td class="py-2 px-4 text-center">{{ $voter->place->place }} - Mesa:
                             {{ $voter->place->table }}
                         </td>

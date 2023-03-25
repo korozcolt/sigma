@@ -23,16 +23,12 @@ class VoterController extends Controller
         $user = Auth::user();
         if ($user->hasRole(['coordinator', 'leader']) || $user->isAdmin()) {
             $search = $request->input('search');
-            $query = Voter::with(['leader', 'place']);
+            $query = Voter::with('leader','place')->with('leader.coordinator');
 
             if ($user->hasRole('leader')) {
-                // Filtrar votantes del líder logueado
                 $query->where('leader_id', $user->id);
             } elseif ($user->hasRole('coordinator')) {
-                // Obtener líderes relacionados con el coordinador logueado
                 $leaderIds = $user->coordinator->leaders()->pluck('id')->toArray();
-
-                // Filtrar votantes de los líderes relacionados con el coordinador
                 $query->whereIn('leader_id', $leaderIds);
             }
 
@@ -40,7 +36,7 @@ class VoterController extends Controller
                 return $query->where('first_name', 'like', "%$search%")
                     ->orWhere('last_name', 'like', "%$search%")
                     ->orWhere('dni', 'like', "%$search%");
-            })->paginate(10);
+            })->orderBy('leader_id','asc')->paginate(10);
 
             if (session('success_message')) {
                 Alert::success('Éxito', session('success_message'));
@@ -59,10 +55,6 @@ class VoterController extends Controller
      */
     public function create()
     {
-        // Only admins, coordinators and leaders can see voters
-        // Admins can see all voters
-        // Coordinators can see voters of their leaders
-        // Leaders can see voters of their own
         $user = Auth::user();
         if($user->hasRole(['coordinator', 'leader']) || $user->isAdmin()) {
             $places = Place::all();

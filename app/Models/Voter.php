@@ -45,6 +45,12 @@ class Voter extends Model
         return $this->belongsTo(Leader::class);
     }
 
+    //One leader can have one Coordinador, on voter can have one leader and one coordinador but voter only has a realtionship with one leader
+    public function coordinador()
+    {
+        return $this->belongsTo(Leader::class, 'leader_id');
+    }
+
     public function place()
     {
         return $this->belongsTo(Place::class);

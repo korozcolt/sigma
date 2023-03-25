@@ -21,12 +21,12 @@ class Place extends Model
 
     public function leaders()
     {
-        return $this->hasManyThrough(Leader::class, Coordinator::class);
+        return $this->hasMany(Leader::class);
     }
 
     public function voters()
     {
-        return $this->hasManyThrough(Voter::class, Leader::class);
+        return $this->hasMany(Voter::class);
     }
 
     public function setPlaceAttribute($value)
