@@ -199,6 +199,7 @@ namespace App\Models{
  * @property int $leader_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Leader $coordinador
  * @property-read mixed $full_name
  * @property-read \App\Models\Leader $leader
  * @property-read \App\Models\Place $place
