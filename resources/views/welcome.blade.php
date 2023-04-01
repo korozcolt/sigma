@@ -85,7 +85,7 @@
     <div class="container">
         <h1><a href="/login">SIGMA APP</a></h1>
         <div class="btn-container">
-            <a href="/list" class="btn">Iniciar Sesion</a>
+            <a href="/login" class="btn">Iniciar Sesion</a>
             <a href="/votation" class="btn">Ir a Votación</a>
         </div>
     </div>
