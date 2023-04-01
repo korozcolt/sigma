@@ -13,9 +13,9 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $voters = Voter::all();
-        $leaders = Leader::all();
-        $coordinators = Coordinator::all();
+        $voters = Voter::whereType('voter')->get();
+        $leaders = Leader::whereType('leader')->get();
+        $coordinators = Coordinator::whereType('coordinator')->get();
         $places = Place::all();
 
         //group model place by place and count the voters

@@ -23,18 +23,59 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
         }
 
         .container h1 {
-            font-size: 100px;
+            font-size: 60px;
             color: #fff;
             text-transform: uppercase;
             text-align: center;
+            margin-bottom: 50px;
         }
 
         .container h1 a {
             color: #fff;
             text-decoration: none;
+        }
+
+        .container a {
+            text-decoration: none;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 20px;
+            color: #fff;
+            background-color: #2196F3;
+            border: none;
+            border-radius: 5px;
+            margin: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .btn:hover {
+            background-color: #0D47A1;
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn-container a:first-child {
+            margin-right: 20px;
+        }
+
+        .btn-container a:last-child {
+            margin-left: 20px;
         }
     </style>
 
@@ -43,6 +84,10 @@
 <body>
     <div class="container">
         <h1><a href="/login">SIGMA APP</a></h1>
+        <div class="btn-container">
+            <a href="/list" class="btn">Iniciar Sesion</a>
+            <a href="/votation" class="btn">Ir a Votación</a>
+        </div>
     </div>
 </body>
 

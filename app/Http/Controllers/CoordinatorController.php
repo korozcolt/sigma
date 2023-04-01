@@ -48,6 +48,27 @@ class CoordinatorController extends Controller
         }
     }
 
+    //voters list for coordinators order by leaders
+    //the function receives the id of the coordinator
+    //only send response if the user is a coordinator or isAdmin
+    //this function return a view with the list of voters
+    //remember coordinators has a relation with leaders and leaders has a relation with voters
+    public function list(Coordinator $coordinator)
+    {
+        $user = Auth::user();
+        if ($user->hasRole('coordinator') || $user->isAdmin()) {
+            $leaders = Leader::where('coordinator_id', $coordinator->id)->get();
+            $voters = [];
+            foreach ($leaders as $leader) {
+                $voters = $voters->merge(Voter::where('leader_id', $leader->id)->get());
+            }
+            return view('coordinators.list', compact('voters'));
+        } else {
+            abort(403, 'No tienes permiso para acceder a esta página.');
+        }
+
+    }
+
     /**
      * Show the form for creating a new resource.
      *
