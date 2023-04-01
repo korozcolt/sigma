@@ -39,7 +39,7 @@ class SmsController extends Controller
             $contacts = $contacts->merge(\App\Models\Leader::all());
             $contacts = $contacts->merge(\App\Models\Voter::where('type', 'voter')->get());
         }
-        //count the contacts to send the message
+        
         $count = count($contacts);
 
         $response = \App\Helpers\Helper::sendSmsBulk($contacts, $message);
@@ -47,7 +47,12 @@ class SmsController extends Controller
         return redirect()->route('sms.index')->with('success', 'Se han enviado ' . $count . ' mensajes');
     }
 
-    //shorLink helper function to create a short link for the sms
+    /**
+     * Display the specified resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function link(Request $request)
     {
         //validate the url to create a short link

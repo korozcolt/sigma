@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
     //Coordinator routes
     Route::resource('coordinators', \App\Http\Controllers\CoordinatorController::class);
     Route::put('coordinators/{coordinator}/status', [\App\Http\Controllers\CoordinatorController::class, 'status'])->name('coordinators.status');
+    Route::get('coordinators/{id}/list', [\App\Http\Controllers\CoordinatorController::class, 'list'])->name('coordinators.list');
     //Place routes
     Route::resource('places', \App\Http\Controllers\PlaceController::class);
     //Leader routes
