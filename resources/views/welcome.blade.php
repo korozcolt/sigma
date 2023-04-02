@@ -11,10 +11,10 @@
 
 <body>
     <div class="container">
-        <h1><a href="/login">SIGMA APP</a></h1>
+        <h1><a class="slide-in-blurred-top" href="/login">SIGMA APP</a></h1>
         <div class="btn-container">
-            <a href="/login" class="btn">Iniciar Sesion</a>
-            <a href="/votation" class="btn">Ir a Votación</a>
+            <a href="/login" class="btn puff-in-center">Iniciar Sesion</a>
+            <a href="/votation" class="btn puff-in-center">Ir a Votación</a>
         </div>
     </div>
 </body>
