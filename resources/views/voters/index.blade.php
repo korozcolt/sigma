@@ -34,6 +34,7 @@
                     <th class="py-2 px-4">Lugar de votación</th>
                     @if (auth()->user()->isAdmin())
                         <th class="py-2 px-4">Estado</th>
+                        <th class="py-2 px-4">Parentesco</th>
                     @endif
                     <th class="py-2 px-4"><i class="fa-solid fa-gear"></i></th>
                 </tr>
@@ -56,6 +57,9 @@
                                     'bg-orange-600' => $voter->status->pendiente(),
                                     'bg-green-600' => $voter->status->revisado(),
                                 ])>{{ $voter->status->getLabelText() }}</span>
+                            </td>
+                            <td class="py-2 px-4 text-center">
+                                <span @class(['rounded-md px-2 py-1 text-white bg-blue-600'])>{{ $voter->entity_parent->getLabelText() }}</span>
                             </td>
                         @endif
                         @if (auth()->user()->isAdmin() ||

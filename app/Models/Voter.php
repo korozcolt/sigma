@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\EntityStatus;
+use App\Enums\EntityParent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,6 +24,7 @@ class Voter extends Model
         'candidate',
         'leader_id',
         'place_id',
+        'entity_parent',
     ];
 
     public function getFullNameAttribute()
@@ -57,6 +59,7 @@ class Voter extends Model
     }
 
     protected $casts = [
-        'status' => EntityStatus::class
+        'status' => EntityStatus::class,
+        'entity_parent' => EntityParent::class
     ];
 }

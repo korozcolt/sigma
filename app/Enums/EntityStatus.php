@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum EntityStatus: string
+enum EntityStatus:string
 {
     case PENDIENTE = 'pendiente';
     case REVISADO = 'revisado';

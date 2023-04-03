@@ -40,6 +40,11 @@ class VoterRequest extends FormRequest
                 Rule::exists('leaders', 'id'),
             ],
             'address' => 'nullable|string',
+            //add entity enum parent validation
+            'entity_parent' => [
+                'required',
+                Rule::in(\App\Enums\EntityParent::toArray()),
+            ],
         ];
     }
 
@@ -64,6 +69,13 @@ class VoterRequest extends FormRequest
             'last_name.regex' => 'El campo Apellido solo debe contener letras.',
             'email.email' => 'El campo Email debe ser una dirección de correo electrónico válida.',
             'phone.numeric' => 'El campo Teléfono solo debe contener números.',
+            'phone.digits' => 'El campo Teléfono debe contener 10 dígitos.',
+            'place_id.required' => 'El campo Lugar es obligatorio.',
+            'place_id.exists' => 'El campo Lugar no existe.',
+            'leader_id.required' => 'El campo Líder es obligatorio.',
+            'leader_id.exists' => 'El campo Líder no existe.',
+            'parent_entity.required' => 'El campo Parentesco es obligatorio.',
+            'parent_entity.in' => 'El campo Parentesco no es válido.',
         ];
     }
 }
