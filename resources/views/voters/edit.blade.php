@@ -9,8 +9,7 @@
                 <div class="mt-4">
                     <x-input-label for="dni" :value="__('Cedula')" />
                     <x-text-input type="text" id="dni" name="dni"
-                        class="block w-full bg-gray-100 text-gray-400 cursor-not-allowed" value="{{ $voter->dni }}"
-                        disabled />
+                        class="block w-full bg-gray-100 text-gray-400 cursor-not-allowed" value="{{ $voter->dni }}" />
                     <x-input-error :messages="$errors->get('dni')" class="mt-2" />
                 </div>
             </div>
@@ -45,6 +44,14 @@
                 <x-select-input-place :options="$places" id="place_id" name="place_id"
                     value="{{ old('place_id', $voter->place_id) }}" required autofocus />
                 <x-input-error :messages="$errors->get('place')" class="mt-2" />
+            </div>
+
+            {{-- leader_id --}}
+            <div class="mt-4">
+                <x-input-label for="leader" :value="__('Leader')" />
+                <x-select-input-entities :options="$leaders" id="leader_id" name="leader_id"
+                    value="{{ old('leader_id', $voter->leader_id) }}" required autofocus />
+                <x-input-error :messages="$errors->get('leader')" class="mt-2" />
             </div>
 
             <div class="mt-4">

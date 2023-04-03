@@ -28,7 +28,6 @@ namespace App\Models{
  * @property int $place_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read mixed $full_name
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Leader> $leaders
  * @property-read int|null $leaders_count
  * @property-read \App\Models\Place $place
@@ -190,6 +189,7 @@ namespace App\Models{
  * @property string $first_name
  * @property string $last_name
  * @property int $phone
+ * @property \App\Enums\EntityParent $entity_parent
  * @property string|null $address
  * @property string|null $type
  * @property \App\Enums\EntityStatus|null $status
@@ -200,7 +200,6 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Leader $coordinador
- * @property-read mixed $full_name
  * @property-read \App\Models\Leader $leader
  * @property-read \App\Models\Place $place
  * @method static \Illuminate\Database\Eloquent\Builder|Voter newModelQuery()
@@ -211,6 +210,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Voter whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Voter whereDebateBoss($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Voter whereDni($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Voter whereEntityParent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Voter whereFirstName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Voter whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Voter whereLastName($value)

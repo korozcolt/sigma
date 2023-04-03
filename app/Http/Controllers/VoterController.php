@@ -114,10 +114,16 @@ class VoterController extends Controller
     public function edit(Voter $voter)
     {
         $user = Auth::user();
-        if ($user->isAdmin()) {
+        if($user->hasRole(['coordinator', 'leader']) || $user->isAdmin()) {
             $places = Place::all();
-            return view('voters.edit', compact('voter', 'places'));
-        } else {
+            $leaders = Leader::all();
+
+            if ($user->hasRole('coordinator')) {
+                $leaders = $user->coordinator->leaders;
+            } elseif ($user->hasRole('leader')) {
+                $leaders = $user->leader->where('id', $user->id);
+            }
+            return view('voters.edit', compact('places', 'leaders', 'voter'));
             abort(403, 'No tienes permiso para acceder a esta página.');
         }
     }
