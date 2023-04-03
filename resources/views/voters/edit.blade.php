@@ -34,10 +34,42 @@
             </div>
 
             <div class="mt-4">
+                <x-input-label for="address" :value="__('Address')" />
+                <x-text-input type="text" id="address" name="address" class="block w-full"
+                    value="{{ old('address', $voter->address) }}" required autofocus />
+                <x-input-error :messages="$errors->get('address')" class="mt-2" />
+            </div>
+
+            <div class="mt-4">
                 <x-input-label for="place" :value="__('Place')" />
                 <x-select-input-place :options="$places" id="place_id" name="place_id"
                     value="{{ old('place_id', $voter->place_id) }}" required autofocus />
                 <x-input-error :messages="$errors->get('place')" class="mt-2" />
+            </div>
+
+            <div class="mt-4">
+                <x-input-label for="entity_parent" :value="__('Parent')" />
+                <select name="entity_parent" id="entity_parent"
+                    value="{{ old('entity_parent', $voter->entity_parent) }}"
+                    class="form-select mt-1 border-gray-300 rounded-md shadow-sm focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 focus-within:text-primary-600 w-full select2">
+                    <option value="amigo">Amigo(a)</option>
+                    <option value="padre">Padre</option>
+                    <option value="madre">Madre</option>
+                    <option value="hermano">Hermano(a)</option>
+                    <option value="tio">Tio(a)</option>
+                    <option value="abuelo">Abuelo(a)</option>
+                    <option value="esposo">Esposo(a)</option>
+                    <option value="novio">Novio(a)</option>
+                    <option value="hijo">Hijo(a)</option>
+                    <option value="primo">Primo(a)</option>
+                    <option value="sobrino">Sobrino(a)</option>
+                    <option value="nieto">Nieto(a)</option>
+                    <option value="cunado">Cuñado(a)</option>
+                    <option value="suegro">Suegro(a)</option>
+                    <option value="yerno">Yerno</option>
+                    <option value="nuera">Nuera</option>
+                </select>
+                <x-input-error :messages="$errors->get('entity_parent')" class="mt-2" />
             </div>
 
             <div class="text-right mt-4 flex">
