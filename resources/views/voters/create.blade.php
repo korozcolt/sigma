@@ -32,6 +32,13 @@
             </div>
 
             <div class="mt-4">
+                <x-input-label for="address" :value="__('Address')" />
+                <x-text-input type="text" id="address" name="address" class="block w-full"
+                    value="{{ old('address') }}" autofocus />
+                <x-input-error :messages="$errors->get('address')" class="mt-2" />
+            </div>
+
+            <div class="mt-4">
                 <x-input-label for="leader" :value="__('Leader')" />
                 <x-select-input-entities :options="$leaders" id="leader_id" name="leader_id"
                     value="{{ old('leader_id') }}" required autofocus />
