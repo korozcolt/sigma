@@ -40,10 +40,26 @@ class VoterRequest extends FormRequest
                 Rule::exists('leaders', 'id'),
             ],
             'address' => 'nullable|string',
-            //add entity enum parent validation
             'entity_parent' => [
                 'required',
-                Rule::in(\App\Enums\EntityParent::toArray()),
+                Rule::in([
+                    'madre',
+                    'padre',
+                    'hijo',
+                    'hermano',
+                    'tio',
+                    'abuelo',
+                    'esposo',
+                    'novio',
+                    'amigo',
+                    'suegro',
+                    'cuñado',
+                    'primo',
+                    'yerno',
+                    'nuero',
+                    'nieto',
+                    'sobrino',
+                ]),
             ],
         ];
     }
@@ -74,8 +90,8 @@ class VoterRequest extends FormRequest
             'place_id.exists' => 'El campo Lugar no existe.',
             'leader_id.required' => 'El campo Líder es obligatorio.',
             'leader_id.exists' => 'El campo Líder no existe.',
-            'parent_entity.required' => 'El campo Parentesco es obligatorio.',
-            'parent_entity.in' => 'El campo Parentesco no es válido.',
+            'entity_parent.required' => 'El campo Parentesco es obligatorio.',
+            'entity_parent.in' => 'El campo Parentesco no es válido.',
         ];
     }
 }

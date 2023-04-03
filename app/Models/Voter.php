@@ -27,19 +27,27 @@ class Voter extends Model
         'entity_parent',
     ];
 
-    public function getFullNameAttribute()
+    protected function firstName(): Attribute
     {
-        return "{$this->first_name} {$this->last_name}";
+        return Attribute::make(
+            set: fn ($value) => strtoupper($value),
+        );
     }
 
-    public function setFirstNameAttribute($value)
+    //define a mutator to set the last name to uppercase and trim the spaces before and after the name
+    protected function lastName(): Attribute
     {
-        $this->attributes['first_name'] = trim(strtoupper($value));
+        return Attribute::make(
+            set: fn ($value) => strtoupper($value),
+        );
     }
 
-    public function setLastNameAttribute($value)
+    //define a mutator to get the full name concatenating the first name and the last name
+    protected function fullName(): Attribute
     {
-        $this->attributes['last_name'] = trim(strtoupper($value));
+        return Attribute::make(
+            get: fn () => "{$this->first_name} {$this->last_name}",
+        );
     }
 
     public function leader()
