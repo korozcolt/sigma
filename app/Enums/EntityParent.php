@@ -21,6 +21,27 @@ enum EntityParent:string{
     case NIETO = 'nieto';
     case SOBRINO = 'sobrino';
 
+    public function getLabelText():string{
+        return match($this){
+            self::MADRE => 'Madre',
+            self::PADRE => 'Padre',
+            self::HIJO => 'Hijo',
+            self::HERMANO => 'Hermano',
+            self::TIO => 'Tío',
+            self::ABUELO => 'Abuelo',
+            self::ESPOSO => 'Esposo',
+            self::NOVIO => 'Novio',
+            self::AMIGO => 'Amigo',
+            self::SUEGRO => 'Suegro',
+            self::CUÑADO => 'Cuñado',
+            self::PRIMO => 'Primo',
+            self::YERNO => 'Yerno',
+            self::NUERO => 'Nuero',
+            self::NIETO => 'Nieto',
+            self::SOBRINO => 'Sobrino',
+        };
+    }
+
     public function getLabelColor():string{
         //if parent is null return self::AMIGO color
         return match($this){
