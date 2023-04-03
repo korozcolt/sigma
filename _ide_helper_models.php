@@ -73,7 +73,6 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Coordinator $coordinator
- * @property-read mixed $full_name
  * @property-read \App\Models\Place $place
  * @property-read \App\Models\User $user
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Voter> $voters
