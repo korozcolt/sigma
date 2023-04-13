@@ -58,7 +58,11 @@ Route::middleware('auth')->group(function () {
 
         var_dump(Helper::sendSms($contact, $message));
     });
+    //Report routes
+    Route::get('places-export', [\App\Http\Controllers\PlaceController::class,'export_excel'])->name('places.export.excel');
+    // Route::post('places-import', 'import')->name('places.import');
 
+    //Profile routes
     Route::get('profile', [\App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
     Route::put('profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
 });

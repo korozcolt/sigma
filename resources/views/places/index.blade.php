@@ -3,6 +3,18 @@
         <div class="flex justify-between mb-3">
             <h1 class="text-2xl font-bold">Listado de Lugares</h1>
             <button class="bg-blue-500 text-white px-4 py-2 rounded-lg" id="showCreateFormButton">Crear Lugar</button>
+            <div>
+                <a class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+                    href="{{ route('places.export.excel') }}">
+                    <i class="far fa-file-excel"></i>
+                </a>
+                <a class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                    <i class="fas fa-file-csv"></i>
+                </a>
+                <a class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
+                    <i class="far fa-file-pdf"></i>
+                </a>
+            </div>
         </div>
         <div class="mt-4 mb-4" id="createForm" style="display: none;">
             <form action="{{ route('places.store') }}" method="post">

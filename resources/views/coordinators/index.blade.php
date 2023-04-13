@@ -23,69 +23,75 @@
             </button>
         </div>
 
-        <table class="w-full table-auto">
-            <thead>
-                <tr class="bg-gray-800 text-white">
-                    <th class="py-2 px-4">Nombre Completo</th>
-                    <th class="py-2 px-4">DNI</th>
-                    <th class="py-2 px-4">Teléfono</th>
-                    <th class="py-2 px-4">Lugar de votacion</th>
-                    @if (auth()->user()->isAdmin())
-                        <th class="py-2 px-4">Estado</th>
-                    @endif
-                    <th class="py-2 px-4"><i class="fa-solid fa-gear"></i></th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($coordinators as $coordinator)
-                    <tr class="border-b">
-                        <td class="py-2 px-4 text-center">{{ $coordinator->full_name }}</td>
-                        <td class="py-2 px-4  text-center">{{ $coordinator->dni }}</td>
-                        <td class="py-2 px-4 text-center">{{ $coordinator->phone }}</td>
-                        <td class="py-2 px-4 text-center">{{ $coordinator->place->place }} - Mesa:
-                            {{ $coordinator->place->table }}
-                        </td>
+        <div class="table-responsive">
+            <table class="w-full table-auto">
+                <thead>
+                    <tr class="bg-gray-800 text-white">
+                        <th class="py-2 px-4">Nombre Completo</th>
+                        <th class="py-2 px-4">DNI</th>
+                        <th class="py-2 px-4">Teléfono</th>
+                        <th class="py-2 px-4">Lugar de votacion</th>
                         @if (auth()->user()->isAdmin())
-                            <td class="py-2 px-4 text-center">
-                                <span @class([
-                                    'rounded-md px-2 py-1 text-white',
-                                    'bg-orange-600' => $coordinator->status->pendiente(),
-                                    'bg-green-600' => $coordinator->status->revisado(),
-                                ])>{{ $coordinator->status->getLabelText() }}</span>
-                            </td>
+                            <th class="py-2 px-4">Estado</th>
+                            <th class="py-2 px-4">Lideres</th>
                         @endif
-                        @if (auth()->user()->isAdmin())
-                            <td class="py-2 px-4 flex items-center text-center">
-                                <a href="{{ route('coordinators.edit', $coordinator) }}"
-                                    class="text-blue-500 hover:text-blue-700 mr-2">
-                                    <i class="fas fa-pencil-alt"></i>
-                                </a>
-                                <x-modal-delete-confirmation :route="route('coordinators.destroy', $coordinator)" :id="$coordinator->id">
-                                    <x-slot name="trigger">
-                                        <button type="button"
-                                            class="text-red-500 hover:text-red-700 focus:outline-none mr-2">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </x-slot>
-                                </x-modal-delete-confirmation>
-                                <x-modal-reviewer-confirmation :route="route('coordinators.status', $coordinator)" :id="$coordinator->id">
-                                    <x-slot name="trigger">
-                                        <button type="button"
-                                            class="text-orange-500 hover:text-orange-700 focus:outline-none mr-2">
-                                            <i class="fas fa-exchange-alt"></i>
-                                        </button>
-                                    </x-slot>
-                                </x-modal-reviewer-confirmation>
+                        <th class="py-2 px-4"><i class="fa-solid fa-gear"></i></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($coordinators as $coordinator)
+                        <tr class="border-b">
+                            <td class="py-2 px-4 text-center">{{ $coordinator->full_name }}</td>
+                            <td class="py-2 px-4  text-center">{{ $coordinator->dni }}</td>
+                            <td class="py-2 px-4 text-center">{{ $coordinator->phone }}</td>
+                            <td class="py-2 px-4 text-center">{{ $coordinator->place->place }} - Mesa:
+                                {{ $coordinator->place->table }}
                             </td>
-                        @endif
-                    </tr>
-                @empty
-                    <tr>
-                        <td class="py-2 px-4" colspan="4">No hay coordinadores registrados</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+                            @if (auth()->user()->isAdmin())
+                                <td class="py-2 px-4 text-center">
+                                    <span @class([
+                                        'rounded-md px-2 py-1 text-white',
+                                        'bg-orange-600' => $coordinator->status->pendiente(),
+                                        'bg-green-600' => $coordinator->status->revisado(),
+                                    ])>{{ $coordinator->status->getLabelText() }}</span>
+                                </td>
+                                <td class="py-2 px-4 text-center">
+                                    {{ $coordinator->leaders->count() }}
+                                </td>
+                            @endif
+                            @if (auth()->user()->isAdmin())
+                                <td class="py-2 px-4 flex items-center text-center">
+                                    <a href="{{ route('coordinators.edit', $coordinator) }}"
+                                        class="text-blue-500 hover:text-blue-700 mr-2">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </a>
+                                    <x-modal-delete-confirmation :route="route('coordinators.destroy', $coordinator)" :id="$coordinator->id">
+                                        <x-slot name="trigger">
+                                            <button type="button"
+                                                class="text-red-500 hover:text-red-700 focus:outline-none mr-2">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </x-slot>
+                                    </x-modal-delete-confirmation>
+                                    <x-modal-reviewer-confirmation :route="route('coordinators.status', $coordinator)" :id="$coordinator->id">
+                                        <x-slot name="trigger">
+                                            <button type="button"
+                                                class="text-orange-500 hover:text-orange-700 focus:outline-none mr-2">
+                                                <i class="fas fa-exchange-alt"></i>
+                                            </button>
+                                        </x-slot>
+                                    </x-modal-reviewer-confirmation>
+                                </td>
+                            @endif
+                        </tr>
+                    @empty
+                        <tr>
+                            <td class="py-2 px-4" colspan="4">No hay coordinadores registrados</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
 
         {{ $coordinators->links() }}
     </div>

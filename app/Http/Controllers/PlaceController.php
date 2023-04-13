@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Place;
 use App\Http\Requests\PlaceRequest;
 use Illuminate\Support\Facades\Auth;
+use App\Exports\PlacesExport;
+use App\Imports\PlacesImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PlaceController extends Controller
 {
@@ -37,6 +40,15 @@ class PlaceController extends Controller
         } else {
             abort(403, 'No tienes permiso para acceder a esta página.');
         }
+    }
+    /**
+     * Export places to excel
+     *
+     * @return \Illuminate\Http\Response
+     */
+
+    public function export_excel(){
+        return Excel::download(new PlacesExport, 'lugar_de_votaciones.xlsx');
     }
 
     /**
