@@ -42,6 +42,28 @@ enum EntityParent:string{
         };
     }
 
+    public static function getValues(): array
+    {
+        return [
+            self::MADRE,
+            self::PADRE,
+            self::HIJO,
+            self::HERMANO,
+            self::TIO,
+            self::ABUELO,
+            self::ESPOSO,
+            self::NOVIO,
+            self::AMIGO,
+            self::SUEGRO,
+            self::CUÑADO,
+            self::PRIMO,
+            self::YERNO,
+            self::NUERO,
+            self::NIETO,
+            self::SOBRINO,
+        ];
+    }
+
     public function getLabelColor():string{
         //if parent is null return self::AMIGO color
         return match($this){
