@@ -4,7 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class SelectInputPlace extends Component
+class SelectInputParents extends Component
 {
     public $options;
     public $parent;
@@ -26,6 +26,6 @@ class SelectInputPlace extends Component
      */
     public function render()
     {
-        return view('components.select-input-place');
+        return view('components.select-input-parents');
     }
 }

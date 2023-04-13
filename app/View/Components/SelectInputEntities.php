@@ -6,6 +6,9 @@ use Illuminate\View\Component;
 
 class SelectInputEntities extends Component
 {
+    public $options;
+    public $parent;
+    public $exists_id;
     /**
      * Create a new component instance.
      *

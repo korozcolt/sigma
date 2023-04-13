@@ -10,6 +10,7 @@ use App\Models\Voter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
+use App\Enums\EntityParent;
 
 class VoterController extends Controller
 {
@@ -59,13 +60,14 @@ class VoterController extends Controller
         if($user->hasRole(['coordinator', 'leader']) || $user->isAdmin()) {
             $places = Place::all();
             $leaders = Leader::all();
+            $entityParents = EntityParent::getValues();
 
             if ($user->hasRole('coordinator')) {
                 $leaders = $user->coordinator->leaders;
             } elseif ($user->hasRole('leader')) {
                 $leaders = $user->leader->where('id', $user->id);
             }
-            return view('voters.create', compact('places', 'leaders'));
+            return view('voters.create', compact('places', 'leaders', 'entityParents'));
         } else {
             abort(403, 'No tienes permiso para acceder a esta página.');
         }
@@ -117,13 +119,14 @@ class VoterController extends Controller
         if($user->hasRole(['coordinator', 'leader']) || $user->isAdmin()) {
             $places = Place::all();
             $leaders = Leader::all();
+            $entityParents = EntityParent::getValues();
 
             if ($user->hasRole('coordinator')) {
                 $leaders = $user->coordinator->leaders;
             } elseif ($user->hasRole('leader')) {
                 $leaders = $user->leader->where('id', $user->id);
             }
-            return view('voters.edit', compact('places', 'leaders', 'voter'));
+            return view('voters.edit', compact('places', 'leaders', 'voter', 'entityParents'));
             abort(403, 'No tienes permiso para acceder a esta página.');
         }
     }
