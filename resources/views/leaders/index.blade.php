@@ -33,6 +33,7 @@
                     <th class="py-2 px-4">Lugar de votación</th>
                     @if (auth()->user()->isAdmin())
                         <th class="py-2 px-4">Estado</th>
+                        <th class="py-2 px-4">Votantes</th>
                     @endif
                     <th class="py-2 px-4"><i class="fa-solid fa-gear"></i></th>
                 </tr>
@@ -54,6 +55,9 @@
                                     'bg-orange-600' => $leader->status->pendiente(),
                                     'bg-green-600' => $leader->status->revisado(),
                                 ])>{{ $leader->status->getLabelText() }}</span>
+                            </td>
+                            <td class="py-2 px-4 text-center">
+                                {{ $leader->voters->count() }}
                             </td>
                         @endif
                         @if (auth()->user()->isAdmin() ||

@@ -35,7 +35,6 @@ class Voter extends Model
         );
     }
 
-    //define a mutator to set the last name to uppercase and trim the spaces before and after the name
     protected function lastName(): Attribute
     {
         return Attribute::make(
@@ -43,7 +42,6 @@ class Voter extends Model
         );
     }
 
-    //define a mutator to get the full name concatenating the first name and the last name
     protected function fullName(): Attribute
     {
         return Attribute::make(
@@ -56,7 +54,7 @@ class Voter extends Model
         return $this->belongsTo(Leader::class);
     }
 
-    //One leader can have one Coordinador, on voter can have one leader and one coordinador but voter only has a realtionship with one leader
+    //One leader can have one Coordinador, on voter can have one leader and one coordinador but voter only has a relationship with one leader
     public function coordinador()
     {
         return $this->belongsTo(Leader::class, 'leader_id');

@@ -28,7 +28,7 @@ class LeaderController extends Controller
         $user = Auth::user();
         if ($user->hasRole(['coordinator', 'leader']) || $user->isAdmin()) {
             if ($user->isAdmin()) {
-                $leaders = Leader::with(['place', 'coordinator', 'user'])->when($search, function ($query) use ($search) {
+                $leaders = Leader::with(['place', 'coordinator', 'user', 'voters'])->when($search, function ($query) use ($search) {
                     return $query->where('first_name', 'like', "%$search%")
                         ->orWhere('last_name', 'like', "%$search%")
                         ->orWhere('dni', 'like', "%$search%");
@@ -37,14 +37,14 @@ class LeaderController extends Controller
             } else {
                 if ($user->hasRole(['coordinator'])) {
                     $coordinator = Coordinator::with(['place', 'users'])->where('user_id', $user->id)->first();
-                    $leaders = Leader::with(['place', 'coordinator', 'user'])->when($search, function ($query) use ($search) {
+                    $leaders = Leader::with(['place', 'coordinator', 'user', 'voters'])->when($search, function ($query) use ($search) {
                         return $query->where('first_name', 'like', "%$search%")
                             ->orWhere('last_name', 'like', "%$search%")
                             ->orWhere('dni', 'like', "%$search%");
                         })->where('coordinator_id', $coordinator->id)->orderBy('coordinator_id', 'asc')->paginate(10);
                     return view('leaders.index', compact('leaders'));
                 } else {
-                    $leaders = Leader::with(['place', 'coordinator', 'user'])->when($search, function ($query) use ($search) {
+                    $leaders = Leader::with(['place', 'coordinator', 'user', 'voters'])->when($search, function ($query) use ($search) {
                         return $query->where('first_name', 'like', "%$search%")
                             ->orWhere('last_name', 'like', "%$search%")
                             ->orWhere('dni', 'like', "%$search%");
