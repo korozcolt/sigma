@@ -35,9 +35,16 @@
 
             <div class="mt-4">
                 <x-input-label for="place" :value="__('Place')" />
-                <x-select-input-place :options="$places" id="place_id" name="place_id"
+                <x-select-input-place :options="$places" id="place_id" name="place_id" :exists_id="$leader->place_id"
                     value="{{ old('place_id', $leader->place_id) }}" required autofocus />
                 <x-input-error :messages="$errors->get('place')" class="mt-2" />
+            </div>
+
+            <div class="mt-4">
+                <x-input-label for="coordinator" :value="__('Coordinator')" />
+                <x-select-input-entities :options="$coordinators" id="coordinator_id" name="coordinator_id" :exists_id="$leader->coordinator_id"
+                    value="{{ old('coordinator_id', $leader->coordinator_id) }}" required autofocus />
+                <x-input-error :messages="$errors->get('coordinator')" class="mt-2" />
             </div>
 
             <div class="text-right mt-4 flex">

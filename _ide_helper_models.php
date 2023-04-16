@@ -156,6 +156,9 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string $role
+ * @property string|null $last_logout_at
+ * @property string|null $last_login_at
+ * @property string|null $session_id
  * @property-read \App\Models\Coordinator|null $coordinator
  * @property-read \App\Models\Leader|null $leader
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
@@ -170,10 +173,13 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User whereEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereEmailVerifiedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereLastLoginAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereLastLogoutAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRole($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereSessionId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  */
 	class User extends \Eloquent {}

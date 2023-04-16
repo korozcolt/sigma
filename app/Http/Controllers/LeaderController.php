@@ -23,7 +23,7 @@ class LeaderController extends Controller
     public function index(Request $request)
     {
         //the search variable is the value of the input search
-        //all querys must be order by coordinator_id asc
+        //all queries must be order by coordinator_id asc
         $search = $request->input('search');
         $user = Auth::user();
         if ($user->hasRole(['coordinator', 'leader']) || $user->isAdmin()) {
@@ -32,7 +32,7 @@ class LeaderController extends Controller
                     return $query->where('first_name', 'like', "%$search%")
                         ->orWhere('last_name', 'like', "%$search%")
                         ->orWhere('dni', 'like', "%$search%");
-                    })->orderBy('coordinator_id', 'asc')->paginate(10);
+                    })->orderBy('coordinator_id', 'asc')->whereType('leader')->paginate(10);
                 return view('leaders.index', compact('leaders'));
             } else {
                 if ($user->hasRole(['coordinator'])) {
@@ -41,14 +41,14 @@ class LeaderController extends Controller
                         return $query->where('first_name', 'like', "%$search%")
                             ->orWhere('last_name', 'like', "%$search%")
                             ->orWhere('dni', 'like', "%$search%");
-                        })->where('coordinator_id', $coordinator->id)->orderBy('coordinator_id', 'asc')->paginate(10);
+                        })->whereType('leader')->where('coordinator_id', $coordinator->id)->orderBy('coordinator_id', 'asc')->paginate(10);
                     return view('leaders.index', compact('leaders'));
                 } else {
                     $leaders = Leader::with(['place', 'coordinator', 'user', 'voters'])->when($search, function ($query) use ($search) {
                         return $query->where('first_name', 'like', "%$search%")
                             ->orWhere('last_name', 'like', "%$search%")
                             ->orWhere('dni', 'like', "%$search%");
-                        })->where('user_id', $user->id)->orderBy('coordinator_id', 'asc')->paginate(10);
+                        })->whereType('leader')->where('user_id', $user->id)->orderBy('coordinator_id', 'asc')->paginate(10);
                     return view('leaders.index', compact('leaders'));
                 }
             }
@@ -106,6 +106,7 @@ class LeaderController extends Controller
         $leader->type = 'leader';
         $leader->candidate = 'none';
         $leader->debate_boss = 'none';
+        $leader->generatePublicUrlToken();
         $leader->save();
 
         $voter = Voter::create([
@@ -169,6 +170,7 @@ class LeaderController extends Controller
     public function update(LeaderRequest $request, Leader $leader)
     {
         $leader->update($request->validated());
+        $leader->generatePublicUrlToken();
         return redirect()->route('leaders.index')->with('success', 'Líder actualizado correctamente.');
     }
 
@@ -193,4 +195,12 @@ class LeaderController extends Controller
         $leader->delete();
         return redirect()->route('leaders.index')->with('success', 'Líder eliminado correctamente.');
     }
+
+    //generate link to public register voter from leader->generatePublicUrlToken()
+    public function generatePublicUrlToken(Leader $leader)
+    {
+        $leader->generatePublicUrlToken();
+        return $leader->public_url_token;
+    }
+
 }

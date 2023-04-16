@@ -35,7 +35,7 @@
 
             <div class="mt-4">
                 <x-input-label for="place" :value="__('Place')" />
-                <x-select-input-place :options="$places" id="place_id" name="place_id"
+                <x-select-input-place :options="$places" id="place_id" name="place_id" :exists_id="$coordinator->place_id"
                     value="{{ old('place_id', $coordinator->place_id) }}" required autofocus />
                 <x-input-error :messages="$errors->get('place')" class="mt-2" />
             </div>

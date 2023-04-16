@@ -24,7 +24,7 @@ class VoterController extends Controller
         $user = Auth::user();
         if ($user->hasRole(['coordinator', 'leader']) || $user->isAdmin()) {
             $search = $request->input('search');
-            $query = Voter::with('leader','place')->with('leader.coordinator');
+            $query = Voter::with('leader','place')->whereType('voter')->with('leader.coordinator');
 
             if ($user->hasRole('leader')) {
                 $query->where('leader_id', $user->id);
@@ -154,5 +154,14 @@ class VoterController extends Controller
     {
         $voter->delete();
         return redirect()->route('voters.index')->with('success', 'Votante eliminado correctamente.');
+    }
+
+    //Public function without auth
+    //function to show a view with public_url_token and leader_id setting
+    public function new_voter($public_url_string){
+        $leader = Leader::where('public_url_string', $public_url_string)->first();
+        $leader_id = $leader->id;
+
+        return view('voters.public.create', compact('leader_id', 'public_url_string'));
     }
 }

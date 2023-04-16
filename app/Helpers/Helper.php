@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Facades\Crypt;
+
 class Helper
 {
     // TODO: declare global constants with account, apiKey, token and baseUrl. Use env() to get the values from .env file

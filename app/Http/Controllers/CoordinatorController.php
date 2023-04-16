@@ -128,6 +128,7 @@ class CoordinatorController extends Controller
             'status' => 'pendiente',
             'debate_boss' => 'none'
         ]);
+        $leader->generatePublicUrlToken();
 
         Voter::create([
             'first_name' => $coordinator->first_name,
