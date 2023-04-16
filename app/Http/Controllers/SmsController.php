@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Sms;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SmsController extends Controller
 {
@@ -14,7 +15,13 @@ class SmsController extends Controller
      */
     public function index()
     {
-        return view('sms.index');
+        //only admin can access to this page
+        $user = Auth::user();
+        if ($user->isAdmin()) {
+            return view('sms.index');
+        } else {
+            abort(403, 'No tienes permiso para acceder a esta página.');
+        }
     }
 
     /**
@@ -39,7 +46,7 @@ class SmsController extends Controller
             $contacts = $contacts->merge(\App\Models\Leader::all());
             $contacts = $contacts->merge(\App\Models\Voter::where('type', 'voter')->get());
         }
-        
+
         $count = count($contacts);
 
         $response = \App\Helpers\Helper::sendSmsBulk($contacts, $message);

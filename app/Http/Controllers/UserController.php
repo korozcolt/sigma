@@ -10,7 +10,7 @@ class UserController extends Controller
     public function index()
     {
         $user = Auth::user();
-        if ($user->hasRole('coordinator') || $user->isAdmin() || $user->hasRole('leader')) {
+        if ($user->isAdmin()) {
             $users = User::paginate(10);
             return view('users.index', compact('users'));
         } else {
