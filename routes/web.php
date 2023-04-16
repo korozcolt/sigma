@@ -19,7 +19,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+//Public routes
 Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class,'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('voters/{public_url_token}/new', [\App\Http\Controllers\VoterController::class, 'new_voter'])->name('voters.new');
+Route::post('voters/{public_url_token}/new', [\App\Http\Controllers\VoterController::class, 'save_voter'])->name('voters.save_voter');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -42,6 +45,9 @@ Route::middleware('auth')->group(function () {
     //Leader routes
     Route::resource('leaders', \App\Http\Controllers\LeaderController::class);
     Route::put('leaders/{leader}/status', [\App\Http\Controllers\LeaderController::class, 'status'])->name('leaders.status');
+
+    //Generate url for new public voters from leader
+    Route::get('leaders/{leader}/url_generate', [\App\Http\Controllers\LeaderController::class, 'url_generate'])->name('leaders.url_generate');
     //Voter routes
     Route::resource('voters', \App\Http\Controllers\VoterController::class);
     Route::put('voters/{voter}/status', [\App\Http\Controllers\VoterController::class, 'status'])->name('voters.status');

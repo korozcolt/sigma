@@ -4,26 +4,29 @@
     </x-slot>
 
     <div class="p-4 bg-white rounded-lg shadow-xs">
-        <div class="flex items-center justify-between mb-3">
-            <h1 class="text-gray-700 text-2xl">Listado de Votantes</h1>
+        <div class="flex flex-col md:flex-row items-center justify-between mb-3">
+            <h1 class="text-gray-700 text-2xl mb-2 md:mb-0">Listado de Votantes</h1>
             @if (Auth::user()->hasRole(['super_admin', 'admin', 'coordinator']))
-                <a href="{{ route('voters.create') }}"
-                    class="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg">
-                    Crear Votante
-                </a>
-                <div>
-                    <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
-                        <i class="far fa-file-excel"></i>
-                    </button>
-                    <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
-                        <i class="fas fa-file-csv"></i>
-                    </button>
-                    <button class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
-                        <i class="far fa-file-pdf"></i>
-                    </button>
+                <div class="flex items-center">
+                    <a href="{{ route('voters.create') }}"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg mr-2">
+                        Crear Votante
+                    </a>
+                    <div class="hidden md:block">
+                        <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-md mr-2">
+                            <i class="far fa-file-excel"></i>
+                        </button>
+                        <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md mr-2">
+                            <i class="fas fa-file-csv"></i>
+                        </button>
+                        <button class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-md">
+                            <i class="far fa-file-pdf"></i>
+                        </button>
+                    </div>
                 </div>
             @endif
         </div>
+
 
         <div class="flex items-center w-full py-2">
             <input type="text" placeholder="Buscar" name="search" id="search-input"

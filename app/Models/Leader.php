@@ -6,6 +6,7 @@ use App\Enums\EntityStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Crypt;
 
 class Leader extends Model
 {
@@ -68,6 +69,17 @@ class Leader extends Model
     public function place()
     {
         return $this->belongsTo(Place::class);
+    }
+
+    public function generatePublicUrlToken()
+    {
+        if (!$this->public_url_token) {
+            $randomString = Str::random(32);
+            $encryptedString = Crypt::encryptString($randomString);
+            $this->public_url_token = $encryptedString;
+            $this->save();
+        }
+        return $this->public_url_token;
     }
 
     protected $casts = [
