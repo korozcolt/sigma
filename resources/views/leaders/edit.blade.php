@@ -1,13 +1,16 @@
 <x-app-layout>
     <div class="py-4">
         <h1 class="text-2xl font-bold mb-4">Editar Lider</h1>
+        <div class="bg-gray-100 border border-gray-300 rounded-md p-4">
+            <pre class="text-sm font-mono whitespace-pre-wrap"><code class="language-html">URL: {{ env('APP_URL') . '/voters/' . $leader->public_url_token . '/new' }}</code></pre>
+        </div>
 
         <form method="post" action="{{ route('leaders.update', $leader) }}">
             @csrf
             @method('PUT')
             <div class="mt-4">
                 <div class="mt-4">
-                    <x-input-label for="dni" :value="__('Cedula')" />
+                    <x-input-label for="dni" :value="__('Dni')" />
                     <x-text-input type="text" id="dni" name="dni"
                         class="block w-full bg-gray-100 text-gray-400 cursor-not-allowed" value="{{ $leader->dni }}"
                         disabled />

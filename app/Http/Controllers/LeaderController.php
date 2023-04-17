@@ -150,6 +150,7 @@ class LeaderController extends Controller
      */
     public function edit(Leader $leader)
     {
+        $leader->generatePublicUrlToken();
         $user = Auth::user();
         if ($user->isAdmin()) {
             $places = Place::all();
@@ -170,7 +171,6 @@ class LeaderController extends Controller
     public function update(LeaderRequest $request, Leader $leader)
     {
         $leader->update($request->validated());
-        $leader->generatePublicUrlToken();
         return redirect()->route('leaders.index')->with('success', 'Líder actualizado correctamente.');
     }
 

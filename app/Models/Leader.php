@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Str;
 
 class Leader extends Model
 {
@@ -74,9 +75,9 @@ class Leader extends Model
     public function generatePublicUrlToken()
     {
         if (!$this->public_url_token) {
-            $randomString = Str::random(32);
-            $encryptedString = Crypt::encryptString($randomString);
-            $this->public_url_token = $encryptedString;
+            $randomString = Str::random(6);
+            $encryptedString = hash('crc32',$randomString);
+            $this->public_url_token =  $encryptedString;
             $this->save();
         }
         return $this->public_url_token;

@@ -8,10 +8,6 @@
             <h1 class="text-gray-700 text-2xl">Listado de Líderes</h1>
             @if (Auth::user()->hasRole(['super_admin', 'admin', 'coordinator']))
                 {{-- make a button with onClick event --}}
-                <a href="{{ route('leaders.index') }}"
-                    class="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg" id='generate_url'>
-                    Generar URL de registro
-                </a>
                 <a href="{{ route('leaders.create') }}"
                     class="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg">
                     Crear Líder
@@ -26,10 +22,6 @@
                 id="search-button">
                 <i class="fas fa-search"></i>
             </button>
-        </div>
-
-        <div id="url_generated" class="">
-            <span>URL: </span>
         </div>
 
         <table class="w-full table-auto">
