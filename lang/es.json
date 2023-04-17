@@ -88,5 +88,6 @@
     "Voter": "Votante",
     "Coordinator": "Coordinador",
     "Leader": "Lider",
-    "Parent": "Parentesco"
+    "Parent": "Parentesco",
+    "Dni": "Cedula"
 }

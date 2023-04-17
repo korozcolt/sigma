@@ -158,10 +158,25 @@ class VoterController extends Controller
 
     //Public function without auth
     //function to show a view with public_url_token and leader_id setting
-    public function new_voter($public_url_string){
-        $leader = Leader::where('public_url_string', $public_url_string)->first();
+    public function new_voter($public_url_token){
+        $leader = Leader::where('public_url_token','LIKE', $public_url_token)->first();
+        $entityParents = EntityParent::getValues();
+        $places = Place::all();
         $leader_id = $leader->id;
 
-        return view('voters.public.create', compact('leader_id', 'public_url_string'));
+        return view('voters.public.create', compact('leader_id', 'public_url_token', 'leader', 'entityParents', 'places'));
+    }
+
+    public function save_voter(VoterRequest $request)
+    {
+        $voter = Voter::create($request->validated());
+
+        $voter->status = 'pendiente';
+        $voter->type = 'voter';
+        $voter->candidate = 'none';
+        $voter->debate_boss = 'none';
+        $voter->save();
+
+        return redirect()->route('welcome')->with('success', 'Votante creado correctamente.');
     }
 }

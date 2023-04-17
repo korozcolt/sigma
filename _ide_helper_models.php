@@ -72,6 +72,7 @@ namespace App\Models{
  * @property int $coordinator_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $public_url_token
  * @property-read \App\Models\Coordinator $coordinator
  * @property-read \App\Models\Place $place
  * @property-read \App\Models\User $user
@@ -91,6 +92,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Leader whereLastName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Leader wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Leader wherePlaceId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Leader wherePublicUrlToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Leader whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Leader whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Leader whereUpdatedAt($value)

@@ -14,25 +14,23 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+require __DIR__ . '/auth.php';
+//Public routes
 Route::get('/', function () {
     return view('welcome');
-});
-
-//Public routes
+})->name('welcome');
 Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class,'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('voters/{public_url_token}/new', [\App\Http\Controllers\VoterController::class, 'new_voter'])->name('voters.new');
-Route::post('voters/{public_url_token}/new', [\App\Http\Controllers\VoterController::class, 'save_voter'])->name('voters.save_voter');
+Route::post('voters/new', [\App\Http\Controllers\VoterController::class, 'save_voter'])->name('voters.save_voter');
 
+//Auth routes
 Route::middleware('auth')->group(function () {
+    //Profile routes
+    Route::get('profile', [\App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
+    Route::put('profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
-require __DIR__ . '/auth.php';
-
-Route::middleware('auth')->group(function () {
     //User routes
     Route::get('users', [\App\Http\Controllers\UserController::class, 'index'])->name('users.index');
     Route::delete('users/{user}', [\App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
@@ -67,8 +65,4 @@ Route::middleware('auth')->group(function () {
     //Report routes
     Route::get('places-export', [\App\Http\Controllers\PlaceController::class,'export_excel'])->name('places.export.excel');
     // Route::post('places-import', 'import')->name('places.import');
-
-    //Profile routes
-    Route::get('profile', [\App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
-    Route::put('profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
 });

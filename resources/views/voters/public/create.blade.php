@@ -31,85 +31,79 @@
     <script src="{{ asset('js/init-alpine.js') }}"></script>
 </head>
 
-<body class="font-mono bg-gray-400">
+<body class="bg-gray-200">
     <!-- Container -->
-    <div class="container mx-auto">
-        <div class="flex justify-center px-6 my-12">
-            <!-- Row -->
-            <div class="w-full xl:w-3/4 lg:w-11/12 flex">
-                <!-- Col -->
-                <div class="w-full h-auto bg-gray-400 hidden lg:block lg:w-5/12 bg-cover rounded-l-lg"
-                    style="background-image: url('https://source.unsplash.com/Mv9hjnEUHR4/600x800')"></div>
-                <!-- Col -->
-                <div class="w-full lg:w-7/12 bg-white p-5 rounded-lg lg:rounded-l-none">
-                    <h3 class="pt-4 text-2xl text-center">Create an Account!</h3>
-                    <form class="px-8 pt-6 pb-8 mb-4 bg-white rounded">
-                        <div class="mb-4 md:flex md:justify-between">
-                            <div class="mb-4 md:mr-2 md:mb-0">
-                                <label class="block mb-2 text-sm font-bold text-gray-700" for="firstName">
-                                    First Name
-                                </label>
-                                <input
-                                    class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                                    id="firstName" type="text" placeholder="First Name" />
+    <div class="container max-w-full mx-auto md:py-24 px-6">
+        <div class="max-w-sm mx-auto px-6">
+            <div class="relative flex flex-wrap">
+                <div class="w-full relative">
+                    <div class="md:mt-6">
+                        <div class="text-center font-semibold text-black">
+                            Registrate como votante apadrinado por
+                        </div>
+                        <div class="text-center font-base text-black">
+                            {{ $leader->full_name }}
+                        </div>
+                        <form class="mt-8" method="post" action="{{ route('voters.save_voter') }}">
+                            @csrf
+                            <div class="mx-auto max-w-lg ">
+                                <div class="py-1">
+                                    <span class="px-1 text-sm text-gray-600">{{ __('Dni') }}</span>
+                                    <input placeholder="Cedula" type="number" name="dni"
+                                        class="text-md block px-3 py-2 rounded-lg w-full bg-white border-2 border-gray-300 placeholder-gray-600 shadow-md focus:placeholder-gray-500 focus:bg-white focus:border-gray-600 focus:outline-none">
+                                    <x-input-error :messages="$errors->get('dni')" class="mt-2" />
+                                </div>
+                                <div class="py-1">
+                                    <span class="px-1 text-sm text-gray-600">{{ __('Nombre') }}</span>
+                                    <input placeholder="Nombre" type="text" name="first_name"
+                                        class="text-md block px-3 py-2 rounded-lg w-full
+                bg-white border-2 border-gray-300 placeholder-gray-600 shadow-md focus:placeholder-gray-500 focus:bg-white focus:border-gray-600 focus:outline-none">
+                                    <x-input-error :messages="$errors->get('first_name')" class="mt-2" />
+                                </div>
+                                <div class="py-1">
+                                    <span class="px-1 text-sm text-gray-600">{{ __('Apellido') }}</span>
+                                    <input placeholder="Apellido" type="text" name="last_name"
+                                        class="text-md block px-3 py-2 rounded-lg w-full
+                bg-white border-2 border-gray-300 placeholder-gray-600 shadow-md focus:placeholder-gray-500 focus:bg-white focus:border-gray-600 focus:outline-none">
+                                    <x-input-error :messages="$errors->get('last_name')" class="mt-2" />
+                                </div>
+                                <div class="py-1">
+                                    <span class="px-1 text-sm text-gray-600">{{ __('Phone') }}</span>
+                                    <input placeholder="Telefono" type="tel" name="phone"
+                                        class="text-md block px-3 py-2 rounded-lg w-full bg-white border-2 border-gray-300 placeholder-gray-600 shadow-md focus:placeholder-gray-500 focus:bg-white
+                                        focus:border-gray-600 focus:outline-none">
+                                    <x-input-error :messages="$errors->get('phone')" class="mt-2" />
+                                </div>
+                                <div class="py-1">
+                                    <span class="px-1 text-sm text-gray-600">{{ __('Address') }}</span>
+                                    <input placeholder="Direccion" type="text" name="address"
+                                        class="text-md block px-3 py-2 rounded-lg w-full bg-white border-2 border-gray-300 placeholder-gray-600 shadow-md focus:placeholder-gray-500 focus:bg-white
+                                        focus:border-gray-600 focus:outline-none">
+                                    <x-input-error :messages="$errors->get('address')" class="mt-2" />
+                                </div>
+
+                                <div class="mt-4">
+                                    <x-input-label for="place" :value="__('Place')" />
+                                    <x-select-input-place :options="$places" id="place_id" name="place_id"
+                                        value="{{ old('place_id') }}" required autofocus />
+                                    <x-input-error :messages="$errors->get('place')" class="mt-2" />
+                                </div>
+
+                                <div class="mt-4">
+                                    <x-input-label for="entity_parent" :value="__('Parent')" />
+                                    <x-select-input-parents :options="$entityParents" id="entity_parent" name="entity_parent"
+                                        value="{{ old('entity_parent') }}" required autofocus />
+                                    <x-input-error :messages="$errors->get('entity_parent')" class="mt-2" />
+                                </div>
+                                <button
+                                    class="mt-3 text-lg font-semibold
+            bg-gray-800 w-full text-white rounded-lg
+            px-6 py-3 block shadow-xl hover:text-white hover:bg-black">
+                                    Registrarte
+                                </button>
                             </div>
-                            <div class="md:ml-2">
-                                <label class="block mb-2 text-sm font-bold text-gray-700" for="lastName">
-                                    Last Name
-                                </label>
-                                <input
-                                    class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                                    id="lastName" type="text" placeholder="Last Name" />
-                            </div>
-                        </div>
-                        <div class="mb-4">
-                            <label class="block mb-2 text-sm font-bold text-gray-700" for="email">
-                                Email
-                            </label>
-                            <input
-                                class="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                                id="email" type="email" placeholder="Email" />
-                        </div>
-                        <div class="mb-4 md:flex md:justify-between">
-                            <div class="mb-4 md:mr-2 md:mb-0">
-                                <label class="block mb-2 text-sm font-bold text-gray-700" for="password">
-                                    Password
-                                </label>
-                                <input
-                                    class="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border border-red-500 rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                                    id="password" type="password" placeholder="******************" />
-                                <p class="text-xs italic text-red-500">Please choose a password.</p>
-                            </div>
-                            <div class="md:ml-2">
-                                <label class="block mb-2 text-sm font-bold text-gray-700" for="c_password">
-                                    Confirm Password
-                                </label>
-                                <input
-                                    class="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                                    id="c_password" type="password" placeholder="******************" />
-                            </div>
-                        </div>
-                        <div class="mb-6 text-center">
-                            <button
-                                class="w-full px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline"
-                                type="button">
-                                Register Account
-                            </button>
-                        </div>
-                        <hr class="mb-6 border-t" />
-                        <div class="text-center">
-                            <a class="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800"
-                                href="#">
-                                Forgot Password?
-                            </a>
-                        </div>
-                        <div class="text-center">
-                            <a class="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800"
-                                href="./index.html">
-                                Already have an account? Login!
-                            </a>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

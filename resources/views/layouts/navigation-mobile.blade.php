@@ -66,7 +66,7 @@
                     ->isAdmin() ||
                     auth()
                         ->user()
-                        ->hasRole(['leader', 'coordinator'])">
+                        ->hasRole(['coordinator', 'leader'])">
                     <x-slot name="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 96 960 960" width="24">
                             <path
@@ -83,10 +83,7 @@
                     ->isAdmin() ||
                     auth()
                         ->user()
-                        ->hasRole('coordinator') ||
-                    auth()
-                        ->user()
-                        ->hasRole('leader')">
+                        ->hasRole(['coordinator', 'leader'])">
                     <x-slot name="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 96 960 960" width="24">
                             <path
