@@ -27,6 +27,7 @@ class Leader extends Model
         'coordinator_id',
         'place_id',
         'user_id',
+        'public_url_token'
     ];
 
     public function user()
