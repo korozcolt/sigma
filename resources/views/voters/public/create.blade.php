@@ -46,6 +46,9 @@
                         </div>
                         <form class="mt-8" method="post" action="{{ route('voters.save_voter') }}">
                             @csrf
+                            <div class="mt-4">
+                                <input type="hidden" name="leader_id" value="{{ $leader->id }}">
+                            </div>
                             <div class="mx-auto max-w-lg ">
                                 <div class="py-1">
                                     <span class="px-1 text-sm text-gray-600">{{ __('Dni') }}</span>
