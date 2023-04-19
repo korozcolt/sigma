@@ -132,4 +132,11 @@ class Helper
         curl_close($ch);
         return $response;
     }
+
+    public static function createMessage($contact):string{
+        $email = $contact->dni . '@' . env('APP_URL');
+        $password = $contact->dni . date('Y');
+
+        return 'Bienvenido a '. env('APP_NAME') .', tu usuario es: ' . $email . ' y tu contraseña es: ' . $password;
+    }
 }

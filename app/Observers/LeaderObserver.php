@@ -15,12 +15,7 @@ class LeaderObserver
      */
     public function created(Leader $leader)
     {
-        $email = $leader->dni . '@' . 'sigmaapp.co';
-        $password = $leader->dni . '2023';
-
-        $message = 'Bienvenido a Sigma, tu usuario es: ' . $email . ' y tu contraseña es: ' . $password;
-
-        Helper::sendSms($leader, $message);
+        Helper::sendSms($leader, Helper::createMessage($leader));
     }
 
     /**
