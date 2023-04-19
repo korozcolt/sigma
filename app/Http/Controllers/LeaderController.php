@@ -156,7 +156,17 @@ class LeaderController extends Controller
             $places = Place::all();
             $coordinators = Coordinator::all();
             return view('leaders.edit', compact('leader', 'places', 'coordinators'));
-        } else {
+        }
+        elseif($user->hasRole('coordinator')){
+            $places = Place::all();
+            $coordinators = Coordinator::with(['place', 'users'])->where('user_id', $user->id)->get();
+            return view('leaders.edit', compact('leader', 'places', 'coordinators'));
+        }elseif($user->hasRole('leader')){
+            $coordinators = Coordinator::where('id', $leader->coordinator_id)->get();
+            $places = Place::all();
+            return view('leaders.edit', compact('leader', 'places', 'coordinators'));
+        }
+         else {
             abort(403, 'No tienes permiso para acceder a esta página.');
         }
     }
