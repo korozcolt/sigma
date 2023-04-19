@@ -43,6 +43,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'last_login_at' => 'datetime',
         'last_logout_at' => 'datetime',
+        'last_activity' => 'datetime',
     ];
 
     public function coordinator()
