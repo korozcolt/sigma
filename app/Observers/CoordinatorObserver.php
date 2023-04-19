@@ -15,12 +15,7 @@ class CoordinatorObserver
      */
     public function created(Coordinator $coordinator)
     {
-        $email = $coordinator->dni . '@' . 'sigmaapp.co';
-        $password = $coordinator->dni . '2023';
-
-        $message = 'Bienvenido a Sigma, tu usuario es: ' . $email . ' y tu contraseña es: ' . $password;
-
-        Helper::sendSms($coordinator, $message);
+        Helper::sendSms($coordinator, Helper::createMessage($coordinator));
     }
 
     /**
