@@ -158,9 +158,10 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string $role
- * @property string|null $last_logout_at
- * @property string|null $last_login_at
+ * @property \Illuminate\Support\Carbon|null $last_logout_at
+ * @property \Illuminate\Support\Carbon|null $last_login_at
  * @property string|null $session_id
+ * @property \Illuminate\Support\Carbon|null $last_activity
  * @property-read \App\Models\Coordinator|null $coordinator
  * @property-read \App\Models\Leader|null $leader
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
@@ -175,6 +176,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User whereEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereEmailVerifiedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereLastActivity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereLastLoginAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereLastLogoutAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereName($value)

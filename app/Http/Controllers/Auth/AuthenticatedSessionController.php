@@ -38,6 +38,7 @@ class AuthenticatedSessionController extends Controller
         }
 
         $user->session_id = $session_id;
+        $user->last_login_at = now();
         $user->save();
 
         return redirect()->intended(RouteServiceProvider::HOME);
@@ -51,6 +52,7 @@ class AuthenticatedSessionController extends Controller
 
         $user = Auth::user();
         $user->session_id = NULL;
+        $user->last_logout_at = now();
         $user->save();
 
         Auth::guard('web')->logout();
