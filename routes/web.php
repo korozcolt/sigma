@@ -8,6 +8,7 @@ use App\Http\Controllers\PlaceController;
 use App\Http\Controllers\CoordinatorController;
 use App\Http\Controllers\LeaderController;
 use App\Http\Controllers\VoterController;
+use App\Http\Controllers\SmsController;
 use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------

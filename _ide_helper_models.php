@@ -158,8 +158,8 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string $role
- * @property string|null $last_logout_at
- * @property string|null $last_login_at
+ * @property \Illuminate\Support\Carbon|null $last_logout_at
+ * @property \Illuminate\Support\Carbon|null $last_login_at
  * @property string|null $session_id
  * @property-read \App\Models\Coordinator|null $coordinator
  * @property-read \App\Models\Leader|null $leader
