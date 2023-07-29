@@ -7,6 +7,10 @@
         <div class="flex items-center justify-between mb-3">
             <h1 class="text-gray-700 text-2xl">Listado de Coordinadores</h1>
             @if (Auth::user()->hasRole(['super_admin', 'admin']))
+                <a href="{{ route('coordinators.file') }}"
+                    class="bg-green-500 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg">
+                    Importar CSV
+                </a>
                 <a href="{{ route('coordinators.create') }}"
                     class="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg">
                     Crear Coordinador

@@ -49,18 +49,18 @@ class Voter extends Model
         );
     }
 
-    public function leader()
+    public function leader(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Leader::class);
     }
 
     //One leader can have one Coordinador, on voter can have one leader and one coordinador but voter only has a relationship with one leader
-    public function coordinador()
+    public function coordinador(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Leader::class, 'leader_id');
     }
 
-    public function place()
+    public function place(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Place::class);
     }

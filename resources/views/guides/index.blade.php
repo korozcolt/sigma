@@ -1,0 +1,124 @@
+<x-app-layout>
+    <x-slot name="header">
+        {{ __('Votantes') }} - {{ $voters->total() }}
+    </x-slot>
+
+    <div class="p-4 bg-white rounded-lg shadow-xs">
+        <div class="flex flex-col md:flex-row items-center justify-between mb-3">
+            <h1 class="text-gray-700 text-2xl mb-2 md:mb-0">Listado de Guias</h1>
+            @if (Auth::user()->hasRole(['super_admin', 'admin', 'coordinator']))
+                <div class="flex items-center">
+                    <a href="{{ route('guides.create') }}"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg mr-2">
+                        Crear Guia
+                    </a>
+                    <div class="hidden md:block">
+                        <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-md mr-2">
+                            <i class="far fa-file-excel"></i>
+                        </button>
+                        <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md mr-2">
+                            <i class="fas fa-file-csv"></i>
+                        </button>
+                        <button class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-md">
+                            <i class="far fa-file-pdf"></i>
+                        </button>
+                    </div>
+                </div>
+            @endif
+        </div>
+
+
+        <div class="flex items-center w-full py-2">
+            <input type="text" placeholder="Buscar" name="search" id="search-input"
+                class="py-2 px-4 rounded-l-lg border-t mr-0 border-b border-l text-gray-800 border-gray-200 bg-white w-full" />
+            <button class="-ml-px px-4 py-2 rounded-r-lg border border-gray-200 bg-white hover:bg-gray-100"
+                id="search-button">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+
+        <table class="w-full table-auto">
+            <thead>
+                <tr class="bg-gray-800 text-white">
+                    <th class="py-2 px-4">Nombre Completo</th>
+                    <th class="py-2 px-4">DNI</th>
+                    <th class="py-2 px-4">Teléfono</th>
+                    <th class="py-2 px-4">Lider</th>
+                    <th class="py-2 px-4">Coordinador</th>
+                    <th class="py-2 px-4">Lugar de votación</th>
+                    @if (auth()->user()->isAdmin())
+                        <th class="py-2 px-4">Estado</th>
+                        <th class="py-2 px-4">Parentesco</th>
+                    @endif
+                    <th class="py-2 px-4"><i class="fa-solid fa-gear"></i></th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($voters as $voter)
+                    <tr class="border-b">
+                        <td class="py-2 px-4 text-center">{{ $voter->full_name }}</td>
+                        <td class="py-2 px-4 text-center">{{ $voter->dni }}</td>
+                        <td class="py-2 px-4 text-center">{{ $voter->phone }}</td>
+                        <td class="py-2 px-4 text-center">{{ $voter->leader->full_name }}</td>
+                        <td class="py-2 px-4 text-center">{{ $voter->leader->coordinator->full_name }}</td>
+                        <td class="py-2 px-4 text-center">{{ $voter->place->place }} - Mesa:
+                            {{ $voter->place->table }}
+                        </td>
+                        @if (auth()->user()->isAdmin())
+                            <td class="py-2 px-4 text-center">
+                                <span @class([
+                                    'rounded-md px-2 py-1 text-white',
+                                    'bg-orange-600' => $voter->status->pendiente(),
+                                    'bg-green-600' => $voter->status->revisado(),
+                                ])>{{ $voter->status->getLabelText() }}</span>
+                            </td>
+                            <td class="py-2 px-4 text-center">
+                                <span @class(['rounded-md px-2 py-1 text-white bg-blue-600'])>{{ $voter->entity_parent->getLabelText() }}</span>
+                            </td>
+                        @endif
+                        @if (auth()->user()->isAdmin() ||
+                                auth()->user()->hasRole('coordinator'))
+                            <td class="py-2 px-4 flex items-center text-center">
+                                <a href="{{ route('guides.edit', $voter) }}"
+                                    class="text-blue-500 hover:text-blue-700 mr-4">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </a>
+                                <x-modal-delete-confirmation :route="route('guides.destroy', $voter)" :id="$voter->id">
+                                    <x-slot name="trigger">
+                                        <button type="button"
+                                            class="text-red-500 hover:text-red-700 focus:outline-none">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </x-slot>
+                                </x-modal-delete-confirmation>
+                                <x-modal-reviewer-confirmation :route="route('guides.status', $voter)" :id="$voter->id">
+                                    <x-slot name="trigger">
+                                        <button type="button"
+                                            class="text-orange-500 hover:text-orange-700 focus:outline-none mr-2">
+                                            <i class="fas fa-exchange-alt"></i>
+                                        </button>
+                                    </x-slot>
+                                </x-modal-reviewer-confirmation>
+                            </td>
+                        @endif
+                    </tr>
+                @empty
+                    <tr>
+                        <td class="py-2 px-4" colspan="6">No hay votantes registrados</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+
+        {{ $voters->links() }}
+    </div>
+    <script>
+        const searchButton = document.getElementById('search-button');
+        const searchInput = document.getElementById('search-input');
+
+        searchButton.addEventListener('click', () => {
+            const searchTerm = searchInput.value;
+            window.location.href = `/guides?search=${searchTerm}`;
+        });
+    </script>
+</x-app-layout>

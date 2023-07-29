@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\EntityStatus;
 use App\Models\Coordinator;
 use App\Http\Requests\CoordinatorRequest;
 use App\Models\Leader;
@@ -12,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use RealRashid\SweetAlert\Facades\Alert;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class CoordinatorController extends Controller
 {
@@ -48,17 +50,12 @@ class CoordinatorController extends Controller
         }
     }
 
-    //voters list for coordinators order by leaders
-    //the function receives the id of the coordinator
-    //only send response if the user is a coordinator or isAdmin
-    //this function return a view with the list of voters
-    //remember coordinators has a relation with leaders and leaders has a relation with voters
     public function list(Coordinator $coordinator)
     {
         $user = Auth::user();
         if ($user->hasRole('coordinator') || $user->isAdmin()) {
             $leaders = Leader::where('coordinator_id', $coordinator->id)->get();
-            $voters = [];
+            $voters = collect(); // initialize $voters as a Collection instance
             foreach ($leaders as $leader) {
                 $voters = $voters->merge(Voter::where('leader_id', $leader->id)->get());
             }
@@ -66,7 +63,83 @@ class CoordinatorController extends Controller
         } else {
             abort(403, 'No tienes permiso para acceder a esta página.');
         }
+    }
 
+    public function importFileCSV(){
+        $user = Auth::user();
+        if ($user->isAdmin()) {
+            $invalidRows = [];
+            return view('coordinators.import.index',compact('invalidRows'));
+        }else {
+            abort(403, 'No tienes permiso para acceder a esta página.');
+        }
+    }
+
+    public function importCSV(CoordinatorRequest $request)
+    {
+        dd($request->all());
+        $file = $request->file('csv_file');
+        $handle = fopen($file->getRealPath(), 'r');
+        $invalidRows = [];
+        $columnNames = fgetcsv($handle);
+        $user = Auth::user();
+
+        while (($row = fgetcsv($handle)) !== false) {
+            $data = array_combine($columnNames, $row);
+            $data['user_id'] = $user->id;
+            $data['type'] = 'coordinator';
+            $data['status'] = EntityStatus::PENDIENTE;
+            $data['debate_boss'] = 'none';
+            $data['candidate'] = 'none';
+            $data['place_id'] = 1;
+
+            $newRequest = new CoordinatorRequest();
+            $newRequest->replace($data);
+            $validator = $newRequest->getValidatorInstance();
+
+            if ($validator->fails()) {
+                $invalidRow = $row;
+                $invalidRow[] = implode(', ', $validator->errors()->all());
+                $invalidRows[] = $invalidRow;
+            } else {
+                Coordinator::create($data);
+            }
+        }
+
+        fclose($handle);
+
+        return view('coordinators.import.index',compact('invalidRows'));
+}
+
+    /**
+     * Download a CSV example file for the Coordinator model.
+     *
+     * This function generates a CSV file with a header row containing
+     * the fillable attributes of the Coordinator model. The user can
+     * download this file as an example to use when importing data.
+     *
+     * @return \Symfony\Component\HttpFoundation\StreamedResponse
+     */
+    public function downloadCSVExample()
+    {
+        // Define the column names for the CSV file
+        $columnNames = (new Coordinator)->getFillable();
+        $columnNames = array_diff($columnNames, ['type', 'status', 'debate_boss', 'candidate', 'place_id', 'user_id']);
+
+        // Create a StreamedResponse to send the CSV data to the front-end
+        return new StreamedResponse(function () use ($columnNames) {
+            // Open a file handle for writing to the output stream
+            $handle = fopen('php://output', 'w');
+
+            // Write the column names to the first row of the CSV file
+            fputcsv($handle, $columnNames);
+
+            // Close the file handle
+            fclose($handle);
+        }, 200, [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="coordinator_example.csv"',
+        ]);
     }
 
     /**

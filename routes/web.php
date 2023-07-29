@@ -1,6 +1,7 @@
 <?php
 
 use App\Helpers\Helper;
+use App\Http\Controllers\GuideController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
@@ -40,9 +41,13 @@ Route::middleware('auth')->group(function () {
     Route::get('users', [UserController::class, 'index'])->name('users.index');
     Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
     //Coordinator routes
-    Route::resource('coordinators', CoordinatorController::class);
+    Route::resource('coordinators', CoordinatorController::class)->except(['show']);
     Route::put('coordinators/{coordinator}/status', [CoordinatorController::class, 'status'])->name('coordinators.status');
     Route::get('coordinators/{id}/list', [CoordinatorController::class, 'list'])->name('coordinators.list');
+
+    Route::get('coordinators/import', [CoordinatorController::class, 'importFileCSV'])->name('coordinators.file');
+    Route::get('coordinators/example',[CoordinatorController::class, 'downloadCSVExample'])->name('coordinators.example');
+    Route::post('coordinators/file/import', [CoordinatorController::class, 'importCSV'])->name('coordinators.import');
     //Place routes
     Route::resource('places', PlaceController::class);
     //Leader routes
@@ -52,6 +57,9 @@ Route::middleware('auth')->group(function () {
     //Voter routes
     Route::resource('voters', VoterController::class);
     Route::put('voters/{voter}/status', [VoterController::class, 'status'])->name('voters.status');
+    //Guides routes
+    Route::resource('guides', GuideController::class);
+    Route::put('guides/{voter}/status', [GuideController::class, 'status'])->name('guides.status');
     //Sms routes
     Route::resource('sms', SmsController::class)->only(['index', 'store']);
     Route::post('sms/link', [SmsController::class, 'link'])->name('sms.link');
