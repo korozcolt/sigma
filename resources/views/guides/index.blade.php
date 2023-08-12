@@ -5,12 +5,12 @@
 
     <div class="p-4 bg-white rounded-lg shadow-xs">
         <div class="flex flex-col md:flex-row items-center justify-between mb-3">
-            <h1 class="text-gray-700 text-2xl mb-2 md:mb-0">Listado de Votantes</h1>
-            @if (Auth::user()->hasRole(['super_admin', 'admin', 'coordinator','digitizer']))
+            <h1 class="text-gray-700 text-2xl mb-2 md:mb-0">Listado de Guias</h1>
+            @if (Auth::user()->hasRole(['super_admin', 'admin', 'coordinator']))
                 <div class="flex items-center">
-                    <a href="{{ route('voters.create') }}"
+                    <a href="{{ route('guides.create') }}"
                         class="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg mr-2">
-                        Crear Votante
+                        Crear Guia
                     </a>
                     <div class="hidden md:block">
                         <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-md mr-2">
@@ -79,11 +79,11 @@
                         @if (auth()->user()->isAdmin() ||
                                 auth()->user()->hasRole('coordinator'))
                             <td class="py-2 px-4 flex items-center text-center">
-                                <a href="{{ route('voters.edit', $voter) }}"
+                                <a href="{{ route('guides.edit', $voter) }}"
                                     class="text-blue-500 hover:text-blue-700 mr-4">
                                     <i class="fas fa-pencil-alt"></i>
                                 </a>
-                                <x-modal-delete-confirmation :route="route('voters.destroy', $voter)" :id="$voter->id">
+                                <x-modal-delete-confirmation :route="route('guides.destroy', $voter)" :id="$voter->id">
                                     <x-slot name="trigger">
                                         <button type="button"
                                             class="text-red-500 hover:text-red-700 focus:outline-none">
@@ -91,7 +91,7 @@
                                         </button>
                                     </x-slot>
                                 </x-modal-delete-confirmation>
-                                <x-modal-reviewer-confirmation :route="route('voters.status', $voter)" :id="$voter->id">
+                                <x-modal-reviewer-confirmation :route="route('guides.status', $voter)" :id="$voter->id">
                                     <x-slot name="trigger">
                                         <button type="button"
                                             class="text-orange-500 hover:text-orange-700 focus:outline-none mr-2">
@@ -118,7 +118,7 @@
 
         searchButton.addEventListener('click', () => {
             const searchTerm = searchInput.value;
-            window.location.href = `/voters?search=${searchTerm}`;
+            window.location.href = `/guides?search=${searchTerm}`;
         });
     </script>
 </x-app-layout>

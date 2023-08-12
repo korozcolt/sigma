@@ -2,10 +2,7 @@
 
 namespace App\Providers;
 
-use App\Models\Coordinator;
-use App\Models\Leader;
-use App\Observers\CoordinatorObserver;
-use App\Observers\LeaderObserver;
+
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -27,7 +24,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //Apply CoordinatorObserver config
-        Coordinator::observe(CoordinatorObserver::class);
-        Leader::observe(LeaderObserver::class);
+
     }
 }

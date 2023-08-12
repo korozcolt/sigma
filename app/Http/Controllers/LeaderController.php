@@ -26,8 +26,8 @@ class LeaderController extends Controller
         //all queries must be order by coordinator_id asc
         $search = $request->input('search');
         $user = Auth::user();
-        if ($user->hasRole(['coordinator', 'leader']) || $user->isAdmin()) {
-            if ($user->isAdmin()) {
+        if ($user->hasRole(['coordinator', 'leader','digitizer']) || $user->isAdmin()) {
+            if ($user->isAdmin() || $user->isDigitizer()) {
                 $leaders = Leader::with(['place', 'coordinator', 'user', 'voters'])->when($search, function ($query) use ($search) {
                     return $query->where('first_name', 'like', "%$search%")
                         ->orWhere('last_name', 'like', "%$search%")
@@ -65,7 +65,7 @@ class LeaderController extends Controller
     public function create()
     {
         $user = Auth::user();
-        if ($user->hasRole(['coordinator']) || $user->isAdmin()) {
+        if ($user->hasRole(['coordinator','digitizer']) || $user->isAdmin()) {
             if ($user->isAdmin()) {
                 $places = Place::all();
                 $coordinators = Coordinator::all();
@@ -97,7 +97,7 @@ class LeaderController extends Controller
         $user = User::create([
             'email' => $email,
             'name' => $name,
-            'password' => Hash::make($password),
+            'password' => $password,
             'role' => 'leader',
         ]);
 

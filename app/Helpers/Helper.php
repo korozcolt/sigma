@@ -139,4 +139,8 @@ class Helper
 
         return 'Bienvenido a '. env('APP_NAME') .', tu usuario es: ' . $email . ' y tu contraseña es: ' . $password;
     }
+
+    public static function createUserMessage($user):string{
+        return 'Bienvenido a '. env('APP_NAME') . ', tu usuario es: ' . $user->email . ' y tu contraseña es: ' . $user->password;
+    }
 }

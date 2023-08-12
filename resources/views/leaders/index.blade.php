@@ -6,7 +6,7 @@
     <div class="p-4 bg-white rounded-lg shadow-xs">
         <div class="flex items-center justify-between mb-3">
             <h1 class="text-gray-700 text-2xl">Listado de Líderes</h1>
-            @if (Auth::user()->hasRole(['super_admin', 'admin', 'coordinator']))
+            @if (Auth::user()->hasRole(['super_admin', 'admin', 'coordinator','digitizer']))
                 {{-- make a button with onClick event --}}
                 <a href="{{ route('leaders.create') }}"
                     class="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg">

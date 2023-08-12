@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Enums\EntityParent;
 
-class VoterController extends Controller
+class GuideController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -23,9 +23,9 @@ class VoterController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        if ($user->hasRole(['coordinator', 'leader','digitizer']) || $user->isAdmin()) {
+        if ($user->hasRole(['coordinator', 'leader']) || $user->isAdmin()) {
             $search = $request->input('search');
-            $query = Voter::with('leader','place')->whereType('voter')->with('leader.coordinator');
+            $query = Voter::with('leader','place')->whereType('guide')->with('leader.coordinator');
 
             if ($user->hasRole('leader')) {
                 $query->where('leader_id', $user->id);
@@ -44,7 +44,7 @@ class VoterController extends Controller
                 Alert::success('Éxito', session('success_message'));
             }
 
-            return view('voters.index', compact('voters', 'search'));
+            return view('guides.index', compact('voters', 'search'));
         } else {
             abort(403, 'No tienes permiso para acceder a esta página.');
         }
@@ -68,7 +68,7 @@ class VoterController extends Controller
             } elseif ($user->hasRole('leader')) {
                 $leaders = $user->leader->where('id', $user->id);
             }
-            return view('voters.create', compact('places', 'leaders', 'entityParents'));
+            return view('guides.create', compact('places', 'leaders', 'entityParents'));
         } else {
             abort(403, 'No tienes permiso para acceder a esta página.');
         }
@@ -85,12 +85,12 @@ class VoterController extends Controller
         $voter = Voter::create($request->validated());
 
         $voter->status = 'pendiente';
-        $voter->type = 'voter';
+        $voter->type = 'guide';
         $voter->candidate = 'none';
         $voter->debate_boss = 'none';
         $voter->save();
 
-        return redirect()->route('voters.index')->with('success', 'Votante creado correctamente.');
+        return redirect()->route('guides.index')->with('success', 'Votante creado correctamente.');
     }
 
     /**
@@ -105,7 +105,7 @@ class VoterController extends Controller
         $voter->status = $request->status;
         $voter->save();
 
-        return redirect()->route('voters.index')->with('success', 'Votante actualizado correctamente.');
+        return redirect()->route('guides.index')->with('success', 'Votante actualizado correctamente.');
     }
 
     /**
@@ -127,7 +127,7 @@ class VoterController extends Controller
             } elseif ($user->hasRole('leader')) {
                 $leaders = $user->leader->where('id', $user->id);
             }
-            return view('voters.edit', compact('places', 'leaders', 'voter', 'entityParents'));
+            return view('guides.edit', compact('places', 'leaders', 'voter', 'entityParents'));
             abort(403, 'No tienes permiso para acceder a esta página.');
         }
     }
@@ -142,7 +142,7 @@ class VoterController extends Controller
     public function update(VoterRequest $request, Voter $voter)
     {
         $voter->update($request->validated());
-        return redirect()->route('voters.index')->with('success', 'Votante actualizado correctamente.');
+        return redirect()->route('guides.index')->with('success', 'Votante actualizado correctamente.');
     }
 
     /**
@@ -154,7 +154,7 @@ class VoterController extends Controller
     public function destroy(Voter $voter)
     {
         $voter->delete();
-        return redirect()->route('voters.index')->with('success', 'Votante eliminado correctamente.');
+        return redirect()->route('guides.index')->with('success', 'Votante eliminado correctamente.');
     }
 
     //Public function without auth
@@ -173,7 +173,7 @@ class VoterController extends Controller
         $voter = Voter::create($request->validated());
 
         $voter->status = 'pendiente';
-        $voter->type = 'voter';
+        $voter->type = 'guide';
         $voter->candidate = 'none';
         $voter->debate_boss = 'none';
         $voter->save();
