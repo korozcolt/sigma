@@ -6,6 +6,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -46,6 +48,12 @@ class User extends Authenticatable
         'last_activity' => 'datetime',
     ];
 
+    protected function password(): Attribute{
+        return Attribute::make(
+            set: fn($value) => Hash::make($value)
+        );
+    }
+
     public function coordinator()
     {
         return $this->hasOne(Coordinator::class);
@@ -84,5 +92,10 @@ class User extends Authenticatable
     public function isCoordinator()
     {
         return $this->role === 'coordinator';
+    }
+
+    public function isDigitizer()
+    {
+        return $this->role === 'digitizer';
     }
 }

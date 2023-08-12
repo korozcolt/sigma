@@ -38,8 +38,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     //User routes
-    Route::get('users', [UserController::class, 'index'])->name('users.index');
-    Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+    Route::resource('users', UserController::class)->except(['show']);
     //Coordinator routes
     Route::resource('coordinators', CoordinatorController::class)->except(['show']);
     Route::put('coordinators/{coordinator}/status', [CoordinatorController::class, 'status'])->name('coordinators.status');

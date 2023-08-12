@@ -23,7 +23,7 @@ class VoterController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        if ($user->hasRole(['coordinator', 'leader']) || $user->isAdmin()) {
+        if ($user->hasRole(['coordinator', 'leader','digitizer']) || $user->isAdmin()) {
             $search = $request->input('search');
             $query = Voter::with('leader','place')->whereType('voter')->with('leader.coordinator');
 

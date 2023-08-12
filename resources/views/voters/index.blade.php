@@ -6,7 +6,7 @@
     <div class="p-4 bg-white rounded-lg shadow-xs">
         <div class="flex flex-col md:flex-row items-center justify-between mb-3">
             <h1 class="text-gray-700 text-2xl mb-2 md:mb-0">Listado de Votantes</h1>
-            @if (Auth::user()->hasRole(['super_admin', 'admin', 'coordinator']))
+            @if (Auth::user()->hasRole(['super_admin', 'admin', 'coordinator','digitizer']))
                 <div class="flex items-center">
                     <a href="{{ route('voters.create') }}"
                         class="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg mr-2">

@@ -4,7 +4,13 @@
     </x-slot>
 
     <div class="p-4 bg-white rounded-lg shadow-xs">
-
+        @if (Auth::user()->hasRole(['super_admin', 'admin']))
+            {{-- make a button with onClick event --}}
+            <a href="{{ route('users.create') }}"
+               class="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg">
+                Crear Usuario
+            </a>
+        @endif
         <div class="inline-flex overflow-hidden mb-4 w-full bg-white rounded-lg shadow-md">
             <div class="flex justify-center items-center w-12 bg-blue-500">
                 <svg class="w-6 h-6 text-white fill-current" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">

@@ -25,9 +25,9 @@ class CoordinatorController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        if ($user->hasRole(['coordinator', 'leader']) || $user->isAdmin()) {
+        if ($user->hasRole(['coordinator', 'leader','digitizer']) || $user->isAdmin()) {
             $search = $request->input('search');
-            if ($user->isAdmin()) {
+            if ($user->isAdmin() || $user->isDigitizer()) {
                 $coordinators = Coordinator::with(['users', 'place', 'leaders'])->when($search, function ($query) use ($search) {
                     return $query->where('first_name', 'like', "%$search%")
                         ->orWhere('last_name', 'like', "%$search%")
@@ -53,7 +53,7 @@ class CoordinatorController extends Controller
     public function list(Coordinator $coordinator)
     {
         $user = Auth::user();
-        if ($user->hasRole('coordinator') || $user->isAdmin()) {
+        if ($user->hasRole(['coordinator', 'digitizer']) || $user->isAdmin()) {
             $leaders = Leader::where('coordinator_id', $coordinator->id)->get();
             $voters = collect(); // initialize $voters as a Collection instance
             foreach ($leaders as $leader) {
@@ -150,7 +150,7 @@ class CoordinatorController extends Controller
     public function create()
     {
         $user = Auth::user();
-        if ($user->hasRole('coordinator') || $user->isAdmin()) {
+        if ($user->hasRole(['coordinator', 'digitizer']) || $user->isAdmin()) {
             $places = Place::all();
             return view('coordinators.create', compact('places'));
         } else {
@@ -175,7 +175,7 @@ class CoordinatorController extends Controller
         $user = User::create([
             'email' => $email,
             'name' => $name,
-            'password' => Hash::make($password),
+            'password' => $password,
             'role' => 'coordinator',
         ]);
 
