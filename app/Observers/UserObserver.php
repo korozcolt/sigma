@@ -15,6 +15,7 @@ class UserObserver
      */
     public function created(User $user)
     {
+        $contact = $user->email;
         Helper::sendSms($user, Helper::createUserMessage($user));
     }
 
