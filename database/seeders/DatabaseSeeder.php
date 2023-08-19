@@ -77,5 +77,7 @@ class DatabaseSeeder extends Seeder
         $contacts = \App\Models\Voter::first();
         $message = 'Tu usuario es: ' . $user->email . ' y tu contraseña es: Q@10op29+';
         Helper::sendSms($contacts, $message);
+
+        $this->call([PlaceSeeder::class]);
     }
 }
