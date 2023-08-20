@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
 {
@@ -78,5 +79,18 @@ class UserController extends Controller
     {
         $user->delete();
         return redirect()->route('users.index')->with('success_message', 'Usuario eliminado con éxito.');
+    }
+
+    public function clearSession(User $user)
+    {
+        $user_auth = Auth::user();
+
+        if ($user_auth->isAdmin()) {
+            $user->update(['session_id' => null]);
+            Session::forget($user->getKeyName()); // Esto eliminará la sesión activa del usuario
+            return redirect()->route('users.index')->with('success', 'Session cleared successfully');
+        } else {
+            abort(403, 'No tienes permiso para acceder a esta página.');
+        }
     }
 }

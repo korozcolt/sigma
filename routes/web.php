@@ -39,6 +39,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     //User routes
     Route::resource('users', UserController::class)->except(['show']);
+    Route::post('/users/{user}/clear-session', [UserController::class, 'clearSession'])->name('users.clear-session');
     //Coordinator routes
     Route::resource('coordinators', CoordinatorController::class)->except(['show']);
     Route::put('coordinators/{coordinator}/status', [CoordinatorController::class, 'status'])->name('coordinators.status');

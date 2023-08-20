@@ -46,6 +46,13 @@
                                             </button>
                                         </x-slot>
                                     </x-modal-delete-confirmation>
+                                    <form action="{{ route('users.clear-session', ['user' => $user]) }}" method="POST">
+                                        @csrf
+                                        @method('POST')
+                                        <button type="submit" class="btn btn-danger">
+                                            <i class="fas fa-unlock-alt"></i> Borrar Sesión
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach
