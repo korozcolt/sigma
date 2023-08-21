@@ -32,10 +32,10 @@ class AuthenticatedSessionController extends Controller
         $user = Auth::user();
         $session_id = session()->getId();
 
-        if ($user->session_id && $user->session_id != $session_id) {
+        /*if ($user->session_id && $user->session_id != $session_id) {
             Auth::logout();
             return redirect()->back()->withErrors(['email' => 'Ya se encuentra logeado en otro dispositivo.']);
-        }
+        }*/
 
         $user->session_id = $session_id;
         $user->last_login_at = now();
