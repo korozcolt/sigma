@@ -37,22 +37,23 @@
                                 <td class="px-4 py-3 text-sm">
                                     {{ $user->role }}
                                 </td>
-                                <td>
-                                    <x-modal-delete-confirmation :route="route('users.destroy', $user)" :id="$user->id">
-                                        <x-slot name="trigger">
-                                            <button type="button"
-                                                class="text-red-500 hover:text-red-700 focus:outline-none">
-                                                <i class="fas fa-trash-alt"></i>
+                                <td class="px-4 py-3">
+                                    <div class="flex space-x-2">
+                                        <x-modal-delete-confirmation :route="route('users.destroy', $user)" :id="$user->id">
+                                            <x-slot name="trigger">
+                                                <button type="button" class="text-red-500 hover:text-red-700 focus:outline-none">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            </x-slot>
+                                        </x-modal-delete-confirmation>
+                                        <form action="{{ route('users.clear-session', ['user' => $user]) }}" method="POST">
+                                            @csrf
+                                            @method('POST')
+                                            <button type="submit" class="btn btn-danger">
+                                                <i class="fas fa-unlock-alt"></i> Borrar Sesión
                                             </button>
-                                        </x-slot>
-                                    </x-modal-delete-confirmation>
-                                    <form action="{{ route('users.clear-session', ['user' => $user]) }}" method="POST">
-                                        @csrf
-                                        @method('POST')
-                                        <button type="submit" class="btn btn-danger">
-                                            <i class="fas fa-unlock-alt"></i> Borrar Sesión
-                                        </button>
-                                    </form>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
