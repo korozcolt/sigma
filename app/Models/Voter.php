@@ -26,6 +26,7 @@ class Voter extends Model
         'leader_id',
         'place_id',
         'entity_parent',
+        'table',
     ];
 
     protected function firstName(): Attribute

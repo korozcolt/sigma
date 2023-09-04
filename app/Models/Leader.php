@@ -6,7 +6,8 @@ use App\Enums\EntityStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Crypt;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
 class Leader extends Model
@@ -30,7 +31,10 @@ class Leader extends Model
         'public_url_token'
     ];
 
-    public function user()
+    /**
+     * @return BelongsTo
+     */
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -58,17 +62,26 @@ class Leader extends Model
         );
     }
 
-    public function coordinator()
+    /**
+     * @return BelongsTo
+     */
+    public function coordinator(): BelongsTo
     {
         return $this->belongsTo(Coordinator::class);
     }
 
-    public function voters()
+    /**
+     * @return HasMany
+     */
+    public function voters(): HasMany
     {
         return $this->hasMany(Voter::class);
     }
 
-    public function place()
+    /**
+     * @return BelongsTo
+     */
+    public function place(): BelongsTo
     {
         return $this->belongsTo(Place::class);
     }

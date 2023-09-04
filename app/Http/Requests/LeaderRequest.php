@@ -30,7 +30,7 @@ class LeaderRequest extends FormRequest
                 'required',
                 'integer',
                 'digits_between : 6, 11',
-                'unique:leaders,dni',
+                Rule::unique('leaders', 'dni'),
             ],
             'first_name' => 'required|string|regex:/^[\pL\s]+$/u',
             'last_name' => 'required|string|regex:/^[\pL\s]+$/u',
@@ -56,14 +56,7 @@ class LeaderRequest extends FormRequest
         return [
             'dni.required' => 'El DNI es requerido',
             'dni.numeric' => 'El DNI solo debe contener números',
-            'dni.unique' => function ($attribute, $value, $fail) {
-                $leader = Leader::whereDni($value)->first();
-                if ($leader) {
-                    $full_name = $leader->coordinator->full_name;
-                    $dni = $leader->coordinator->dni;
-                    $fail("El DNI ya está asociado con el Líder {$full_name} con DNI {$dni}.");
-                }
-            },
+            'dni.unique' => 'El DNI ya está asociado con un Coordinador.',
             'dni.digits_between' => 'El DNI solo debe contener entre 6 y 11 números',
             'first_name.required' => 'El campo Nombre es obligatorio.',
             'first_name.string' => 'El campo Nombre solo debe contener letras.',
