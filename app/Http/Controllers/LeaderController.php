@@ -8,17 +8,27 @@ use App\Models\Coordinator;
 use App\Models\Place;
 use App\Models\User;
 use App\Models\Voter;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class LeaderController extends Controller
 {
+    protected static $baseUrl  = '';
+
+    public static function initialize(){
+        $baseUrl = env('APP_URL');
+    }
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index(Request $request)
     {
@@ -60,7 +70,7 @@ class LeaderController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View|void
      */
     public function create()
     {
@@ -83,16 +93,16 @@ class LeaderController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param LeaderRequest $request
+     * @return RedirectResponse
      */
     public function store(LeaderRequest $request)
     {
         $leader = Leader::create($request->validated());
-
         // Crear y asociar usuario
-        $email = $request->dni . '@' . 'sigmaapp.co';
-        $password = $request->dni . '2023';
+        $ano_actual = date("Y");
+        $email = $request->dni . '@' . self::$baseUrl;
+        $password = $request->dni . $ano_actual;
         $name = $request->first_name . ' ' . $request->last_name;
         $user = User::create([
             'email' => $email,
@@ -109,7 +119,7 @@ class LeaderController extends Controller
         $leader->generatePublicUrlToken();
         $leader->save();
 
-        $voter = Voter::create([
+        Voter::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'dni' => $request->dni,
@@ -146,7 +156,7 @@ class LeaderController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Leader  $leader
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit(Leader $leader)
     {
@@ -176,7 +186,7 @@ class LeaderController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Leader  $leader
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(LeaderRequest $request, Leader $leader)
     {
@@ -188,7 +198,7 @@ class LeaderController extends Controller
      * Remove the specified resource from storage.
      *
      * @param \App\Models\Leader $leader
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy(Leader $leader)
     {

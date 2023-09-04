@@ -45,7 +45,12 @@
                     value="{{ old('place_id', $voter->place_id) }}" required autofocus />
                 <x-input-error :messages="$errors->get('place')" class="mt-2" />
             </div>
-
+            <div class="mt-4">
+                <x-input-label for="table" :value="__('Mesa')" />
+                <x-text-input type="number" id="table" name="table" class="block w-full"
+                              value="{{ old('table',$voter->table) }}" required autofocus />
+                <x-input-error :messages="$errors->get('table')" class="mt-2" />
+            </div>
             {{-- leader_id --}}
             <div class="mt-4">
                 <x-input-label for="leader" :value="__('Leader')" />
