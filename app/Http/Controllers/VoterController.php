@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\VoterRequest;
+use App\Http\Requests\VoterUpdateRequest;
 use App\Models\Leader;
 use App\Models\Place;
 use App\Models\Voter;
@@ -111,7 +112,7 @@ class VoterController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Voter  $voter
+     * @param Voter $voter
      * @return Response
      */
     public function edit(Voter $voter)
@@ -128,18 +129,19 @@ class VoterController extends Controller
                 $leaders = $user->leader->where('id', $user->id);
             }
             return view('voters.edit', compact('places', 'leaders', 'voter', 'entityParents'));
-            abort(403, 'No tienes permiso para acceder a esta página.');
         }
+
+        abort(403, 'No tienes permiso para acceder a esta página.');
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Voter  $voter
-     * @return Response
+     * @param VoterRequest $request
+     * @param Voter $voter
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(VoterRequest $request, Voter $voter)
+    public function update(VoterUpdateRequest $request, Voter $voter)
     {
         $voter->update($request->validated());
         return redirect()->route('voters.index')->with('success', 'Votante actualizado correctamente.');
@@ -148,7 +150,7 @@ class VoterController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Voter  $voter
+     * @param Voter $voter
      * @return Response
      */
     public function destroy(Voter $voter)

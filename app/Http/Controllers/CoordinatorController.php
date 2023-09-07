@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Enums\EntityStatus;
+use App\Http\Requests\CoordinatorUpdateRequest;
 use App\Models\Coordinator;
 use App\Http\Requests\CoordinatorRequest;
 use App\Models\Leader;
 use App\Models\Place;
 use App\Models\User;
 use App\Models\Voter;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -20,7 +23,7 @@ class CoordinatorController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index(Request $request)
     {
@@ -77,7 +80,6 @@ class CoordinatorController extends Controller
 
     public function importCSV(CoordinatorRequest $request)
     {
-        dd($request->all());
         $file = $request->file('csv_file');
         $handle = fopen($file->getRealPath(), 'r');
         $invalidRows = [];
@@ -118,7 +120,7 @@ class CoordinatorController extends Controller
      * the fillable attributes of the Coordinator model. The user can
      * download this file as an example to use when importing data.
      *
-     * @return \Symfony\Component\HttpFoundation\StreamedResponse
+     * @return StreamedResponse
      */
     public function downloadCSVExample()
     {
@@ -145,7 +147,7 @@ class CoordinatorController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -161,8 +163,8 @@ class CoordinatorController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\CoordinatorRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param CoordinatorRequest $request
+     * @return RedirectResponse
      */
     public function store(CoordinatorRequest $request)
     {
@@ -238,8 +240,8 @@ class CoordinatorController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Coordinator  $coordinator
-     * @return \Illuminate\Http\Response
+     * @param Coordinator $coordinator
+     * @return Response
      */
     public function edit(Coordinator $coordinator)
     {
@@ -255,11 +257,11 @@ class CoordinatorController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\CoordinatorRequest  $request
-     * @param  \App\Models\Coordinator  $coordinator
-     * @return \Illuminate\Http\Response
+     * @param CoordinatorUpdateRequest $request
+     * @param Coordinator $coordinator
+     * @return Response
      */
-    public function update(CoordinatorRequest $request, Coordinator $coordinator)
+    public function update(CoordinatorUpdateRequest $request, Coordinator $coordinator)
     {
         $coordinator->update($request->validated());
         return redirect()->route('coordinators.index')->with('success', 'Coordinador actualizado Correctamente.');
@@ -268,8 +270,8 @@ class CoordinatorController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Coordinator  $coordinator
-     * @return \Illuminate\Http\Response
+     * @param Coordinator $coordinator
+     * @return Response
      */
     public function destroy(Coordinator $coordinator)
     {
