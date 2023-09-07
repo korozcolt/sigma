@@ -42,7 +42,7 @@
             <tbody>
                 @forelse ($leaders as $leader)
                     <tr class="border-b">
-                        <td class="py-2 px-4 text-center">{{ $leader->full_name }}</td>
+                        <td class="py-2 px-4 text-center"><a href="{{ route('leaders.show',$leader) }}">{{ $leader->full_name }}</a></td>
                         <td class="py-2 px-4 text-center">{{ $leader->dni }}</td>
                         <td class="py-2 px-4 text-center">{{ $leader->phone }}</td>
                         <td class="py-2 px-4 text-center">{{ $leader->coordinator->full_name }}</td>

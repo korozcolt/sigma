@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LeaderRequest;
+use App\Http\Requests\LeaderUpdateRequest;
 use App\Models\Leader;
 use App\Models\Coordinator;
 use App\Models\Place;
@@ -88,6 +89,12 @@ class LeaderController extends Controller
         } else {
             abort(403, 'No tienes permiso para acceder a esta página.');
         }
+    }
+
+    public function show(Leader $leader){
+        //show the voters associated with the leader on the leader.show view
+        $voters = Voter::where('leader_id', $leader->id)->whereType('voter')->with('leader')->with('place')->get();
+        return view('leaders.show', compact('leader', 'voters'));
     }
 
     /**
@@ -188,7 +195,7 @@ class LeaderController extends Controller
      * @param  \App\Models\Leader  $leader
      * @return Response
      */
-    public function update(LeaderRequest $request, Leader $leader)
+    public function update(LeaderUpdateRequest $request, Leader $leader)
     {
         $leader->update($request->validated());
         return redirect()->route('leaders.index')->with('success', 'Líder actualizado correctamente.');

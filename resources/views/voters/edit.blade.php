@@ -2,9 +2,9 @@
     <div class="py-4">
         <h1 class="text-2xl font-bold mb-4">Editar Votante</h1>
 
-        <form method="post" action="{{ route('voters.update', $voter) }}">
+        <form action="{{ route('voters.update', $voter) }}" method="post">
             @csrf
-            @method('PUT')
+            @method('put')
             <div class="mt-4">
                 <div class="mt-4">
                     <x-input-label for="dni" :value="__('Cedula')" />
@@ -69,7 +69,7 @@
             <div class="text-right mt-4 flex">
                 <button class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-l w-1/2"
                     onclick="window.location='{{ route('voters.index') }}'">Cancelar</button>
-                <button class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-r w-1/2">Actualizar</button>
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-r w-1/2">Actualizar</button>
             </div>
         </form>
     </div>
