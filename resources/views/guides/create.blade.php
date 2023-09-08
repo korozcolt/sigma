@@ -53,6 +53,13 @@
             </div>
 
             <div class="mt-4">
+                <x-input-label for="table" :value="__('Mesa')" />
+                <x-text-input type="number" id="table" name="table" class="block w-full"
+                              value="{{ old('table') }}" required autofocus />
+                <x-input-error :messages="$errors->get('table')" class="mt-2" />
+            </div>
+
+            <div class="mt-4">
                 <x-input-label for="entity_parent" :value="__('Parent')" />
                 <x-select-input-parents :options="$entityParents" id="entity_parent" name="entity_parent"
                     value="{{ old('entity_parent') }}" required autofocus />
