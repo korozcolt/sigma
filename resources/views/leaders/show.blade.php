@@ -33,7 +33,7 @@
                 <td class="py-2 px-4 text-center">{{ $voter->phone }}</td>
                 <td class="py-2 px-4 text-center">{{ $voter->leader->full_name }}</td>
                 <td class="py-2 px-4 text-center">{{ $voter->place->place }} - Mesa:
-                    {{ $voter->place->table }}
+                    {{ $voter->table }}
                 </td>
 
                 <td class="py-2 px-4 text-center">
