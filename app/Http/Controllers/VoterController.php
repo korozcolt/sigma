@@ -201,7 +201,9 @@ class VoterController extends Controller
             'external_numbers.mesa',
         ])->with('leader')
             ->join('external_numbers', 'voters.dni', '=', 'external_numbers.cedula')
+            ->join('leaders', 'voters.leader_id', '=', 'leaders.id')
             ->where('external_numbers.municipio', '=', 'SINCELEJO')
+            ->orderBy('leaders.dni', 'asc')
             ->get();
 
         return view('voters.public.show', compact('voters'));
