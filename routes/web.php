@@ -29,6 +29,7 @@ Route::get('/', function () {
 Route::get('/dashboard', [DashboardController::class,'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('voters/{public_url_token}/new', [VoterController::class, 'new_voter'])->name('voters.new');
 Route::post('voters/new', [VoterController::class, 'save_voter'])->name('voters.save_voter');
+Route::get('voters/censo', [VoterController::class, 'new_place_voter'])->name('voters.censo');
 //Auth routes
 Route::middleware('auth')->group(function () {
     //Profile routes

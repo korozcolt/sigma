@@ -4,7 +4,9 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use League\Csv\Exception;
 use League\Csv\Reader;
+use League\Csv\UnavailableStream;
 
 class ExternalNumbersSeeder extends Seeder
 {
@@ -13,6 +15,7 @@ class ExternalNumbersSeeder extends Seeder
      *
      * @return void
      * @throws UnavailableStream|Exception
+     * @throws Exception
      */
     public function run(): void
     {
