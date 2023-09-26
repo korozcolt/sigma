@@ -12,7 +12,7 @@
 </head>
 <body>
 <div class="container mx-auto">
-    <div class="m-4"><h1>Listado de Votantes</h1></div>
+    <div class="m-4"><h1>Listado de Votantes - Cantidad: {{ $voters->count() }}</h1></div>
 
     <table class="w-full table-auto">
         <thead>
