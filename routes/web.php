@@ -30,6 +30,9 @@ Route::get('/dashboard', [DashboardController::class,'index'])->middleware(['aut
 Route::get('voters/{public_url_token}/new', [VoterController::class, 'new_voter'])->name('voters.new');
 Route::post('voters/new', [VoterController::class, 'save_voter'])->name('voters.save_voter');
 Route::get('voters/censo', [VoterController::class, 'new_place_voter'])->name('voters.censo');
+Route::get('voters/{dni}/exists', function($dni){
+    return Helper::voterExists($dni);
+})->name('voters.exists');
 //Auth routes
 Route::middleware('auth')->group(function () {
     //Profile routes

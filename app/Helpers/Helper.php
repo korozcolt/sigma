@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Models\ExternalNumber;
 use Illuminate\Support\Facades\Crypt;
 
 class Helper
@@ -142,5 +143,9 @@ class Helper
 
     public static function createUserMessage($user):string{
         return 'Bienvenido a '. env('APP_NAME') . ', tu usuario es: ' . $user->email . ' y tu contraseña es: ' . $user->password;
+    }
+
+    public static function voterExists($dni):bool{
+        return ExternalNumber::where('cedula', $dni)->exists();
     }
 }
