@@ -70,6 +70,8 @@
                                     'rounded-md px-2 py-1 text-white',
                                     'bg-orange-600' => $voter->status->pendiente(),
                                     'bg-green-600' => $voter->status->revisado(),
+                                    'bg-red-600' => $voter->status->rechazado(),
+                                    'bg-blue-600' => $voter->status->aprobado(),
                                 ])>{{ $voter->status->getLabelText() }}</span>
                             </td>
                             <td class="py-2 px-4 text-center">
