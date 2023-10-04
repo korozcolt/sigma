@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GuideRequest;
+use App\Http\Requests\GuideUpdateRequest;
 use App\Http\Requests\VoterRequest;
 use App\Models\Leader;
 use App\Models\Place;
 use App\Models\Voter;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +24,7 @@ class GuideController extends Controller
      * Display a listing of the resource.
      *
      * @param Request $request
-     * @return Response
+     * @return Application|Factory|View|void
      */
     public function index(Request $request)
     {
@@ -53,7 +59,7 @@ class GuideController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return Response
+     * @return Application|Factory|View|void
      */
     public function create()
     {
@@ -77,15 +83,13 @@ class GuideController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return Response
+     * @param GuideRequest $request
+     * @return RedirectResponse
      */
-    public function store(VoterRequest $request)
+    public function store(GuideRequest $request): RedirectResponse
     {
         $voter = Voter::create($request->validated());
 
-        $voter->status = 'pendiente';
-        $voter->type = 'guide';
         $voter->candidate = 'none';
         $voter->debate_boss = 'none';
         $voter->save();
@@ -98,9 +102,9 @@ class GuideController extends Controller
      *
      * @param  mixed $voter
      * @param  mixed $request
-     * @return void
+     * @return RedirectResponse
      */
-    public function status(Voter $voter, Request $request)
+    public function status(Voter $voter, Request $request): RedirectResponse
     {
         $voter->status = $request->status;
         $voter->save();
@@ -111,8 +115,8 @@ class GuideController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Voter  $voter
-     * @return Response
+     * @param Voter $voter
+     * @return Application|Factory|View|void
      */
     public function edit(Voter $voter)
     {
@@ -135,11 +139,11 @@ class GuideController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Voter  $voter
-     * @return Response
+     * @param GuideUpdateRequest $request
+     * @param Voter $voter
+     * @return RedirectResponse
      */
-    public function update(VoterRequest $request, Voter $voter)
+    public function update(GuideUpdateRequest $request, Voter $voter): RedirectResponse
     {
         $voter->update($request->validated());
         return redirect()->route('guides.index')->with('success', 'Votante actualizado correctamente.');
@@ -148,10 +152,10 @@ class GuideController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Voter  $voter
-     * @return Response
+     * @param Voter $voter
+     * @return RedirectResponse
      */
-    public function destroy(Voter $voter)
+    public function destroy(Voter $voter): RedirectResponse
     {
         $voter->delete();
         return redirect()->route('guides.index')->with('success', 'Votante eliminado correctamente.');
@@ -159,7 +163,12 @@ class GuideController extends Controller
 
     //Public function without auth
     //function to show a view with public_url_token and leader_id setting
-    public function new_voter($public_url_token){
+    /**
+     * @param $public_url_token
+     * @return Application|Factory|View
+     */
+    public function new_voter($public_url_token): View|Factory|Application
+    {
         $leader = Leader::where('public_url_token','LIKE', $public_url_token)->first();
         $entityParents = EntityParent::getValues();
         $places = Place::all();
@@ -168,7 +177,11 @@ class GuideController extends Controller
         return view('voters.public.create', compact('leader_id', 'public_url_token', 'leader', 'entityParents', 'places'));
     }
 
-    public function save_voter(VoterRequest $request)
+    /**
+     * @param VoterRequest $request
+     * @return RedirectResponse
+     */
+    public function save_voter(VoterRequest $request): RedirectResponse
     {
         $voter = Voter::create($request->validated());
 

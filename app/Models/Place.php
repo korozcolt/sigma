@@ -14,28 +14,28 @@ class Place extends Model
         'table',
     ];
 
-    public function coordinators()
+    public function coordinators(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Coordinator::class);
     }
 
-    public function leaders()
+    public function leaders(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Leader::class);
     }
 
-    public function voters()
+    public function voters(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Voter::class);
     }
 
-    public function setPlaceAttribute($value)
+    public function setPlaceAttribute($value): void
     {
         $this->attributes['place'] = trim(strtoupper($value));
     }
 
     //function for convert the place to uppercase
-    public function getPlaceAttribute($value)
+    public function getPlaceAttribute($value): string
     {
         return strtoupper($value);
     }

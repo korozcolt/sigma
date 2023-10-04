@@ -28,7 +28,7 @@ enum EntityStatus:string
         return $this === self::RECHAZADO;
     }
 
-    public function getLabelText()
+    public function getLabelText(): string
     {
         return match ($this) {
             self::PENDIENTE => 'Pendiente',

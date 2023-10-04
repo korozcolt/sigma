@@ -65,6 +65,8 @@
                     value="{{ old('entity_parent') }}" required autofocus />
                 <x-input-error :messages="$errors->get('entity_parent')" class="mt-2" />
             </div>
+            <input type="hidden" name="status" value="pendiente">
+            <input type="hidden" name="type" value="guide">
 
             <div class="text-right mt-4 flex">
                 <button class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-l w-1/2"

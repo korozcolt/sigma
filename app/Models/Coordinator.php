@@ -31,20 +31,20 @@ class Coordinator extends Model
             'name' => $this->full_name,
             'email' => $this->dni . '@sigma.com',
             'role' => 'coordinator',
-        ])->onDelete('cascade');
+        ])->onDelete('cascade')->onUpdate('cascade');
     }
 
-    public function place()
+    public function place(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Place::class);
     }
 
-    public function leaders()
+    public function leaders(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Leader::class);
     }
 
-    public function users()
+    public function users(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class);
     }
