@@ -68,6 +68,16 @@
                 <x-input-error :messages="$errors->get('entity_parent')" class="mt-2" />
             </div>
 
+            <!-- Type edit with select option -->
+            <div class="mt-4">
+                <x-input-label for="type" :value="__('Tipo')" />
+                <select name="type" id="type">
+                    <option value="voter" {{ $voter->type == 'voter' ? 'selected' : '' }}>Votante</option>
+                    <option value="guide" {{ $voter->type == 'guide' ? 'selected' : '' }}>Testigo</option>
+                </select>
+                <x-input-error :messages="$errors->get('type')" class="mt-2" />
+
+
             <div class="text-right mt-4 flex">
                 <button class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-l w-1/2"
                     onclick="window.location='{{ route('guides.index') }}'">Cancelar</button>
