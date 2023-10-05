@@ -2,7 +2,7 @@
     <div class="py-4">
         <h1 class="text-2xl font-bold mb-4">Crear Votante</h1>
 
-        <form method="post" action="{{ route('voters.store') }}">
+        <form method="post" action="{{ route('guides.store') }}">
             @csrf
             <div class="mt-4">
                 <div class="mt-4">
