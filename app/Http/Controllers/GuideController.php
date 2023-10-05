@@ -94,7 +94,7 @@ class GuideController extends Controller
         $voter->debate_boss = 'none';
         $voter->save();
 
-        return redirect()->route('guides.index')->with('success', 'Votante creado correctamente.');
+        return redirect()->route('guides.index')->with('success', 'Guía creado correctamente.');
     }
 
     /**
