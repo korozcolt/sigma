@@ -38,9 +38,8 @@ Route::get('voters/{dni}/exists', function($dni){
 Route::middleware('auth')->group(function () {
     //Profile routes
     Route::get('profile/show', [ProfileController::class, 'show'])->name('profile.show');
-    Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::patch('profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     //User routes
     Route::resource('users', UserController::class)->except(['show']);
