@@ -10,6 +10,7 @@ use App\Http\Controllers\CoordinatorController;
 use App\Http\Controllers\LeaderController;
 use App\Http\Controllers\VoterController;
 use App\Http\Controllers\SmsController;
+use App\Http\Controllers\VotationController;
 use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
@@ -80,3 +81,9 @@ Route::middleware('auth')->group(function () {
     Route::get('places-export', [PlaceController::class,'export_excel'])->name('places.export.excel');
     // Route::post('places-import', 'import')->name('places.import');
 });
+//Votations resource routes
+Route::get('/votations', [VotationController::class, 'login'])->name('votations.login');
+Route::post('/votations', [VotationController::class, 'tokenGenerate'])->name('votations.token');
+Route::get('/votations/{votation}/search', [VotationController::class, 'index'])->name('votations.index');
+Route::get('/votations/{cedula}/show', [VotationController::class, 'show'])->name('votations.show');
+Route::put('/votations/update', [VotationController::class, 'update'])->name('votations.update');
