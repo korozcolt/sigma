@@ -52,7 +52,7 @@
         <h1><a class="slide-in-blurred-top" href="/login">SIGMA APP</a></h1>
         <div class="btn-container">
             <a href="/login" class="btn puff-in-center">Iniciar Sesion</a>
-            <a href="/votation" class="btn puff-in-center">Ir a Votación</a>
+            <a href="{{ route('votations.login') }}" class="btn puff-in-center">Ir a Votación</a>
         </div>
     </div>
 </body>
