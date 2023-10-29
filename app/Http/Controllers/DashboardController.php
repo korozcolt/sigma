@@ -2,29 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Voter;
-use App\Models\Leader;
-use App\Models\Coordinator;
-use App\Models\Place;
+use App\Models\Votation;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
-        $voters = Voter::whereType('voter')->get();
-        $leaders = Leader::whereType('leader')->get();
-        $coordinators = Coordinator::whereType('coordinator')->get();
-        $places = Place::all();
-
-        //group model place by place and count the voters
-        $places_count = Place::select('place', DB::raw('COUNT(voters.id) as voters_count'))
-        ->leftJoin('voters', 'places.id', '=', 'voters.place_id')
-        ->groupBy('places.place')
-        ->orderBy('voters_count', 'desc')
+        $votationsOpinion = Votation::where('type', 'opinion')->count();
+        $votationsYes = Votation::where('type', 'yes')->count();$votationCounts = Votation::select(
+        'nombre_puesto',
+        DB::raw('SUM(CASE WHEN type = "opinion" THEN 1 ELSE 0 END) as TOTAL_OPINION'),
+        DB::raw('SUM(CASE WHEN type = "yes" THEN 1 ELSE 0 END) as TOTAL_YES')
+    )
+        ->groupBy('nombre_puesto')
         ->get();
 
-        return view('dashboard',compact('voters','leaders','coordinators','places','places_count'));
+        return view('dashboard', compact('votationCounts', 'votationsOpinion', 'votationsYes'));
+    }
+
+    public function realTime(){
+        $votationsOpinion = Votation::where('type', 'opinion')->count();
+        $votationsYes = Votation::where('type', 'yes')->count();
+        $votationCounts = Votation::select(
+            'nombre_puesto',
+            DB::raw('SUM(CASE WHEN type = "opinion" THEN 1 ELSE 0 END) as TOTAL_OPINION'),
+            DB::raw('SUM(CASE WHEN type = "yes" THEN 1 ELSE 0 END) as TOTAL_YES')
+        )
+            ->groupBy('nombre_puesto')
+            ->get();
+        return response()->json(['votationCounts' => $votationCounts, 'votationsOpinion' => $votationsOpinion, 'votationsYes' => $votationsYes]);
     }
 }

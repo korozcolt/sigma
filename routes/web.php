@@ -28,6 +28,7 @@ Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 Route::get('/dashboard', [DashboardController::class,'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard/real-time', [DashboardController::class,'realTime'])->middleware(['auth', 'verified'])->name('dashboard.real-time');
 Route::get('voters/{public_url_token}/new', [VoterController::class, 'new_voter'])->name('voters.new');
 Route::post('voters/new', [VoterController::class, 'save_voter'])->name('voters.save_voter');
 Route::get('voters/censo', [VoterController::class, 'new_place_voter'])->name('voters.censo');
