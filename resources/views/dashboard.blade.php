@@ -24,9 +24,9 @@
                         </div>
                         <div class="ml-2 w-full flex-1">
                             <div>
-                                <div class="mt-3 text-3xl font-bold leading-8">{{ $coordinators->count() }}</div>
+                                <div id="votations_opinion" class="mt-3 text-3xl font-bold leading-8">{{ $votationsOpinion }}</div>
 
-                                <div class="mt-1 text-base text-gray-600">Coordinadores</div>
+                                <div class="mt-1 text-base text-gray-600">Opinion</div>
                             </div>
                         </div>
                     </div>
@@ -47,9 +47,9 @@
                         </div>
                         <div class="ml-2 w-full flex-1">
                             <div>
-                                <div class="mt-3 text-3xl font-bold leading-8">{{ $leaders->count() }}</div>
+                                <div id="votations_yes" class="mt-3 text-3xl font-bold leading-8">{{ $votationsYes }}</div>
 
-                                <div class="mt-1 text-base text-gray-600">Lideres</div>
+                                <div class="mt-1 text-base text-gray-600">Regulares</div>
                             </div>
                         </div>
                     </div>
@@ -72,32 +72,9 @@
                         </div>
                         <div class="ml-2 w-full flex-1">
                             <div>
-                                <div class="mt-3 text-3xl font-bold leading-8">{{ $voters->count() }}</div>
+                                <div id="votation_total" class="mt-3 text-3xl font-bold leading-8">{{ $votationsYes+$votationsOpinion }}</div>
 
-                                <div class="mt-1 text-base text-gray-600">Votantes</div>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-                <a class="transform  hover:scale-105 transition duration-300 shadow-xl rounded-lg col-span-12 sm:col-span-6 xl:col-span-3 intro-y bg-white"
-                    href="#">
-                    <div class="p-5">
-                        <div class="flex justify-between">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-green-400" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
-                            </svg>
-                            <div
-                                class="bg-blue-500 rounded-full h-6 px-2 flex justify-items-center text-white font-semibold text-sm">
-                                <span class="flex items-center">0%</span>
-                            </div>
-                        </div>
-                        <div class="ml-2 w-full flex-1">
-                            <div>
-                                <div class="mt-3 text-3xl font-bold leading-8">{{ $places->count() }}</div>
-
-                                <div class="mt-1 text-base text-gray-600">Places</div>
+                                <div class="mt-1 text-base text-gray-600">Totales</div>
                             </div>
                         </div>
                     </div>
@@ -114,49 +91,40 @@
                                     <div class="py-2 align-middle inline-block min-w-full">
                                         <div
                                             class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg bg-white">
-                                            <table class="min-w-full divide-y divide-gray-200">
+                                            <table class="min-w-full divide-y divide-gray-200" id="data_table_real_time">
                                                 <thead>
                                                     <tr>
                                                         <th
                                                             class="px-6 py-3 bg-gray-50 text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                                             <div class="flex cursor-pointer">
-                                                                <span class="mr-2">Lugar de Votacion</span>
+                                                                <span class="mr-2">Lugar de Votación</span>
                                                             </div>
                                                         </th>
                                                         <th
                                                             class="px-6 py-3 bg-gray-50 text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                                             <div class="flex cursor-pointer">
-                                                                <span class="mr-2">Cantidad</span>
+                                                                <span class="mr-2">Total Opinión</span>
                                                             </div>
                                                         </th>
                                                         <th
                                                             class="px-6 py-3 bg-gray-50 text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                                             <div class="flex cursor-pointer">
-                                                                <span class="mr-2">ESTADO</span>
+                                                                <span class="mr-2">Total Regular</span>
                                                             </div>
                                                         </th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="bg-white divide-y divide-gray-200">
-                                                    @forelse ($places_count as $place_count)
+                                                    @forelse ($votationCounts as $votation)
                                                         <tr>
                                                             <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5">
-                                                                <p>{{ $place_count->place }}</p>
+                                                                <p>{{ $votation->nombre_puesto }}</p>
                                                             </td>
                                                             <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5">
-                                                                <p>{{ $place_count->voters_count }}</p>
+                                                                <p>{{ $votation->TOTAL_OPINION }}</p>
                                                             </td>
                                                             <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5">
-                                                                <div class="flex text-green-500">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        class="w-5 h-5 mr-1" fill="none"
-                                                                        viewBox="0 0 24 24" stroke="currentColor">
-                                                                        <path stroke-linecap="round"
-                                                                            stroke-linejoin="round" stroke-width="2"
-                                                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                                    </svg>
-                                                                    <p>Active</p>
-                                                                </div>
+                                                                <p>{{ $votation->TOTAL_YES }}</p>
                                                             </td>
                                                         </tr>
                                                     @empty
@@ -177,4 +145,13 @@
             </div>
         </div>
     </div>
+    <script>
+        // Función para recargar la página cada 10 segundos
+        function autoReloadPage() {
+            location.reload();
+        }
+
+        // Establecer un intervalo para llamar a la función cada 10 segundos (10000 milisegundos)
+        setInterval(autoReloadPage, 10000);
+    </script>
 </x-app-layout>
